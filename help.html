@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="help.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    
+    <div id="sidebar-container"></div>
+
+    <!-- HELP SECTION -->
+    <section class="help-section">
+        <h1>Help & Support</h1>
+        <p class="subtitle">
+            Need assistance? Check FAQs or submit your query below.
+        </p>
+
+        <!-- FAQ -->
+        <div class="faq">
+            <h2>Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <h3>How do I join the tournament?</h3>
+                <p>Go to the Join page and fill the Google Form.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Is the entry free?</h3>
+                <p>Yes, entry is completely free.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How many teams are allowed?</h3>
+                <p>Only 16 teams per match.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Where will room ID be shared?</h3>
+                <p>Room details will be shared via WhatsApp or Discord.</p>
+            </div>
+        </div>
+
+        <!-- SUPPORT FORM -->
+        <div class="support-form">
+            <h2>Submit Your Query</h2>
+
+            <iframe 
+                name="hidden_iframe" 
+                id="hidden_iframe" 
+            style="display:none;"
+            onload="if(submitted) showSuccess();">
+            </iframe>
+
+            <form 
+                action="https://docs.google.com/forms/d/e/1FAIpQLSfTBw_8yq2k3IewLDvkviji0qaVT_8BKBHE6KccuFZyNoOPNg/formResponse" 
+                method="POST" 
+                target="hidden_iframe"
+                onsubmit="submitted=true;"
+            >
+
+                <div class="form-group">
+                   <label>Your Name</label>
+                    <input 
+                    type="text" 
+                    name="entry.393905909" 
+                    placeholder="Enter your name" 
+                    required>
+                </div>
+
+                <div class="form-group">
+                    <label>MOBILE NO. (OPTIONAL)</label>
+                    <input 
+                    type="text"
+                    name="entry.1231568842" 
+                    placeholder="Enter your number" >
+                </div>
+
+            <!-- Select Type -->
+                <div class="form-group">
+                    <label>Select Type</label>
+                    <select name="entry.592091452" required>
+                        <option value="" disabled selected>Choose one</option>
+                        <option value="FEEDBACK">Feedback</option>
+                        <option value="QUERY">Query</option>
+                        <option value="OTHER ISSUE">Other Issue</option>
+                    </select>
+                </div>
+
+                <!-- Message -->
+                <div class="form-group">
+                    <label>Your Query</label>
+                    <input 
+                        type="text" 
+                        name="entry.528004686" 
+                        placeholder="Write your query here..."
+                        required>
+                </div>
+
+                <button class="button" type="submit">Submit Query</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 Luso Esports. All Rights Reserved.
+    </footer>
+<script>
+    let submitted = false;
+
+    function showSuccess() {
+        alert("Thank you! Your message has been submitted successfully.");
+        document.querySelector("form").reset();
+        submitted = false;
+    }
+</script>
+
+<script src="sidebar.js"></script>
+<script src="sidebar-loader.js"></script>
+</body>
+</html>
