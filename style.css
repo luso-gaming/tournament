@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Make footer stick properly */
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0F172A;
+  color: #FFFFFF;
+}
+
+/* MAIN CONTENT AREA */
+main {
+  flex: 1;
+}
+
+/* FOOTER */
+footer {
+  background: #020617;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #94A3B8;
+}

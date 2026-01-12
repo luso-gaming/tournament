@@ -15,7 +15,6 @@
     color: #38bdf8;
     cursor: pointer;
 }
-
 /* SIDEBAR */
 .sidebar {
     position: fixed;
@@ -49,20 +48,35 @@
     cursor: pointer;
 }
 
+/* LIST */
 .sidebar ul {
     list-style: none;
+    padding: 0;
 }
 
-.sidebar ul li {
-    margin-bottom: 20px;
-}
-
+/* BUTTON STYLE */
 .sidebar ul li a {
+    display: block;
+    padding: 14px 16px;
+    border-radius: 10px;
     text-decoration: none;
     color: #e5e7eb;
     font-size: 16px;
+    font-weight: 500;
+    transition: 0.25s ease;
+    background: transparent;
 }
 
+/* HOVER EFFECT */
 .sidebar ul li a:hover {
+    background: #0f172a;
     color: #38bdf8;
+    transform: translateX(6px);
+}
+
+/* ACTIVE PAGE (OPTIONAL) */
+.sidebar ul li a.active {
+    background: #38bdf8;
+    color: #020617;
+    font-weight: bold;
 }

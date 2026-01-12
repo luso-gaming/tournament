@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="leaderboard.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+<main>
+    <!-- LEADERBOARD -->
+    <section class="leaderboard-section">
+        <h2>Leaderboard</h2>
+        <div class="team-search">
+          <input
+            type="text"
+            id="leaderboardSearch"
+            placeholder="Search by Team ID or Team Name"
+            onkeyup="searchLeaderboard()"
+          >
+        <!--   <button onclick="searchLeaderboard()">Search</button> -->
+        </div>
+
+        <div class="leaderboard">
+            <!-- Leaderboard rows added by JS -->
+        </div>
+    </section>
+</main>
+    <!-- FOOTER -->
+    <footer>
+        © 2026 Luso Esports. All Rights Reserved.
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="sidebar.js"></script>
+    <script src="sidebar-loader.js"></script>
+    <script src="leaderboard.js"></script>
+
+</body>
+</html>
