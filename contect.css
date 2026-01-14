@@ -1,0 +1,60 @@
+.page-section {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.page-section h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #38bdf8;
+}
+
+.page-section p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #cbd5f5;
+  margin-bottom: 15px;
+}
+
+.contact-box {
+  background: #020617;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.contact-box a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.contact-box a:hover {
+  text-decoration: underline;
+}
+
+.help-list {
+  margin: 15px 0 25px;
+  padding-left: 20px;
+  color: #cbd5f5;
+}
+
+.help-list li {
+  margin-bottom: 8px;
+}
+
+.help-button {
+  display: inline-block;
+  margin-bottom: 30px;
+  padding: 12px 25px;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.help-button:hover {
+  background: #1d4ed8;
+}
