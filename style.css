@@ -31,3 +31,30 @@ footer {
   font-size: 14px;
   color: #94A3B8;
 }
+
+/* FOOTER LINKS */
+.footer-links {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #CBD5F5;
+  text-decoration: none;
+  margin: 0 6px;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  color: #38BDF8;
+  text-decoration: underline;
+}
+
+.footer-links span {
+  color: #475569;
+}
+
+/* COPYRIGHT */
+.footer-copy {
+  font-size: 13px;
+  color: #94A3B8;
+}
