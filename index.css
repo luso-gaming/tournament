@@ -91,6 +91,21 @@ ul.rules li {
     margin-bottom: 10px;
 }
 
+section button {
+    padding: 14px 28px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #38bdf8;
+    color: #020617;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+section button:hover {
+    background: #0ea5e9;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
