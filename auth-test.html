@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Auth Test</title>
+</head>
+<body>
+
+  <h1>Supabase Google Login Test</h1>
+
+  <button id="googleLogin">Sign in with Google</button>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = supabase.createClient(
+      "https://ndifofxobgmixcswhiet.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaWZvZnhvYmdtaXhjc3doaWV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTcyMDQsImV4cCI6MjA4NDM3MzIwNH0.9-BulmjzuZX3uxxhjXi_GXHnHjnr5MU0E6BhPspAkUY"
+    );
+
+    document.getElementById("googleLogin").onclick = async () => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://www.lusoesports.in/auth-test.html"
+        }
+      });
+
+      if (error) alert(error.message);
+    };
+  </script>
+
+</body>
+</html>
