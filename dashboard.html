@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Dashboard | Luso Esports</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Common CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <main class="dashboard">
+    <div class="dashboard-card">
+      <h1>My Dashboard</h1>
+
+      <div class="user-info">
+        <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
+        <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+      </div>
+
+      <hr>
+
+      <div class="password-section">
+        <h2>Change Password</h2>
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Enter new password"
+        />
+        <button id="changePasswordBtn">Update Password</button>
+      </div>
+
+      <hr>
+
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script type="module" src="js/dashboard.js"></script>
+
+</body>
+</html>
