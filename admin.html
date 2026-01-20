@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Tournaments</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+    <p id="adminEmail"></p>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <main>
+    <!-- Create Tournament -->
+    <section id="create-tournament">
+      <h2>Create New Tournament</h2>
+      <form id="tournamentForm">
+        <input type="text" name="name" placeholder="Tournament Name" required>
+        <input type="date" name="date" required>
+        <input type="time" name="time" required>
+        <textarea name="description" placeholder="Description"></textarea>
+        <button type="submit">Add Tournament</button>
+      </form>
+    </section>
+
+    <!-- Existing Tournaments -->
+    <section id="tournament-list">
+      <h2>Existing Tournaments</h2>
+      <div id="tournamentsContainer"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
