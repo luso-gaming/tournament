@@ -1,90 +1,125 @@
-// Initialize Supabase
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+import { supabase } from "./supabase.js";
 
-// Check login and admin role
+/* ======================
+   CHECK ADMIN ACCESS
+====================== */
 async function checkAdmin() {
   const { data: { session } } = await supabase.auth.getSession();
-  
+
   if (!session) {
-    alert("You must log in!");
     window.location.href = "/login.html";
     return;
   }
 
-  // Save user in your users table if not exists
-  const email = session.user.email;
-  const username = session.user.user_metadata.full_name;
-
-  await supabase.from('users').upsert(
-    { id: session.user.id, email, username },
-    { onConflict: 'id' }
-  );
-
-  // Check admin role
-  const { data: user, error } = await supabase
-    .from('users')
-    .select('role,email')
-    .eq('id', session.user.id)
+  // Fetch profile role
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("role, email")
+    .eq("id", session.user.id)
     .single();
 
-  if (!user || user.role !== 'admin') {
-    alert("You are not authorized to access this page.");
+  if (error || profile.role !== "admin") {
+    alert("Unauthorized access");
     window.location.href = "/";
     return;
   }
 
-  document.getElementById("adminEmail").textContent = "Logged in as: " + user.email;
+  document.getElementById("adminEmail").innerText =
+    "Admin: " + profile.email;
 
-  // Load existing tournaments
   loadTournaments();
 }
 
-// Load tournaments
+/* ======================
+   LOAD TOURNAMENTS
+====================== */
 async function loadTournaments() {
   const { data, error } = await supabase
-    .from('tournaments')
-    .select('*')
-    .order('created_at', { ascending: false });
+    .from("tournaments")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-  const container = document.getElementById('tournamentsContainer');
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const container = document.getElementById("tournamentsContainer");
   container.innerHTML = "";
 
-  if (error) return console.error(error);
-
   data.forEach(t => {
-    const div = document.createElement('div');
-    div.textContent = `${t.name} - ${t.date} ${t.time}`;
+    const div = document.createElement("div");
+    div.className = "tournament-card";
+    div.innerHTML = `
+      <h3>${t.title}</h3>
+      <p>Type: ${t.type}</p>
+      <p>Status: ${t.status}</p>
+      <button onclick="editStatus('${t.id}')">Edit Status</button>
+      <button onclick="managePlayers('${t.id}')">Players</button>
+    `;
     container.appendChild(div);
   });
 }
 
-// Handle tournament creation
-document.getElementById("tournamentForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const name = form.name.value;
-  const date = form.date.value;
-  const time = form.time.value;
-  const description = form.description.value;
+/* ======================
+   CREATE TOURNAMENT
+====================== */
+document
+  .getElementById("tournamentForm")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const { data, error } = await supabase
-    .from('tournaments')
-    .insert([{ name, date, time, description }]);
+    const title = e.target.title.value;
+    const description = e.target.description.value;
+    const type = e.target.type.value;
+    const status = e.target.status.value;
 
-  if (error) return alert("Error creating tournament: " + error.message);
+    const { error } = await supabase
+      .from("tournaments")
+      .insert({ title, description, type, status });
 
-  alert("Tournament created successfully!");
-  form.reset();
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    e.target.reset();
+    loadTournaments();
+  });
+
+/* ======================
+   EDIT STATUS
+====================== */
+window.editStatus = async (id) => {
+  const status = prompt("Enter status: upcoming / live / completed");
+  if (!status) return;
+
+  await supabase
+    .from("tournaments")
+    .update({ status })
+    .eq("id", id);
+
   loadTournaments();
-});
+};
 
-// Logout button
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-  await supabase.auth.signOut();
-  window.location.href = "/login.html";
-});
+/* ======================
+   PLAYER MANAGEMENT
+====================== */
+window.managePlayers = (id) => {
+  location.href = `/admin-players.html?tournament=${id}`;
+};
 
-// Run on page load
+/* ======================
+   LOGOUT
+====================== */
+document
+  .getElementById("logoutBtn")
+  .addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  });
+
+/* ======================
+   INIT
+====================== */
 checkAdmin();

@@ -1,39 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Tournaments</title>
-  <link rel="stylesheet" href="admin.css">
+  <meta charset="UTF-8" />
+  <title>Admin Panel – Luso Esports</title>
+  <link rel="stylesheet" href="css/admin.css" />
 </head>
 <body>
-  <header>
-    <h1>Admin Dashboard</h1>
-    <p id="adminEmail"></p>
-    <button id="logoutBtn">Logout</button>
-  </header>
 
-  <main>
-    <!-- Create Tournament -->
-    <section id="create-tournament">
-      <h2>Create New Tournament</h2>
-      <form id="tournamentForm">
-        <input type="text" name="name" placeholder="Tournament Name" required>
-        <input type="date" name="date" required>
-        <input type="time" name="time" required>
-        <textarea name="description" placeholder="Description"></textarea>
-        <button type="submit">Add Tournament</button>
-      </form>
-    </section>
+  <h1>Admin Panel</h1>
 
-    <!-- Existing Tournaments -->
-    <section id="tournament-list">
-      <h2>Existing Tournaments</h2>
-      <div id="tournamentsContainer"></div>
-    </section>
-  </main>
+  <div id="adminInfo"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="admin.js"></script>
+  <section class="card">
+    <h2>Users</h2>
+    <div id="usersList">Loading...</div>
+  </section>
+
+  <button id="logoutBtn">Logout</button>
+
+  <h2>Create Tournament</h2>
+
+<form id="createTournament">
+  <input type="text" placeholder="Tournament Title" id="title" required />
+  <textarea placeholder="Description" id="desc"></textarea>
+
+  <select id="type">
+    <option value="daily">Daily</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option>
+    <option value="seasonal">Seasonal</option>
+  </select>
+
+  <select id="status">
+    <option value="upcoming">Upcoming</option>
+    <option value="live">Live</option>
+    <option value="completed">Completed</option>
+  </select>
+
+  <button type="submit">Create Tournament</button>
+</form>
+
+<hr>
+
+<h2>Existing Tournaments</h2>
+<div id="tournamentList">Loading...</div>
+
+
+  <script type="module" src="js/admin.js"></script>
 </body>
 </html>

@@ -80,3 +80,54 @@
     color: #020617;
     font-weight: bold;
 }
+
+/* ================= LOGIN / ACCOUNT BUTTON ================= */
+
+.auth-btn {
+  display: inline-flex;
+  margin-left:auto;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 18px;
+  border-radius: 10px;
+
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  border: none;
+  outline: none;
+}
+
+/* LOGIN STATE */
+.auth-btn.login {
+  background: linear-gradient(135deg, #0066ff, #00b3ff);
+  color: #ffffff;
+}
+
+.auth-btn.login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 102, 255, 0.35);
+}
+
+/* MY ACCOUNT STATE */
+.auth-btn.account {
+  background: #0b1220;
+  color: #ffffff;
+  border: 1px solid #1f3b66;
+}
+
+.auth-btn.account:hover {
+  background: #12203a;
+  border-color: #0066ff;
+}
+
+/* ICON STYLE (optional) */
+.auth-btn i {
+  font-size: 16px;
+}
+
