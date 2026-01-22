@@ -1,8 +1,6 @@
-import { supabase } from "./supabase.js";
+import { supabase } from "/js/supabase.js";
 
-/* ======================
-   CHECK ADMIN ACCESS
-====================== */
+/* 🔐 CHECK ADMIN */
 async function checkAdmin() {
   const { data: { session } } = await supabase.auth.getSession();
 
@@ -11,115 +9,72 @@ async function checkAdmin() {
     return;
   }
 
-  // Fetch profile role
-  const { data: profile, error } = await supabase
+  const { data: profile } = await supabase
     .from("profiles")
-    .select("role, email")
+    .select("role,email")
     .eq("id", session.user.id)
     .single();
 
-  if (error || profile.role !== "admin") {
-    alert("Unauthorized access");
+  if (profile.role !== "admin") {
+    alert("Access denied");
     window.location.href = "/";
     return;
   }
 
-  document.getElementById("adminEmail").innerText =
-    "Admin: " + profile.email;
-
+  document.getElementById("adminEmail").innerText = profile.email;
   loadTournaments();
 }
 
-/* ======================
-   LOAD TOURNAMENTS
-====================== */
+/* 📥 LOAD TOURNAMENTS */
 async function loadTournaments() {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("tournaments")
     .select("*")
     .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error(error);
-    return;
-  }
 
   const container = document.getElementById("tournamentsContainer");
   container.innerHTML = "";
 
   data.forEach(t => {
     const div = document.createElement("div");
-    div.className = "tournament-card";
+    div.className = "tournament";
     div.innerHTML = `
-      <h3>${t.title}</h3>
-      <p>Type: ${t.type}</p>
-      <p>Status: ${t.status}</p>
-      <button onclick="editStatus('${t.id}')">Edit Status</button>
-      <button onclick="managePlayers('${t.id}')">Players</button>
+      <strong>${t.name}</strong><br>
+      ${t.date} ${t.time}<br>
+      Status: ${t.status}
     `;
     container.appendChild(div);
   });
 }
 
-/* ======================
-   CREATE TOURNAMENT
-====================== */
-document
-  .getElementById("tournamentForm")
-  .addEventListener("submit", async (e) => {
-    e.preventDefault();
+/* ➕ CREATE TOURNAMENT */
+document.getElementById("tournamentForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
 
-    const title = e.target.title.value;
-    const description = e.target.description.value;
-    const type = e.target.type.value;
-    const status = e.target.status.value;
+  const tournament = {
+    name: form.name.value,
+    date: form.date.value,
+    time: form.time.value,
+    status: form.status.value,
+    description: form.description.value
+  };
 
-    const { error } = await supabase
-      .from("tournaments")
-      .insert({ title, description, type, status });
+  const { error } = await supabase.from("tournaments").insert([tournament]);
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    e.target.reset();
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Tournament Created");
+    form.reset();
     loadTournaments();
-  });
+  }
+});
 
-/* ======================
-   EDIT STATUS
-====================== */
-window.editStatus = async (id) => {
-  const status = prompt("Enter status: upcoming / live / completed");
-  if (!status) return;
+/* 🚪 LOGOUT */
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  window.location.href = "/";
+});
 
-  await supabase
-    .from("tournaments")
-    .update({ status })
-    .eq("id", id);
-
-  loadTournaments();
-};
-
-/* ======================
-   PLAYER MANAGEMENT
-====================== */
-window.managePlayers = (id) => {
-  location.href = `/admin-players.html?tournament=${id}`;
-};
-
-/* ======================
-   LOGOUT
-====================== */
-document
-  .getElementById("logoutBtn")
-  .addEventListener("click", async () => {
-    await supabase.auth.signOut();
-    window.location.href = "/";
-  });
-
-/* ======================
-   INIT
-====================== */
 checkAdmin();

@@ -7,44 +7,36 @@
 </head>
 <body>
 
-  <h1>Admin Panel</h1>
+  <header class="admin-header">
+    <h1>Admin Panel</h1>
+    <div>
+      <span id="adminEmail"></span>
+      <button id="logoutBtn">Logout</button>
+    </div>
+  </header>
 
-  <div id="adminInfo"></div>
-
+  <!-- CREATE TOURNAMENT -->
   <section class="card">
-    <h2>Users</h2>
-    <div id="usersList">Loading...</div>
+    <h2>Create Tournament</h2>
+    <form id="tournamentForm">
+      <input type="text" name="name" placeholder="Tournament Name" required />
+      <input type="date" name="date" required />
+      <input type="time" name="time" required />
+      <select name="status">
+        <option value="upcoming">Upcoming</option>
+        <option value="live">Live</option>
+        <option value="completed">Completed</option>
+      </select>
+      <textarea name="description" placeholder="Description"></textarea>
+      <button type="submit">Create</button>
+    </form>
   </section>
 
-  <button id="logoutBtn">Logout</button>
-
-  <h2>Create Tournament</h2>
-
-<form id="createTournament">
-  <input type="text" placeholder="Tournament Title" id="title" required />
-  <textarea placeholder="Description" id="desc"></textarea>
-
-  <select id="type">
-    <option value="daily">Daily</option>
-    <option value="weekly">Weekly</option>
-    <option value="monthly">Monthly</option>
-    <option value="seasonal">Seasonal</option>
-  </select>
-
-  <select id="status">
-    <option value="upcoming">Upcoming</option>
-    <option value="live">Live</option>
-    <option value="completed">Completed</option>
-  </select>
-
-  <button type="submit">Create Tournament</button>
-</form>
-
-<hr>
-
-<h2>Existing Tournaments</h2>
-<div id="tournamentList">Loading...</div>
-
+  <!-- TOURNAMENT LIST -->
+  <section class="card">
+    <h2>All Tournaments</h2>
+    <div id="tournamentsContainer"></div>
+  </section>
 
   <script type="module" src="js/admin.js"></script>
 </body>
