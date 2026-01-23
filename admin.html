@@ -19,15 +19,15 @@
   <section class="card">
     <h2>Create Tournament</h2>
     <form id="tournamentForm">
-      <input type="text" name="name" placeholder="Tournament Name" required />
-      <input type="date" name="date" required />
-      <input type="time" name="time" required />
+      <input name="title" required />
+      <input type="date" name="start_date" required />
+      <input type="time" name="start_time" required />
       <select name="status">
         <option value="upcoming">Upcoming</option>
         <option value="live">Live</option>
         <option value="completed">Completed</option>
       </select>
-      <textarea name="description" placeholder="Description"></textarea>
+      <textarea name="description"></textarea>
       <button type="submit">Create</button>
     </form>
   </section>
