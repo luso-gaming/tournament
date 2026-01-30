@@ -19,13 +19,11 @@ async function checkAdmin() {
     .single();
 
   if (profileError || !profile) {
-    alert("Profile not found");
     window.location.href = "/";
     return;
   }
 
   if (profile.role !== "admin") {
-    alert("Access denied");
     window.location.href = "/";
     return;
   }
