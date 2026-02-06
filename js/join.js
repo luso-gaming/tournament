@@ -82,7 +82,6 @@ function attachJoinHandlers() {
 
 /* 🚀 JOIN TOURNAMENT (NEXT STEP) */
 async function joinTournament(tournamentId) {
-  alert("You are logged in. Tournament join logic coming next!");
   // Next: insert into participants table
 }
 
