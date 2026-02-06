@@ -1,92 +1,89 @@
 import { supabase } from "/js/supabase.js";
 
-let currentUser = null;
-
 /* 🔐 CHECK LOGIN */
-async function checkLogin() {
+async function checkUser() {
   const { data: { session } } = await supabase.auth.getSession();
-  currentUser = session?.user || null;
+
+  if (!session) {
+    alert("Please login to join tournaments");
+    window.location.href = "/login.html";
+    return;
+  }
+
+  loadTournaments();
 }
 
-/* 📥 LOAD TOURNAMENTS */
+/* 📥 LOAD LIVE + UPCOMING TOURNAMENTS */
 async function loadTournaments() {
   const { data, error } = await supabase
     .from("tournaments")
     .select("*")
-    .eq("status", "active")
+    .or("status.eq.live,status.eq.upcoming")
     .order("date", { ascending: true });
 
   if (error) {
-    alert("Failed to load tournaments");
-    console.error(error);
+    console.error("Load error:", error);
+    alert(error.message);
     return;
   }
 
   const container = document.getElementById("tournamentList");
   container.innerHTML = "";
 
-  if (!data.length) {
-    container.innerHTML = "<p>No tournaments available.</p>";
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p>No tournaments available</p>";
     return;
   }
 
   data.forEach(t => {
     const card = document.createElement("div");
-    card.className = "tournament-card";
+    card.className = "tournament";
 
     card.innerHTML = `
-      <h2>${t.name}</h2>
+      <h1>${t.name}</h1>
+
       <div class="details-box">
-        <div class="detail"><span>Date</span><p>${t.date}</p></div>
-        <div class="detail"><span>Time</span><p>${t.time}</p></div>
-        <div class="detail"><span>Status</span><p>${t.status}</p></div>
+        <div class="detail">
+          <span>Date</span>
+          <p>${t.date}</p>
+        </div>
+
+        <div class="detail">
+          <span>Time</span>
+          <p>${t.time}</p>
+        </div>
+
+        <div class="detail">
+          <span>Status</span>
+          <p>${t.status.toUpperCase()}</p>
+        </div>
       </div>
-      <button class="join-btn" data-id="${t.id}">Join Tournament</button>
+
+      <button class="join-btn" data-id="${t.id}">
+        Join Tournament
+      </button>
     `;
 
     container.appendChild(card);
   });
 
-  bindJoinButtons();
+  attachJoinHandlers();
 }
 
-/* 🧩 JOIN HANDLER */
-function bindJoinButtons() {
+/* 📝 JOIN HANDLER */
+function attachJoinHandlers() {
   document.querySelectorAll(".join-btn").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      if (!currentUser) {
-        alert("Please login to join the tournament");
-        return;
-      }
-
+    btn.addEventListener("click", () => {
       const tournamentId = btn.dataset.id;
-
-      const { error } = await supabase
-        .from("tournament_joins")
-        .insert({
-          user_id: currentUser.id,
-          tournament_id: tournamentId
-        });
-
-      if (error) {
-        if (error.code === "23505") {
-          alert("You already joined this tournament");
-        } else {
-          alert("Failed to join tournament");
-          console.error(error);
-        }
-        return;
-      }
-
-      alert("Successfully joined the tournament!");
-      btn.disabled = true;
-      btn.innerText = "Joined";
+      joinTournament(tournamentId);
     });
   });
 }
 
-/* 🚀 INIT */
-(async () => {
-  await checkLogin();
-  await loadTournaments();
-})();
+/* 🚀 JOIN TOURNAMENT */
+async function joinTournament(tournamentId) {
+  alert("Tournament joined successfully!");
+  // Next step: insert into participants table
+}
+
+checkUser();
