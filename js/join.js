@@ -1,29 +1,16 @@
 import { supabase } from "/js/supabase.js";
 
-/* 🔐 CHECK LOGIN */
-async function checkUser() {
-  const { data: { session } } = await supabase.auth.getSession();
-
-  if (!session) {
-    alert("Please login to join tournaments");
-    window.location.href = "/login.html";
-    return;
-  }
-
-  loadTournaments();
-}
-
-/* 📥 LOAD LIVE + UPCOMING TOURNAMENTS */
+/* 📥 LOAD LIVE + UPCOMING TOURNAMENTS (PUBLIC) */
 async function loadTournaments() {
   const { data, error } = await supabase
     .from("tournaments")
     .select("*")
-    .or("status.eq.live,status.eq.upcoming")
+    .in("status", ["live", "upcoming"])
     .order("date", { ascending: true });
 
   if (error) {
     console.error("Load error:", error);
-    alert(error.message);
+    alert("Failed to load tournaments");
     return;
   }
 
@@ -73,17 +60,26 @@ async function loadTournaments() {
 /* 📝 JOIN HANDLER */
 function attachJoinHandlers() {
   document.querySelectorAll(".join-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const tournamentId = btn.dataset.id;
-      joinTournament(tournamentId);
+      await joinTournament(tournamentId);
     });
   });
 }
 
-/* 🚀 JOIN TOURNAMENT */
+/* 🔐 JOIN TOURNAMENT (LOGIN REQUIRED) */
 async function joinTournament(tournamentId) {
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session) {
+    alert("Please login to join the tournament");
+    window.location.href = "/login.html";
+    return;
+  }
+
+  // NEXT STEP (later): insert into participants table
   alert("Tournament joined successfully!");
-  // Next step: insert into participants table
 }
 
-checkUser();
+/* 🚀 START */
+loadTournaments();
