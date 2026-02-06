@@ -6,7 +6,7 @@ async function loadTournaments() {
     .from("tournaments")
     .select("*")
     .in("status", ["live", "upcoming"])
-    .order("date", { ascending: true });
+    .order("start_date", { ascending: true });
 
   if (error) {
     console.error("Load error:", error);
@@ -27,22 +27,27 @@ async function loadTournaments() {
     card.className = "tournament";
 
     card.innerHTML = `
-      <h1>${t.name}</h1>
+      <h1>${t.title}</h1>
 
       <div class="details-box">
         <div class="detail">
           <span>Date</span>
-          <p>${t.date}</p>
+          <p>${t.start_date}</p>
         </div>
 
         <div class="detail">
           <span>Time</span>
-          <p>${t.time}</p>
+          <p>${t.start_time}</p>
         </div>
 
         <div class="detail">
           <span>Status</span>
           <p>${t.status.toUpperCase()}</p>
+        </div>
+
+        <div class="detail">
+          <span>Entry Fee</span>
+          <p>${t.entry_fee === 0 ? "Free" : "₹" + t.entry_fee}</p>
         </div>
       </div>
 
@@ -57,29 +62,28 @@ async function loadTournaments() {
   attachJoinHandlers();
 }
 
-/* 📝 JOIN HANDLER */
+/* 🔐 JOIN CLICK → CHECK LOGIN */
 function attachJoinHandlers() {
   document.querySelectorAll(".join-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        alert("Please login to join the tournament");
+        window.location.href = "/login.html";
+        return;
+      }
+
       const tournamentId = btn.dataset.id;
-      await joinTournament(tournamentId);
+      joinTournament(tournamentId);
     });
   });
 }
 
-/* 🔐 JOIN TOURNAMENT (LOGIN REQUIRED) */
+/* 🚀 JOIN TOURNAMENT (NEXT STEP) */
 async function joinTournament(tournamentId) {
-  const { data: { session } } = await supabase.auth.getSession();
-
-  if (!session) {
-    alert("Please login to join the tournament");
-    window.location.href = "/login.html";
-    return;
-  }
-
-  // NEXT STEP (later): insert into participants table
-  alert("Tournament joined successfully!");
+  alert("You are logged in. Tournament join logic coming next!");
+  // Next: insert into participants table
 }
 
-/* 🚀 START */
 loadTournaments();
