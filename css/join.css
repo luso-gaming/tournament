@@ -125,3 +125,70 @@ nav ul li a:hover {
         font-size: 32px;
     }
 }
+
+/* MULTI TOURNAMENT LIST */
+.tournament-list {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* TOURNAMENT CARD */
+.tournament-card {
+    background: #020617;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.12);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.tournament-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.25);
+}
+
+.tournament-card h2 {
+    font-size: 24px;
+    color: #38bdf8;
+    margin-bottom: 16px;
+}
+
+/* CARD DETAILS */
+.tournament-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.tournament-info div {
+    font-size: 14px;
+    color: #cbd5f5;
+}
+
+.tournament-info span {
+    display: block;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* JOIN BUTTON STATES */
+.join-btn {
+    width: 100%;
+    text-align: center;
+}
+
+.join-btn.disabled {
+    background: #1e293b;
+    color: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.join-btn.login-required {
+    background: #0ea5e9;
+    color: #020617;
+}
