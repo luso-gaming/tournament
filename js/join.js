@@ -1,5 +1,16 @@
 import { supabase } from "/js/supabase.js";
 
+function getBannerByType(type) {
+  const banners = {
+    elite: "/assets/images/elite.png",
+    pro: "/assets/images/pro.png",
+    legend: "/assets/images/legend.png"
+  };
+
+  return banners[type] || "/assets/images/elite.png";
+}
+
+
 /*  LOAD LIVE + UPCOMING TOURNAMENTS (PUBLIC) */
 async function loadTournaments() {
   const { data, error } = await supabase
@@ -30,8 +41,9 @@ async function loadTournaments() {
       <div class="tournament-card">
 
       <div class="image-box">
-      <a href="https://ibb.co/5mPJxdY"><img src="https://i.ibb.co/gNxcFGv/banner.jpg" alt="banner" border="0"></a>
+        <img src="${getBannerByType(t.type)}" alt="${t.type} banner">
       </div>
+
 
 
       <div class="details-box">

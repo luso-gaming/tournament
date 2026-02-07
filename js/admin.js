@@ -60,6 +60,7 @@ async function loadTournaments() {
       <strong>${t.title}</strong><br>
       ${t.start_date} ${t.start_time}<br>
       Status: ${t.status}
+      type: ${t.type}
     `;
     container.appendChild(div);
   });
@@ -82,12 +83,13 @@ document
     }
 
     const tournament = {
-      title: form.title.value,                 // ✅ FIX
+      title: form.title.value,                
       description: form.description.value,
+      type: form.type.value,
       status: form.status.value,
-      start_date: form.start_date.value,       // ✅ FIX
-      start_time: form.start_time.value,       // ✅ FIX
-      created_by: session.user.id              // ✅ REQUIRED
+      start_date: form.start_date.value,      
+      start_time: form.start_time.value,       
+      created_by: session.user.id            
     };
 
     const { error } = await supabase
@@ -103,7 +105,7 @@ document
       loadTournaments();
     }
   });
-
+ 
 /*  LOGOUT */
 document
   .getElementById("logoutBtn")

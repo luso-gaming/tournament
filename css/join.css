@@ -52,11 +52,12 @@ nav ul li a:hover {
 }
 
 .image-box img{
-    background: #ffaf01;
+    background: #00000000;
     height: 200px;
     width: 300px;
     border-radius: 10px 10px 0px 0px;
 }
+
 
 .detail {
     background: #181B21;
