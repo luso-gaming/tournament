@@ -1,4 +1,3 @@
-
 /* NAVBAR */
 nav {
     background: #020617;
@@ -33,15 +32,15 @@ nav ul li a:hover {
 /* TOURNAMENT SECTION */
 .tournament {
     max-width: 1100px;
-    margin: 60px auto;
+    margin: 10px auto;
     padding: 20px;
-    text-align: center;
 }
 
 .tournament h1 {
-    font-size: 42px;
-    margin-bottom: 30px;
-    color: #38bdf8;
+    font-size: 25px;
+    margin: 10px;
+    color: #EDF0F2;
+    padding-left: 10px;
 }
 
 /* DETAILS GRID */
@@ -52,11 +51,17 @@ nav ul li a:hover {
     margin-bottom: 40px;
 }
 
+.image-box img{
+    background: #ffaf01;
+    height: 200px;
+    width: 300px;
+    border-radius: 10px 10px 0px 0px;
+}
+
 .detail {
-    background: #020617;
+    background: #181B21;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+    border-radius: 0px 0px 10px 10px;
 }
 
 .detail span {
@@ -71,6 +76,31 @@ nav ul li a:hover {
     font-weight: bold;
 }
 
+.description{
+    height: 45px;
+}
+
+#bar {
+    display: flex;
+    flex-direction: row;
+    color: #6c6e73;
+    font-size: 10px;
+    margin: 10px 0px 10px 0px;
+    padding: 5px;
+    border-top: 2px #3b3f46 solid;
+    border-bottom: 2px #3b3f46 solid;
+
+}
+
+#time {
+    font-size: 13px;
+}
+#status{
+    margin-left: 40px;
+    font-size: 13px;
+    color:#59E476
+}
+
 /* JOIN BUTTON */
 .join-btn {
     display: inline-block;
@@ -78,16 +108,17 @@ nav ul li a:hover {
     font-size: 18px;
     font-weight: bold;
     border-radius: 8px;
-    background: #38bdf8;
-    color: #020617;
+    background: #EFEFEF;
+    color: #131313;
     text-decoration: none;
     transition: 0.3s;
 }
 
-.join-btn:hover {
-    background: #0ea5e9;
-    transform: scale(1.05);
+.detail button {
+  margin-top: 10px;
+  width: 100%;
 }
+
 
 /* RULES */
 .rules {
@@ -100,7 +131,6 @@ nav ul li a:hover {
     font-size: 32px;
     margin-bottom: 20px;
     color: #38bdf8;
-    text-align: center;
 }
 
 .rules ul {
@@ -113,7 +143,6 @@ nav ul li a:hover {
     line-height: 1.6;
 }
 
-
 /* RESPONSIVE */
 @media (max-width: 768px) {
     nav {
@@ -122,14 +151,14 @@ nav ul li a:hover {
     }
 
     .tournament h1 {
-        font-size: 32px;
+        font-size: 25px;
     }
 }
 
 /* MULTI TOURNAMENT LIST */
 .tournament-list {
     max-width: 1200px;
-    margin: 60px auto;
+    margin: auto;
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -138,9 +167,10 @@ nav ul li a:hover {
 
 /* TOURNAMENT CARD */
 .tournament-card {
-    background: #020617;
+    background: #181B21;
+    height: 500px;
+    width: 300px;
     border-radius: 14px;
-    padding: 25px;
     box-shadow: 0 0 20px rgba(56, 189, 248, 0.12);
     transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -176,11 +206,6 @@ nav ul li a:hover {
 }
 
 /* JOIN BUTTON STATES */
-.join-btn {
-    width: 100%;
-    text-align: center;
-}
-
 .join-btn.disabled {
     background: #1e293b;
     color: #94a3b8;
@@ -189,6 +214,6 @@ nav ul li a:hover {
 }
 
 .join-btn.login-required {
-    background: #0ea5e9;
-    color: #020617;
+    background: #EFEFEF;
+    color: #131313;
 }

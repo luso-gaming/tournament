@@ -1,6 +1,6 @@
 import { supabase } from "/js/supabase.js";
 
-/* 📥 LOAD LIVE + UPCOMING TOURNAMENTS (PUBLIC) */
+/*  LOAD LIVE + UPCOMING TOURNAMENTS (PUBLIC) */
 async function loadTournaments() {
   const { data, error } = await supabase
     .from("tournaments")
@@ -27,33 +27,48 @@ async function loadTournaments() {
     card.className = "tournament";
 
     card.innerHTML = `
-      <h1>${t.title}</h1>
+      <div class="tournament-card">
+
+      <div class="image-box">
+      <a href="https://ibb.co/5mPJxdY"><img src="https://i.ibb.co/gNxcFGv/banner.jpg" alt="banner" border="0"></a>
+      </div>
+
 
       <div class="details-box">
         <div class="detail">
-          <span>Date</span>
-          <p>${t.start_date}</p>
-        </div>
 
-        <div class="detail">
-          <span>Time</span>
-          <p>${t.start_time}</p>
-        </div>
-
-        <div class="detail">
-          <span>Status</span>
-          <p>${t.status.toUpperCase()}</p>
-        </div>
-
-        <div class="detail">
+          <h1>${t.title}</h1>
+        
+          <span>Details</span>
+          <p class="description">${t.description}</p>
+          <div id="bar"><p id="time">${
+            (() => {
+              const d = new Date(`${t.start_date}T${t.start_time}`);
+              return d.toLocaleString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true
+              });
+            })()
+          }</p>
+          <p id="status">${t.status.toUpperCase()}</p>
+         </div>
+        
           <span>Entry Fee</span>
           <p>${t.entry_fee === 0 ? "Free" : "₹" + t.entry_fee}</p>
+
+
+        <button class="join-btn" data-id="${t.id}">
+          Join Tournament
+        </button>
         </div>
       </div>
 
-      <button class="join-btn" data-id="${t.id}">
-        Join Tournament
-      </button>
+
+      </div>
     `;
 
     container.appendChild(card);
@@ -62,7 +77,7 @@ async function loadTournaments() {
   attachJoinHandlers();
 }
 
-/* 🔐 JOIN CLICK → CHECK LOGIN */
+/*  JOIN CLICK → CHECK LOGIN */
 function attachJoinHandlers() {
   document.querySelectorAll(".join-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
@@ -80,7 +95,7 @@ function attachJoinHandlers() {
   });
 }
 
-/* 🚀 JOIN TOURNAMENT (NEXT STEP) */
+/*  JOIN TOURNAMENT (NEXT STEP) */
 async function joinTournament(tournamentId) {
   // Next: insert into participants table
 }

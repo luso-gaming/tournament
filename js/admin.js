@@ -1,6 +1,6 @@
 import { supabase } from "/js/supabase.js";
 
-/* 🔐 CHECK ADMIN */
+/*CHECK ADMIN */
 async function checkAdmin() {
   const {
     data: { session },
@@ -33,7 +33,7 @@ async function checkAdmin() {
   loadTournaments();
 }
 
-/* 📥 LOAD TOURNAMENTS */
+/*  LOAD TOURNAMENTS */
 async function loadTournaments() {
   const { data, error } = await supabase
     .from("tournaments")
@@ -65,7 +65,7 @@ async function loadTournaments() {
   });
 }
 
-/* ➕ CREATE TOURNAMENT */
+/*  CREATE TOURNAMENT */
 document
   .getElementById("tournamentForm")
   .addEventListener("submit", async (e) => {
@@ -104,7 +104,7 @@ document
     }
   });
 
-/* 🚪 LOGOUT */
+/*  LOGOUT */
 document
   .getElementById("logoutBtn")
   .addEventListener("click", async () => {

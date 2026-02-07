@@ -1,6 +1,6 @@
 import { supabase } from "./supabase.js";
 
-/* ================= AUTH CHECK ================= */
+/*  AUTH CHECK  */
 
 const { data: { session } } = await supabase.auth.getSession();
 
@@ -8,13 +8,13 @@ if (!session) {
   window.location.href = "/login.html";
 }
 
-/* ================= USER INFO ================= */
+/*  USER INFO  */
 
 document.getElementById("userEmail").textContent = session.user.email;
 document.getElementById("userName").textContent =
   session.user.user_metadata?.full_name || "Not provided";
 
-/* ================= CHANGE PASSWORD ================= */
+/*  CHANGE PASSWORD  */
 
 document
   .getElementById("changePasswordBtn")
@@ -39,7 +39,7 @@ document
     }
   });
 
-/* ================= LOGOUT ================= */
+/*  LOGOUT  */
 
 document
   .getElementById("logoutBtn")

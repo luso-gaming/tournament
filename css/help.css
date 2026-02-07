@@ -1,5 +1,4 @@
 
-/* NAVBAR */
 nav {
   background: #020617;
   padding: 15px 40px;
@@ -138,11 +137,10 @@ select {
   color: white;
   font-size: 14px;
   outline: none;
-  appearance: none; /* removes default arrow */
+  appearance: none;
   cursor: pointer;
 }
 
-/* Dropdown arrow (custom look) */
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -150,40 +148,33 @@ select {
   background-size: 18px;
 }
 
-/* Disabled placeholder option */
 select option[disabled] {
   color: #AAA;
 }
 
-/* Options text color (important for dark theme) */
 select option {
   color: #ffffff;
 }
 
-/* Focus effect (matches theme) */
 input:focus,
 select:focus {
   outline: 2px solid rgba(255, 107, 43, 0.6);
 }
 
-/* Smooth spacing between form elements */
 .form-group {
   margin-bottom: 18px;
 }
 
-/* Force dark dropdown where browser allows */
 select {
   color-scheme: dark;
 }
 
-/* Option colors (works in Firefox + some Chromium builds) */
 select option {
-  background-color: #0F172A; /*hsl(235, 25%, 10%);*/
+  background-color: #0F172A;
   color: #FFFFFF;
 }
 
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
