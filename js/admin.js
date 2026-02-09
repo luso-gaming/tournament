@@ -59,12 +59,73 @@ async function loadTournaments() {
     div.innerHTML = `
       <strong>${t.title}</strong><br>
       ${t.start_date} ${t.start_time}<br>
-      Status: ${t.status}
-      type: ${t.type}
+      Status: ${t.status}<br>
+      Type: ${t.type}<br><br>
+
+      <button class="edit-btn" data-id="${t.id}">Edit</button>
+      <button class="delete-btn" data-id="${t.id}">Delete</button>
     `;
     container.appendChild(div);
   });
+  attachAdminActions();
 }
+
+function attachAdminActions() {
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+
+      if (!confirm("Are you sure you want to delete this tournament?")) return;
+
+      const { error } = await supabase
+        .from("tournaments")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        alert(error.message);
+      } else {
+        alert("Tournament deleted");
+        loadTournaments();
+      }
+    });
+  });
+
+  document.querySelectorAll(".edit-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+
+      const title = prompt("Enter new title:");
+      if (!title) return;
+
+      const description = prompt("Enter description:");
+      const type = prompt("Type (elite / pro / legend):", "elite");
+      const status = prompt("Status (upcoming / live / completed):", "upcoming");
+      const start_date = prompt("Start date (YYYY-MM-DD):");
+      const start_time = prompt("Start time (HH:MM):");
+
+      const { error } = await supabase
+        .from("tournaments")
+        .update({
+          title,
+          description,
+          type,
+          status,
+          start_date,
+          start_time
+        })
+        .eq("id", id);
+
+      if (error) {
+        alert(error.message);
+      } else {
+        alert("Tournament updated");
+        loadTournaments();
+      }
+    });
+  });
+}
+
 
 /*  CREATE TOURNAMENT */
 document
