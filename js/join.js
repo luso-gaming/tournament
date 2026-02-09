@@ -73,7 +73,7 @@ async function loadTournaments() {
           <p>${t.entry_points === 0 ? "Free" : t.entry_points + " TC" }</p>
 
 
-        <button onclick="joinTournament('TOURNAMENT_UUID')">
+        <button class="join-btn" data-id="${t.id}">
           Join Tournament
         </button>
         </div>
@@ -102,12 +102,26 @@ function attachJoinHandlers() {
       }
 
       const tournamentId = btn.dataset.id;
-      joinTournament(tournamentId);
+
+      // UI protection
+      btn.disabled = true;
+      btn.innerText = "Joining...";
+
+      const success = await joinTournament(tournamentId);
+
+      if (success) {
+        btn.innerText = "Joined ✅";
+        btn.classList.add("joined");
+      } else {
+        btn.disabled = false;
+        btn.innerText = "Join Tournament";
+      }
     });
   });
 }
 
-/*  JOIN TOURNAMENT (NEXT STEP) */
+
+/*  JOIN TOURNAMENT */
 const joinTournament = async (tournamentId) => {
   const { data, error } = await supabase.rpc("join_tournament", {
     p_tournament_id: tournamentId
@@ -115,10 +129,13 @@ const joinTournament = async (tournamentId) => {
 
   if (error) {
     alert(error.message);
-  } else {
-    alert(data); // Joined successfully
+    return false;
   }
+
+  alert(data); // message from DB function
+  return true;
 };
+
 
 
 loadTournaments();
