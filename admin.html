@@ -16,16 +16,16 @@
   </header>
 
   <!-- CREATE TOURNAMENT -->
-  <section class="card">
+  <section class="tournament-card">
     <h2>Create Tournament</h2>
     <form id="tournamentForm">
-      <input name="title" required /> 
+      <input name="title" placeholder="Tournament Name" required /> 
       <input type="date" name="start_date" required />
       <input type="time" name="start_time" required />
       <select name="type">
-        <option value="elite">Upcoming</option>
-        <option value="pro">Live</option>
-        <option value="legend">Completed</option>
+        <option value="elite">Elite</option>
+        <option value="pro">Pro</option>
+        <option value="legend">Legend</option>
       </select>
       <select name="status">
         <option value="upcoming">Upcoming</option>

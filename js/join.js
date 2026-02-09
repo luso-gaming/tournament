@@ -49,7 +49,7 @@ async function loadTournaments() {
       <div class="details-box">
         <div class="detail">
 
-          <h1>${t.title}</h1>
+          <h2>${t.title}</h2>
         
           <span>Details</span>
           <p class="description">${t.description}</p>
@@ -70,10 +70,10 @@ async function loadTournaments() {
          </div>
         
           <span>Entry Fee</span>
-          <p>${t.entry_fee === 0 ? "Free" : "₹" + t.entry_fee}</p>
+          <p>${t.entry_points === 0 ? "Free" : t.entry_points + " TC" }</p>
 
 
-        <button class="join-btn" data-id="${t.id}">
+        <button onclick="joinTournament('TOURNAMENT_UUID')">
           Join Tournament
         </button>
         </div>
@@ -108,8 +108,17 @@ function attachJoinHandlers() {
 }
 
 /*  JOIN TOURNAMENT (NEXT STEP) */
-async function joinTournament(tournamentId) {
-  // Next: insert into participants table
-}
+const joinTournament = async (tournamentId) => {
+  const { data, error } = await supabase.rpc("join_tournament", {
+    p_tournament_id: tournamentId
+  });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert(data); // Joined successfully
+  }
+};
+
 
 loadTournaments();

@@ -13,8 +13,10 @@ body {
 }
 
 button {
+
   background: #2563eb;
   color: white;
+  width: 100px;
   border: none;
   padding: 8px 14px;
   cursor: pointer;
@@ -23,6 +25,14 @@ button {
 
 button:hover {
   background: #1d4ed8;
+}
+
+.tournament-card {
+  background: #111827;
+  width: 400px;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .card {
@@ -38,6 +48,10 @@ input, textarea, select {
   padding: 8px;
   border-radius: 6px;
   border: none;
+}
+
+select{
+  width: 415px;
 }
 
 .tournament {
