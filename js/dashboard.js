@@ -69,3 +69,5 @@ document
     await supabase.auth.signOut();
     window.location.href = "/index.html";
   });
+
+  loadUserPoints();
