@@ -14,6 +14,28 @@ document.getElementById("userEmail").textContent = session.user.email;
 document.getElementById("userName").textContent =
   session.user.user_metadata?.full_name || "Not provided";
 
+
+async function loadUserPoints() {
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  if (!session) return;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("points")
+    .eq("id", session.user.id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  document.getElementById("userPoints").innerText = data.points;
+}
+
 /*  CHANGE PASSWORD  */
 
 document
