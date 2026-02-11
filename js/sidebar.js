@@ -5,7 +5,8 @@ function toggleSidebar() {
 }
 
 /*  USER POINTS  */
-async function loadUserPoints() {
+
+export async function loadUserPoints() {
   const {
     data: { session }
   } = await supabase.auth.getSession();
@@ -23,7 +24,9 @@ async function loadUserPoints() {
     return;
   }
 
-  document.getElementById("userPoints").innerText = data.points;
+  const pointsEl = document.getElementById("userPoints");
+  if (pointsEl) {
+    pointsEl.innerText = data.points;
+  }
 }
 
-  loadUserPoints();
