@@ -33,24 +33,31 @@ function renderLeaderboard(data) {
 
   leaderboard.innerHTML = "";
 
-  [...data]
-    .sort((a, b) => Number(b["Points"]) - Number(a["Points"]))
-    .forEach((team, index) => {
-      const row = document.createElement("div");
-      row.className = "leaderboard-row";
+  // 🔥 Make sure points are numbers
+  const sortedData = [...data]
+    .map(team => ({
+      ...team,
+      Points: Number(team["Points"]) || 0
+    }))
+    .sort((a, b) => b.Points - a.Points);
 
-      row.dataset.name = (team["Team Name"] || "").toLowerCase();
-      row.dataset.id = (team["Team ID"] || "").toLowerCase();
+  sortedData.forEach((team, index) => {
+    const row = document.createElement("div");
+    row.className = "leaderboard-row";
 
-      row.innerHTML = `
-        <span>${index + 1}</span>
-        <span>${team["Team Name"] || "Unnamed Team"}</span>
-        <span>${team["Points"] || 0}</span>
-      `;
+    row.dataset.name = (team["Team Name"] || "").toLowerCase();
+    row.dataset.id = (team["Team ID"] || "").toLowerCase();
 
-      leaderboard.appendChild(row);
-    });
+    row.innerHTML = `
+      <span>${index + 1}</span>
+      <span>${team["Team Name"] || "Unnamed Team"}</span>
+      <span>${team.Points}</span>
+    `;
+
+    leaderboard.appendChild(row);
+  });
 }
+
 
 /* ================= SEARCH (TEAMS-STYLE) ================= */
 
