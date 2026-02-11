@@ -36,29 +36,9 @@ async function loadUserPoints() {
   document.getElementById("userPoints").innerText = data.points;
 }
 
-/*  CHANGE PASSWORD  */
-
-document
-  .getElementById("changePasswordBtn")
-  .addEventListener("click", async () => {
-
-    const newPassword = document.getElementById("newPassword").value.trim();
-
-    if (newPassword.length < 6) {
-      alert("Password must be at least 6 characters");
-      return;
-    }
-
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
-
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Password updated successfully");
-      document.getElementById("newPassword").value = "";
-    }
+document.getElementById("backBtn")
+  ?.addEventListener("click", () => {
+    window.history.back();
   });
 
 /*  LOGOUT  */

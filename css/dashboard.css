@@ -1,3 +1,20 @@
+.back-btn {
+  width: 100px;
+  padding: 8px 16px;
+  margin: 20px;
+  background: #e0e0e0;
+  color: rgb(52, 49, 49);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: #333;
+  color: rgb(221, 212, 212);
+
+}
+
 .dashboard {
   min-height: calc(100vh - 60px);
   display: flex;
