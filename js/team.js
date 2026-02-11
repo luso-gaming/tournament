@@ -73,7 +73,7 @@ function renderTeams(data) {
     name.textContent = team["Team Name"] || "Unnamed Team";
 
     const id = document.createElement("p");
-    id.textContent = `ID: ${team["Team ID"] || "N/A"}`;
+    id.textContent = `SLOT NO: ${team["Team ID"] || "N/A"}`;
 
     card.appendChild(img);
     card.appendChild(name);

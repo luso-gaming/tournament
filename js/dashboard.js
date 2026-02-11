@@ -14,7 +14,7 @@ document.getElementById("userEmail").textContent = session.user.email;
 document.getElementById("userName").textContent =
   session.user.user_metadata?.full_name || "Not provided";
 
-
+/*  USER POINTS  */
 async function loadUserPoints() {
   const {
     data: { session }
