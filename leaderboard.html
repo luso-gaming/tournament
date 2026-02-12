@@ -46,7 +46,14 @@
 <main>
     <!-- LEADERBOARD -->
     <section class="leaderboard-section">
-        <h2>Leaderboard</h2>
+        
+        <div class="leaderboard-toggle" id="leaderboardToggle">
+          <div class="toggle-slider"></div>
+          <button data-mode="Today">Today</button>
+          <button data-mode="Points">Final</button>
+        </div>
+        
+        <h2 id="leaderboardTitle">Leaderboard</h2>
         <div class="team-search">
           <input
             type="text"
