@@ -20,7 +20,7 @@ body {
   background: #020202;
   color: #FFFFFF;
 .logo {
-  height: 60px;       /* adjust size */
+  height: 45px;       /* adjust size */
   width: auto;
   object-fit: contain;
 }
