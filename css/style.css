@@ -17,13 +17,18 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #020202;
-  color: #FFFFFF;
+  background: #090301;
+  color: #ffffff;
+}
+
 .logo {
   height: 45px;       /* adjust size */
   width: auto;
   object-fit: contain;
 }
+
+p{
+  color: #f1f1f1;
 }
 
 main {

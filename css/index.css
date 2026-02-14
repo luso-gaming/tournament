@@ -24,6 +24,11 @@ nav ul li a:hover {
 }
 
 .hero {
+    background: 
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../assets/back.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     height: 85vh;
     display: flex;
     flex-direction: column;
@@ -34,15 +39,16 @@ nav ul li a:hover {
 }
 
 .hero h1 {
+    color: #ffffff;
     font-size: 48px;
     margin-bottom: 15px;
 }
 
 .hero p {
+    color: #e5e7eb;
     font-size: 18px;
     max-width: 600px;
     margin-bottom: 30px;
-    color: #cbd5f5;
 }
 
 .hero button {

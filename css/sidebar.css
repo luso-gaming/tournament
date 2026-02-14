@@ -1,5 +1,8 @@
 .topbar {
-    background: #020617;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent */
+    backdrop-filter: blur(10px); /* Blur effect */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden; /* Ensures nothing overflows */
     color: #38bdf8;
     padding: 15px;
     display: flex;
@@ -100,7 +103,7 @@
   margin-left:auto;
   align-items: center;
   gap: 8px;
-  background-color: #020617;
+  background-color: #0f0901b1;
   color: #00ff08;
   border: 1px solid #1f3b66;
   padding: 10px 18px;
