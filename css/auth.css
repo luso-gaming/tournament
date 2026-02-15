@@ -1,0 +1,55 @@
+/* Full screen center */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Container */
+.signin-container {
+  text-align: center;
+}
+
+/* TEXT BORDER EFFECT */
+.signin-text {
+  font-size: 42px;
+  font-weight: bold;
+  color: transparent;
+  -webkit-text-stroke: 1px white;   /* 🔥 Border on text */
+  letter-spacing: 2px;
+  animation: glow 2s ease-in-out infinite alternate;
+  
+}
+
+/* Glow animation
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #00f0ff;
+  }
+  to {
+    text-shadow: 0 0 25px #00f0ff;
+  }
+}
+ */
+/* Loader animation */
+.loader {
+  margin: 40px auto 0;
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255,255,255,0.2);
+  border-top: 5px solid #00f0ff;
+  border-bottom: 5px solid #00f0ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

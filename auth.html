@@ -3,10 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Auth Redirect</title>
+  <link rel="stylesheet" href="css/auth.css">
+
 </head>
 <body>
 
-  <p>Signing you in…</p>
+  <div class="signin-container">
+    <h1 class="signin-text">Signing you in...</h1>
+    <div class="loader"></div>
+  </div>
 
   <script type="module">
     import { supabase } from "/js/supabase.js";
