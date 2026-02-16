@@ -58,23 +58,28 @@ async function loadTournaments() {
     div.className = "tournament";
     div.innerHTML = `
       <strong>${t.title}</strong><br>
+      ID: ${t.room_id} <br>
+      Password: ${t.room_password || "N/A"} <br>
       ${t.start_date} ${t.start_time}<br>
       Status: ${t.status}<br>
       Type: ${t.type}<br><br>
 
-      <button class="edit-btn" data-id="${t.id}">Edit</button>
+      <button class="edit-btn" data-id="${t.id}">Edit All</button>
+      <button class="edit-idpass-btn" data-id="${t.id}">Edit ID & Password</button>
+      <button class="edit-status-btn" data-id="${t.id}">Edit Status</button>
       <button class="delete-btn" data-id="${t.id}">Delete</button>
     `;
     container.appendChild(div);
   });
+
   attachAdminActions();
 }
 
 function attachAdminActions() {
+  // DELETE
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
-
       if (!confirm("Are you sure you want to delete this tournament?")) return;
 
       const { error } = await supabase
@@ -82,22 +87,21 @@ function attachAdminActions() {
         .delete()
         .eq("id", id);
 
-      if (error) {
-        alert(error.message);
-      } else {
+      if (error) alert(error.message);
+      else {
         alert("Tournament deleted");
         loadTournaments();
       }
     });
   });
 
+  // EDIT ALL (existing)
   document.querySelectorAll(".edit-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
 
       const title = prompt("Enter new title:");
       if (!title) return;
-
       const description = prompt("Enter description:");
       const type = prompt("Type (elite / pro / legend):", "elite");
       const status = prompt("Status (upcoming / live / completed):", "upcoming");
@@ -106,20 +110,54 @@ function attachAdminActions() {
 
       const { error } = await supabase
         .from("tournaments")
-        .update({
-          title,
-          description,
-          type,
-          status,
-          start_date,
-          start_time
-        })
+        .update({ title, description, type, status, start_date, start_time })
         .eq("id", id);
 
-      if (error) {
-        alert(error.message);
-      } else {
+      if (error) alert(error.message);
+      else {
         alert("Tournament updated");
+        loadTournaments();
+      }
+    });
+  });
+
+  // EDIT ID & PASSWORD
+  document.querySelectorAll(".edit-idpass-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      const newID = prompt("Enter new ID:", id); // default current ID
+      const newPass = prompt("Enter new Password:");
+
+      if (!newID || !newPass) return;
+
+      const { error } = await supabase
+        .from("tournaments")
+        .update({ room_id: newRoomID, room_password: newRoomPass })
+        .eq("id", id);
+
+      if (error) alert(error.message);
+      else {
+        alert("ID & Password updated");
+        loadTournaments();
+      }
+    });
+  });
+
+  // EDIT STATUS ONLY
+  document.querySelectorAll(".edit-status-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      const newStatus = prompt("Enter new status (upcoming / live / completed):");
+      if (!newStatus) return;
+
+      const { error } = await supabase
+        .from("tournaments")
+        .update({ status: newStatus })
+        .eq("id", id);
+
+      if (error) alert(error.message);
+      else {
+        alert("Status updated");
         loadTournaments();
       }
     });
