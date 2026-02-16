@@ -100,21 +100,43 @@ async function loadTournaments() {
     if (userJoined && !isLive) {
       buttonDisabled = true;
       buttonText = "Joined ✅";
-      idpContent = `<p style="color:#00d4ff;">
-        ✅ Joined successfully<br>
-        Room details will be visible when match goes live.
-      </p>`;
+    
+      if (!t.room_id || !t.room_password) {
+        idpContent = `
+          <p style="color:#00d4ff;">
+            Room details will be visible here.
+          </p>
+        `;
+      } else {
+        idpContent = `
+          <p><strong>ID:</strong> ${t.room_id}</p>
+          <p><strong>PASS:</strong> ${t.room_password}</p>
+        `;
+      }
     }
-
+    
     /* USER JOINED & MATCH LIVE */
     if (userJoined && isLive) {
       buttonDisabled = true;
       buttonText = "Match Live 🔥";
+    
       idpContent = `
-        <p><strong>Room ID:</strong> ${t.room_id || "Will be announced"}</p>
-        <p><strong>Password:</strong> ${t.room_password || "Will be announced"}</p>
+        <a href="https://youtube.com/@lusogaming?si=2LPftdAmWbC3czgp" 
+           target="_blank"
+           style="
+             display:inline-block;
+             padding:10px 15px;
+             background:#ff0000;
+             color:#fff;
+             border-radius:6px;
+             text-decoration:none;
+             font-weight:bold;
+           ">
+           🔴 Watch Live
+        </a>
       `;
     }
+    
 
     const card = document.createElement("div");
     card.className = "tournament";
@@ -129,7 +151,7 @@ async function loadTournaments() {
         <div class="details-box">
           <div class="detail">
 
-           <div class="bottom-card">
+           <div class="upper-card">
             <h2>${t.title}</h2>
             <div class="players">
               <span>Players Joined</span>

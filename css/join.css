@@ -76,11 +76,18 @@
     color:#59E476
 }
 
+.upper-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;   
+    gap: 10px;             
+}
+
 .bottom-card {
     display: flex;
     justify-content: space-between;
-    align-items: center;   /* vertically center */
-    gap: 10px;             /* spacing between fee and idp */
+    align-items: center;   
+    gap: 10px;            
 }
 
 .idp {
@@ -89,14 +96,14 @@
     width: 160px;
     height: 50px;
 
-    display: flex;              /* center text */
+    display: flex;             
     align-items: center;
     justify-content: center;
 
     padding: 5px;
     box-sizing: border-box;
 
-    overflow: hidden;           /* prevent overflow */
+    overflow: hidden;         
     text-align: center;
     font-size: clamp(10px, 2vw, 14px);
 
@@ -232,15 +239,16 @@
 }
 
 /* ===== HEADING ===== */
-#pastTournamentSection h2 {
+#pastTournamenth2 {
+    margin-left: 40px;
     color: #fff;
-    font-size: 22px;
+    font-size: 30px;
     margin-bottom: 20px;
     position: relative;
 }
 
 /* Optional underline accent */
-#pastTournamentSection h2::after {
+#pastTournamenth2::after {
     content: "";
     position: absolute;
     left: 0;
@@ -261,4 +269,15 @@
     border-radius: 16px;
     border: 1px solid #222;
     padding-bottom: 50px;
+}
+
+#pastTournamentSection .bottom-card,
+#pastTournamentSection .join-btn {
+    display: none !important;
+}
+
+#pastTournamentSection .tournament-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
