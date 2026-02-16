@@ -116,26 +116,16 @@ async function loadTournaments() {
     }
     
     /* USER JOINED & MATCH LIVE */
-    if (userJoined && isLive) {
-      buttonDisabled = true;
-      buttonText = "Match Live 🔥";
-    
-      idpContent = `
-        <a href="https://youtube.com/@lusogaming?si=2LPftdAmWbC3czgp" 
-           target="_blank"
-           style="
-             display:inline-block;
-             padding:10px 15px;
-             background:#ff0000;
-             color:#fff;
-             border-radius:6px;
-             text-decoration:none;
-             font-weight:bold;
-           ">
-           🔴 Watch Live
-        </a>
-      `;
-    }
+    /* MATCH LIVE (For Everyone) */
+if (isLive) {
+  buttonDisabled = false;
+  buttonText = "Watch Live ";
+
+  idpContent = `<p style="color:#DE1412; font-weight:bold;">
+    Registration Closed
+  </p>`;
+}
+
     
 
     const card = document.createElement("div");
@@ -194,6 +184,25 @@ async function loadTournaments() {
 
       </div>
     `;
+
+    // If match is live → redirect button to YouTube
+    if (isLive) {
+      const liveBtn = card.querySelector(".join-btn");
+    
+      if (liveBtn) {
+        liveBtn.style.backgroundColor = "#ff0000";
+        liveBtn.style.color = "#ffffff";
+    
+        liveBtn.addEventListener("click", () => {
+          window.open(
+            "https://youtube.com/@lusogaming?si=2LPftdAmWbC3czgp",
+            "_blank"
+          );
+        });
+      }
+    }
+    
+
 
     if (isCompleted) {
       pastContainer.prepend(card); // newest completed on top
