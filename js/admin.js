@@ -58,14 +58,14 @@ async function loadTournaments() {
     div.className = "tournament";
     div.innerHTML = `
       <strong>${t.title}</strong><br>
-      ID: ${t.room_id} <br>
-      Password: ${t.room_password || "N/A"} <br>
+      Room ID: ${t.room_id} <br>
+      Room Password: ${t.room_password || "N/A"} <br>
       ${t.start_date} ${t.start_time}<br>
       Status: ${t.status}<br>
       Type: ${t.type}<br><br>
 
       <button class="edit-btn" data-id="${t.id}">Edit All</button>
-      <button class="edit-idpass-btn" data-id="${t.id}">Edit ID & Password</button>
+      <button class="edit-room-btn" data-id="${t.id}">Edit Room ID & Password</button>
       <button class="edit-status-btn" data-id="${t.id}">Edit Status</button>
       <button class="delete-btn" data-id="${t.id}">Delete</button>
     `;
@@ -121,40 +121,42 @@ function attachAdminActions() {
     });
   });
 
-  // EDIT ID & PASSWORD
-  document.querySelectorAll(".edit-idpass-btn").forEach(btn => {
+    // EDIT ROOM ID & PASSWORD
+  document.querySelectorAll(".edit-room-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
-      const newID = prompt("Enter new ID:", id); // default current ID
-      const newPass = prompt("Enter new Password:");
-
-      if (!newID || !newPass) return;
-
+  
+      const newRoomID = prompt("Enter new Room ID:");
+      if (!newRoomID) return;
+  
+      const newRoomPass = prompt("Enter new Room Password:");
+      if (!newRoomPass) return;
+  
       const { error } = await supabase
         .from("tournaments")
         .update({ room_id: newRoomID, room_password: newRoomPass })
         .eq("id", id);
-
+  
       if (error) alert(error.message);
       else {
-        alert("ID & Password updated");
+        alert("Room ID & Password updated");
         loadTournaments();
       }
     });
   });
-
+  
   // EDIT STATUS ONLY
   document.querySelectorAll(".edit-status-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
       const newStatus = prompt("Enter new status (upcoming / live / completed):");
       if (!newStatus) return;
-
+  
       const { error } = await supabase
         .from("tournaments")
         .update({ status: newStatus })
         .eq("id", id);
-
+  
       if (error) alert(error.message);
       else {
         alert("Status updated");
@@ -162,6 +164,7 @@ function attachAdminActions() {
       }
     });
   });
+  
 }
 
 
