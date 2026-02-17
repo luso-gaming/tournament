@@ -33,15 +33,17 @@ async function loadTournaments() {
   }
 
   const { data: { session } } = await supabase.auth.getSession();
-  let joinedIds = [];
+  let joinedMap = {};
 
   if (session) {
     const { data: joined } = await supabase
       .from("participants")
-      .select("tournament_id")
+      .select("tournament_id, slot_number")
       .eq("user_id", session.user.id);
-
-    joinedIds = joined?.map(j => j.tournament_id) || [];
+  
+    joined?.forEach(j => {
+      joinedMap[j.tournament_id] = j.slot_number;
+    });
   }
 
   for (const t of data) {
@@ -67,7 +69,8 @@ async function loadTournaments() {
     const isJoinOpen = now >= joinOpenTime && now < startDateTime;
     const isBeforeJoin = now < joinOpenTime;
 
-    const userJoined = joinedIds.includes(t.id);
+    const userSlot = joinedMap[t.id];
+    const userJoined = userSlot !== undefined;
 
     let buttonDisabled = false;
     let buttonText = "Join Tournament";
@@ -166,9 +169,18 @@ if (isLive) {
 
             <div class="bottom-card">
               <div class="fee">
-                <span>Entry Fee</span>
-                <p>${t.entry_points === 0 ? "Free" : t.entry_points + " TC"}</p>
+                ${userJoined 
+                  ? `
+                    <span>Your Slot</span>
+                    <p>${userSlot}</p>
+                  `
+                  : `
+                    <span>Entry Fee</span>
+                    <p>${t.entry_points === 0 ? "Free" : t.entry_points + " TC"}</p>
+                  `
+                }
               </div>
+              
 
               <div class="idp">
                 ${idpContent}
