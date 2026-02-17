@@ -85,6 +85,7 @@ async function loadTournaments() {
     /* REGISTRATION OPEN */
     else if (isJoinOpen && !isFull && !userJoined) {
       buttonDisabled = false;
+      idpContent = `<p style="color:green;">Registration Open</p>`;
     }
 
     /* FULL */
@@ -172,7 +173,7 @@ if (isLive) {
                 ${userJoined 
                   ? `
                     <span>Your Slot</span>
-                    <p>${userSlot}</p>
+                    <p style="color:rgb(135, 231, 9); font-weight:bold;">${userSlot}</p>
                   `
                   : `
                     <span>Entry Fee</span>
