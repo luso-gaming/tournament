@@ -13,6 +13,10 @@ if (!session) {
 document.getElementById("userEmail").textContent = session.user.email;
 document.getElementById("userName").textContent =
   session.user.user_metadata?.full_name || "Not provided";
+document.getElementById("userTeam").textContent =
+  session.user.user_metadata?.team_name || "Not provided";
+document.getElementById("userIgn").textContent =
+  session.user.user_metadata?.in_game_name || "Not provided";
 
 /*  USER POINTS  */
 async function loadUserPoints() {
