@@ -62,13 +62,13 @@ hr {
   margin: 20px 0;
 }
 
-.password-section h2 {
+.user-info h2 {
   font-size: 20px;
   margin-bottom: 10px;
   color: #38bdf8;
 }
 
-.password-section input {
+.user-info input {
   width: 100%;
   padding: 12px;
   background: #0f172a;
@@ -78,13 +78,13 @@ hr {
   margin-bottom: 10px;
 }
 
-.password-section input:focus {
+.user-info input:focus {
   outline: none;
   border-color: #38bdf8;
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
 }
 
-.password-section button {
+.user-info button {
   width: 100%;
   padding: 12px;
   border: none;
@@ -95,7 +95,7 @@ hr {
   cursor: pointer;
 }
 
-.password-section button:hover {
+.user-info button:hover {
   background: #0ea5e9;
 }
 
