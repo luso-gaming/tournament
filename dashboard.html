@@ -16,10 +16,25 @@
       <h1>My Dashboard</h1>
 
       <div class="user-info">
-        <p><strong>Name:</strong></p><div class="fill"> <span id="userName">Loading...</span></div>
-        <p><strong>Email:</strong></p><div class="fill"><span id="userEmail">Loading...</span></div>
-        <p><strong>Team name:</strong></p><div class="fill"><span id="userTeam">Loading...</span></div>
-        <p><strong>Team name:</strong></p><div class="fill"><span id="userIgn">Loading...</span></div>
+        <p><strong>Name:</strong></p>
+        <div class="fill"><span id="userName">Loading...</span></div>
+      
+        <p><strong>Email:</strong></p>
+        <div class="fill"><span id="userEmail">Loading...</span></div>
+      
+        <p><strong>Team Name:</strong></p>
+        <div class="fill">
+          <span id="userTeam">Loading...</span>
+          <input type="text" id="teamInput" class="hidden" />
+        </div>
+      
+        <p><strong>In Game Name:</strong></p>
+        <div class="fill">
+          <span id="userIgn">Loading...</span>
+          <input type="text" id="ignInput" class="hidden" />
+        </div>
+      
+        <button id="editProfileBtn" class="update-btn">Update</button>
       </div>
 
       <hr>

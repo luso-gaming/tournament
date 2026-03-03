@@ -114,3 +114,13 @@ hr {
   background: #ef4444;
   color: #020617;
 }
+
+.hidden {
+  display: none;
+}
+
+.update-btn {
+  margin-top: 15px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
