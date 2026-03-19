@@ -150,17 +150,33 @@ function attachAdminActions() {
       const id = btn.dataset.id;
       const newStatus = prompt("Enter new status (upcoming / live / completed):");
       if (!newStatus) return;
-  
+    
+      // 1. Update status
       const { error } = await supabase
         .from("tournaments")
         .update({ status: newStatus })
         .eq("id", id);
-  
-      if (error) alert(error.message);
-      else {
-        alert("Status updated");
-        loadTournaments();
+    
+      if (error) {
+        alert(error.message);
+        return;
       }
+    
+      // 2. If completed → initialize results
+      if (newStatus === "completed") {
+        const { error: rpcError } = await supabase.rpc("finalize_tournament", {
+          p_tournament_id: id
+        });
+      
+        if (rpcError) {
+          console.error(rpcError);
+          alert("Error initializing results");
+          return;
+        }
+      }
+    
+      alert("Status updated");
+      loadTournaments();
     });
   });
   

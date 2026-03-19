@@ -271,11 +271,11 @@
     border: 1px solid #222;
     padding-bottom: 50px;
 }
-
+/*
 #pastTournamentSection .bottom-card,
 #pastTournamentSection .join-btn {
     display: none !important;
-}
+}*/
 
 #pastTournamentSection .tournament-card {
     display: flex;

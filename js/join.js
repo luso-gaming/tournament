@@ -75,6 +75,8 @@ async function loadTournaments() {
     let buttonDisabled = false;
     let buttonText = "Join Tournament";
     let idpContent = "";
+    
+
 
     /* BEFORE REGISTRATION (More than 20 min left) */
     if (isBeforeJoin) {
@@ -93,7 +95,6 @@ async function loadTournaments() {
       buttonDisabled = true;
       idpContent = `<p style="color:red;">Tournament Full</p>`;
     }
-
     /* MATCH LIVE */
     else if (isLive && !userJoined) {
       buttonDisabled = true;
@@ -130,7 +131,11 @@ if (isLive) {
   </p>`;
 }
 
-    
+if (isCompleted) {
+  buttonDisabled = false;
+  buttonText = "View Result";
+  idpContent = `<p style="color:gold;">Match Completed</p>`;
+}   
 
     const card = document.createElement("div");
     card.className = "tournament";
@@ -199,7 +204,7 @@ if (isLive) {
     `;
 
     // If match is live → redirect button to YouTube
-    if (isLive) {
+    if (isLive && !isCompleted) {
       const liveBtn = card.querySelector(".join-btn");
     
       if (liveBtn) {
@@ -215,7 +220,15 @@ if (isLive) {
       }
     }
     
-
+    if (isCompleted) {
+      const resultBtn = card.querySelector(".join-btn");
+    
+      if (resultBtn) {
+        resultBtn.style.backgroundColor = "#1e90ff"; // blue
+        resultBtn.style.color = "#fff";
+        resultBtn.style.border = "none";
+      }
+    }
 
     if (isCompleted) {
       pastContainer.prepend(card); // newest completed on top
@@ -276,14 +289,36 @@ function attachJoinHandlers() {
   document.querySelectorAll(".join-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      
+      const tournamentId = btn.dataset.id;
+
+      if (btn.innerText.includes("View Result")) {
+        window.location.href = `/teams.html?id=${tournamentId}`;
+        return;
+      }
 
       if (!session) {
         alert("Please login to join");
         window.location.href = "/login.html";
         return;
       }
-
-      const tournamentId = btn.dataset.id;
+      
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("team_name, in_game_name")
+        .eq("id", session.user.id)
+        .single();
+    
+      if (profileError) {
+        alert("Error loading profile");
+        return;
+      }
+    
+      if (!profile.team_name || !profile.in_game_name) {
+        alert("Please fill Team Name & IGN in Dashboard to join tournament");
+        window.location.href = "/dashboard.html";
+        return;
+      }
 
       btn.disabled = true;
       btn.innerText = "Joining...";
