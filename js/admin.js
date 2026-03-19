@@ -232,3 +232,193 @@ document
   });
 
 checkAdmin();
+/* ================= NAVIGATION ================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const createSection = document.getElementById("createSection");
+  const resultSection = document.getElementById("resultSection");
+
+  const navCreate = document.getElementById("navCreate");
+  const navResults = document.getElementById("navResults");
+
+  if (!navCreate || !navResults) return;
+
+  // Default view
+  createSection.style.display = "block";
+  resultSection.style.display = "none";
+
+  navCreate.addEventListener("click", () => {
+    createSection.style.display = "block";
+    resultSection.style.display = "none";
+
+    navCreate.classList.add("active");
+    navResults.classList.remove("active");
+  });
+
+  navResults.addEventListener("click", () => {
+    createSection.style.display = "none";
+    resultSection.style.display = "block";
+
+    navResults.classList.add("active");
+    navCreate.classList.remove("active");
+
+    setTodayDate(); // load today's tournaments
+  });
+
+});
+
+/* ================= BGMI POINT SYSTEM ================= */
+
+const placementPoints = {
+  1: 10,
+  2: 8,
+  3: 6,
+  4: 4,
+  5: 2,
+  6: 1,
+  7: 1,
+  8: 1,
+  9: 1,
+  10: 1
+};
+
+
+/* ================= DATE SET ================= */
+
+function setTodayDate() {
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("resultDate").value = today;
+  loadResultTournamentsByDate(today);
+}
+
+
+/* ================= LOAD TOURNAMENTS BY DATE ================= */
+
+async function loadResultTournamentsByDate(date) {
+
+  const { data, error } = await supabase
+    .from("tournaments")
+    .select("id, title")
+    .eq("status", "completed")
+    .eq("start_date", date);
+
+  const select = document.getElementById("resultTournamentSelect");
+  select.innerHTML = "";
+
+  if (error || !data || data.length === 0) {
+    select.innerHTML = `<option>No tournaments</option>`;
+    document.querySelector("#resultTable tbody").innerHTML = "";
+    return;
+  }
+
+  data.forEach(t => {
+    const option = document.createElement("option");
+    option.value = t.id;
+    option.textContent = t.title;
+    select.appendChild(option);
+  });
+
+  loadMatchResults(data[0].id);
+}
+
+
+/* ================= LOAD MATCH RESULTS ================= */
+
+async function loadMatchResults(tournamentId) {
+
+  const { data, error } = await supabase
+    .from("match_results")
+    .select("*")
+    .eq("tournament_id", tournamentId)
+    .order("slot_number", { ascending: true });
+
+  const tbody = document.querySelector("#resultTable tbody");
+  tbody.innerHTML = "";
+
+  if (error || !data) return;
+
+  data.forEach(player => {
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${player.slot_number}</td>
+      <td>${player.team_name}</td>
+      <td>${player.in_game_name}</td>
+      <td><input type="number" class="kills" value="${player.kills || 0}"></td>
+      <td><input type="number" class="placement" value="${player.placement || 0}"></td>
+      <td class="total">0</td>
+    `;
+
+    tbody.appendChild(row);
+
+    const killsInput = row.querySelector(".kills");
+    const placementInput = row.querySelector(".placement");
+    const totalCell = row.querySelector(".total");
+
+    function updateTotal() {
+      const kills = parseInt(killsInput.value) || 0;
+      const place = parseInt(placementInput.value) || 0;
+      const placePoints = placementPoints[place] || 0;
+
+      totalCell.innerText = kills + placePoints;
+    }
+
+    killsInput.addEventListener("input", updateTotal);
+    placementInput.addEventListener("input", updateTotal);
+
+    updateTotal();
+  });
+
+}
+
+
+/* ================= DATE CHANGE ================= */
+
+document
+  .getElementById("resultDate")
+  ?.addEventListener("change", (e) => {
+    loadResultTournamentsByDate(e.target.value);
+  });
+
+
+/* ================= TOURNAMENT CHANGE ================= */
+
+document
+  .getElementById("resultTournamentSelect")
+  ?.addEventListener("change", (e) => {
+    loadMatchResults(e.target.value);
+  });
+
+
+/* ================= SAVE RESULTS ================= */
+
+document
+  .getElementById("saveResultsBtn")
+  ?.addEventListener("click", async () => {
+
+    const tournamentId = document.getElementById("resultTournamentSelect").value;
+    const rows = document.querySelectorAll("#resultTable tbody tr");
+
+    for (let row of rows) {
+
+      const slot = row.children[0].innerText;
+      const kills = parseInt(row.querySelector(".kills").value) || 0;
+      const placement = parseInt(row.querySelector(".placement").value) || 0;
+
+      const total_points = kills + (placementPoints[placement] || 0);
+
+      await supabase
+        .from("match_results")
+        .update({
+          kills,
+          placement,
+          total_points
+        })
+        .eq("tournament_id", tournamentId)
+        .eq("slot_number", slot);
+    }
+
+    alert("Results Saved ✅");
+  });

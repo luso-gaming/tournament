@@ -4,45 +4,91 @@
   <meta charset="UTF-8" />
   <title>Admin Panel – Luso Esports</title>
   <link rel="stylesheet" href="css/admin.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
+
 </head>
 <body>
 
   <header class="admin-header">
     <h1>Admin Panel</h1>
-    <div>
+    <div class="admin-right">
       <span id="adminEmail"></span>
       <button id="logoutBtn">Logout</button>
     </div>
+
+
+  <!-- 🔥 NAV BUTTONS -->
+  <div class="admin-nav">
+    <button id="navCreate" class="active">Create Tournament</button>
+    <button id="navResults">Match Results</button>
+  </div>
+
   </header>
+  <!-- ================= CREATE SECTION ================= -->
+  <div id="createSection">
 
-  <!-- CREATE TOURNAMENT -->
-  <section class="tournament-card">
-    <h2>Create Tournament</h2>
-    <form id="tournamentForm">
-      <input name="title" placeholder="Tournament Name" required /> 
-      <input type="date" name="start_date" required />
-      <input type="time" name="start_time" required />
-      <select name="type">
-        <option value="elite">Elite</option>
-        <option value="pro">Pro</option>
-        <option value="legend">Legend</option>
-      </select>
-      <select name="status">
-        <option value="upcoming">Upcoming</option>
-        <option value="live">Live</option>
-        <option value="completed">Completed</option>
-      </select>
-      <textarea name="description"></textarea>
-      <button type="submit">Create</button>
-    </form>
-  </section>
+    <!-- CREATE TOURNAMENT -->
+    <section class="tournament-card">
+      <h2>Create Tournament</h2>
+      <form id="tournamentForm">
+        <input name="title" placeholder="Tournament Name" required /> 
+        <input type="date" name="start_date" required />
+        <input type="time" name="start_time" required />
+        <select name="type">
+          <option value="elite">Elite</option>
+          <option value="pro">Pro</option>
+          <option value="legend">Legend</option>
+        </select>
+        <select name="status">
+          <option value="upcoming">Upcoming</option>
+          <option value="live">Live</option>
+          <option value="completed">Completed</option>
+        </select>
+        <textarea name="description"></textarea>
+        <button type="submit">Create</button>
+      </form>
+    </section>
 
-  <!-- TOURNAMENT LIST -->
-  <section class="card">
-    <h2>All Tournaments</h2>
-    <div id="tournamentsContainer"></div>
-  </section>
+    <!-- TOURNAMENT LIST -->
+    <section class="card">
+      <h2>All Tournaments</h2>
+      <div id="tournamentsContainer"></div>
+    </section>
 
-  <script type="module" src="js/admin.js"></script>
+  </div>
+
+  <!-- ================= RESULT SECTION ================= -->
+  <div id="resultSection" style="display:none;">
+
+    <section class="card">
+      <h2>Enter Match Results</h2>
+
+      <!-- DATE FILTER -->
+      <input type="date" id="resultDate" />
+
+      <!-- TOURNAMENT SELECT -->
+      <select id="resultTournamentSelect"></select>
+
+      <!-- RESULT TABLE -->
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>Slot</th>
+            <th>Team</th>
+            <th>IGN</th>
+            <th>Kills</th>
+            <th>Placement</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <button id="saveResultsBtn">Save Results</button>
+    </section>
+
+  </div>
+
+  <script type="module" src="js/admin.js"></script> 
 </body>
 </html>

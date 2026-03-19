@@ -6,10 +6,77 @@ body {
 }
 
 .admin-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+
+  padding: 15px 25px;
+  background: #0f172a;
+  color: white;
+}
+
+/* ===== TITLE (LEFT) ===== */
+.admin-header h1 {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 22px;
+}
+
+/* ===== RIGHT SIDE (EMAIL + LOGOUT) ===== */
+.admin-right {
+  grid-column: 3;
+  grid-row: 1;
+
   display: flex;
-  justify-content: space-between;
-  padding: 15px 20px;
-  background: #ebe9e8;
+  justify-content: flex-end; /* IMPORTANT */
+  align-items: center;
+  gap: 12px;
+}
+
+#adminEmail {
+  font-size: 14px;
+  color: #cbd5f5;
+}
+
+/* LOGOUT BUTTON */
+#logoutBtn {
+  padding: 6px 14px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ===== NAV BAR (SECOND ROW CENTER) ===== */
+.admin-nav {
+  grid-column: 3 / 4; /* center to right */
+  grid-row: 2;
+
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+/* NAV BUTTONS */
+.admin-nav button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #1e293b;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.admin-nav button:hover {
+  background: #334155;
+}
+
+/* ACTIVE TAB */
+.admin-nav button.active {
+  background: #3b82f6;
 }
 
 button {
