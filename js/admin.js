@@ -57,17 +57,16 @@ async function loadTournaments() {
     const div = document.createElement("div");
     div.className = "tournament";
     div.innerHTML = `
-      <strong>${t.title}</strong><br>
-      Room ID: ${t.room_id} <br>
-      Room Password: ${t.room_password || "N/A"} <br>
-      ${t.start_date} ${t.start_time}<br>
-      Status: ${t.status}<br>
-      Type: ${t.type}<br><br>
-
-      <button class="edit-btn" data-id="${t.id}">Edit All</button>
-      <button class="edit-room-btn" data-id="${t.id}">Edit Room ID & Password</button>
-      <button class="edit-status-btn" data-id="${t.id}">Edit Status</button>
-      <button class="delete-btn" data-id="${t.id}">Delete</button>
+      <div class="details title"> <strong>${t.title}</strong></div>
+      <div class="details id">Room ID: ${t.room_id} </div>
+      <div class="details pass">Room Password: ${t.room_password || "N/A"}</div>
+      <div class="details time">${t.start_date} ${t.start_time}</div>
+      <div class="details status">Status: ${t.status}</div>
+      <div class="details type">Type: ${t.type}</div>
+      <button class="edit edit-btn" data-id="${t.id}">Edit All</button>
+      <button class="edit edit-room-btn" data-id="${t.id}">Edit IDP</button>
+      <button class="edit edit-status-btn" data-id="${t.id}">Edit Status</button>
+      <button class="edit delete-btn" data-id="${t.id}">Delete</button>
     `;
     container.appendChild(div);
   });

@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
-  background: #0b1020;
-  color: #fff;
+  background: #e4e3e2;
+  color: #000000;
   margin: 0;
 }
 
@@ -9,41 +9,43 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 15px 20px;
-  background: #111827;
+  background: #ebe9e8;
 }
 
 button {
 
-  background: #2563eb;
-  color: white;
+  background: #dddddd;
+  color: rgb(0, 0, 0);
   width: 100px;
   border: none;
   padding: 8px 14px;
   cursor: pointer;
+  border: 1px solid #ff8b26;
   border-radius: 6px;
 }
 
 button:hover {
-  background: #1d4ed8;
+  background: #ff8820;
 }
 
 .tournament-card {
-  background: #111827;
+  background: #ececed;
   width: 400px;
   margin: 20px;
   padding: 20px;
+  border: 1px solid #ff8b26;
   border-radius: 10px;
 }
 
 .card {
-  background: #111827;
+  background: #c9c9c9;
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
 }
 
 input, textarea, select {
-  width: 100%;
+  width: 95%;
   margin-bottom: 10px;
   padding: 8px;
   border-radius: 6px;
@@ -51,12 +53,26 @@ input, textarea, select {
 }
 
 select{
-  width: 415px;
+  width: 99%;
 }
 
 .tournament {
   padding: 10px;
   margin-top: 10px;
-  background: #1f2933;
+  background: #ebebeb;
+  border: 1px solid #ff8b26;
   border-radius: 6px;
+}
+ 
+.edit{
+  background-color: rgb(214, 214, 214);
+  color: #0b1020;
+  font-style: oblique;
+  margin-left: 10px;
+
+}
+
+.details{
+ margin-bottom: 5px;
+
 }
