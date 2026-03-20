@@ -422,3 +422,116 @@ document
 
     alert("Results Saved ✅");
   });
+
+
+  const navSeason = document.getElementById("navSeason");
+const seasonSection = document.getElementById("seasonSection");
+
+navSeason?.addEventListener("click", () => {
+  createSection.style.display = "none";
+  resultSection.style.display = "none";
+  seasonSection.style.display = "block";
+
+  navSeason.classList.add("active");
+  navCreate.classList.remove("active");
+  navResults.classList.remove("active");
+
+  loadSeasonData();
+});
+
+async function loadSeasonData() {
+
+  // Update status automatically
+  await supabase.rpc("update_season_status");
+
+  /* CURRENT SEASON */
+  const { data: current } = await supabase
+    .from("seasons")
+    .select("*")
+    .eq("status", "current")
+    .single();
+
+  document.getElementById("currentSeason").innerText =
+    current
+      ? `${current.name} (${current.start_date} → ${current.end_date})`
+      : "No active season";
+
+  /* UPCOMING SEASONS */
+  const { data: upcoming } = await supabase
+    .from("seasons")
+    .select("*")
+    .eq("status", "upcoming");
+
+  const select = document.getElementById("upcomingSeasonSelect");
+  select.innerHTML = "";
+
+  if (!upcoming || upcoming.length === 0) {
+    select.innerHTML = `<option>No upcoming seasons</option>`;
+    return;
+  }
+
+  upcoming.forEach(s => {
+    const option = document.createElement("option");
+    option.value = s.id;
+    option.textContent = s.name;
+    select.appendChild(option);
+  });
+}
+
+document.getElementById("createSeasonBtn")?.addEventListener("click", async () => {
+
+  const name = document.getElementById("seasonName").value;
+  const start = document.getElementById("seasonStart").value;
+  const end = document.getElementById("seasonEnd").value;
+
+  if (!name || !start || !end) {
+    alert("Fill all fields");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("seasons")
+    .insert([
+      {
+        name,
+        start_date: start,
+        end_date: end,
+        status: "upcoming"
+      }
+    ]);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Season Created ✅");
+  loadSeasonData();
+});
+
+document.getElementById("setUpcomingBtn")?.addEventListener("click", async () => {
+
+  const seasonId = document.getElementById("upcomingSeasonSelect").value;
+
+  if (!seasonId) return;
+
+  // Set all upcoming to past (safety)
+  await supabase
+    .from("seasons")
+    .update({ status: "past" })
+    .eq("status", "upcoming");
+
+  // Set selected as upcoming
+  const { error } = await supabase
+    .from("seasons")
+    .update({ status: "upcoming" })
+    .eq("id", seasonId);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Upcoming season updated ✅");
+  loadSeasonData();
+});

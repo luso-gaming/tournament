@@ -21,6 +21,7 @@
   <div class="admin-nav">
     <button id="navCreate" class="active">Create Tournament</button>
     <button id="navResults">Match Results</button>
+    <button id="navSeason">Seasons</button>
   </div>
 
   </header>
@@ -88,7 +89,34 @@
     </section>
 
   </div>
-
+  
+  <!-- ================= SEASON SECTION ================= -->
+  <section id="seasonSection" class="card" style="display:none;">
+    <h2>Manage Seasons</h2>
+  
+    <!-- CURRENT SEASON -->
+    <div class="season-box">
+      <h3>Current Season</h3>
+      <p id="currentSeason">Loading...</p>
+    </div>
+  
+    <!-- CREATE SEASON -->
+    <div class="season-box">
+      <h3>Create New Season</h3>
+      <input type="text" id="seasonName" placeholder="Season Name (e.g. Season 1)" />
+      <input type="date" id="seasonStart" />
+      <input type="date" id="seasonEnd" />
+      <button id="createSeasonBtn">Create Season</button>
+    </div>
+  
+    <!-- UPCOMING SEASON -->
+    <div class="season-box">
+      <h3>Upcoming Season</h3>
+      <select id="upcomingSeasonSelect"></select>
+      <button id="setUpcomingBtn">Set as Upcoming</button>
+    </div>
+  
+  </section>
   <script type="module" src="js/admin.js"></script> 
 </body>
 </html>
