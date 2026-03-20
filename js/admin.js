@@ -233,37 +233,57 @@ document
 
 checkAdmin();
 /* ================= NAVIGATION ================= */
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const createSection = document.getElementById("createSection");
   const resultSection = document.getElementById("resultSection");
+  const seasonSection = document.getElementById("seasonSection");
 
   const navCreate = document.getElementById("navCreate");
   const navResults = document.getElementById("navResults");
+  const navSeason = document.getElementById("navSeason");
 
-  if (!navCreate || !navResults) return;
+  if (!navCreate || !navResults || !navSeason) return;
 
-  // Default view
+  function setActive(nav) {
+    navCreate.classList.remove("active");
+    navResults.classList.remove("active");
+    navSeason.classList.remove("active");
+
+    nav.classList.add("active");
+  }
+
+  // Default
   createSection.style.display = "block";
   resultSection.style.display = "none";
+  seasonSection.style.display = "none";
+
+  setActive(navCreate);
 
   navCreate.addEventListener("click", () => {
     createSection.style.display = "block";
     resultSection.style.display = "none";
+    seasonSection.style.display = "none";
 
-    navCreate.classList.add("active");
-    navResults.classList.remove("active");
+    setActive(navCreate);
   });
 
   navResults.addEventListener("click", () => {
     createSection.style.display = "none";
     resultSection.style.display = "block";
+    seasonSection.style.display = "none";
 
-    navResults.classList.add("active");
-    navCreate.classList.remove("active");
+    setActive(navResults);
+    setTodayDate();
+  });
 
-    setTodayDate(); // load today's tournaments
+  navSeason.addEventListener("click", () => {
+    createSection.style.display = "none";
+    resultSection.style.display = "none";
+    seasonSection.style.display = "block";
+
+    setActive(navSeason);
+    loadSeasonData();
   });
 
 });
@@ -424,21 +444,11 @@ document
   });
 
 
-  const navSeason = document.getElementById("navSeason");
-const seasonSection = document.getElementById("seasonSection");
 
-navSeason?.addEventListener("click", () => {
-  createSection.style.display = "none";
-  resultSection.style.display = "none";
-  seasonSection.style.display = "block";
 
-  navSeason.classList.add("active");
-  navCreate.classList.remove("active");
-  navResults.classList.remove("active");
 
-  loadSeasonData();
-});
-
+  
+// season section
 async function loadSeasonData() {
 
   // Update status automatically
