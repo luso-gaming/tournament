@@ -1,90 +1,94 @@
-/* ================= CONFIG ================= */
+import { supabase } from "/js/supabase.js";
 
-const SHEET_URL =
-  "https://opensheet.elk.sh/18iJoY4REDlBCEEw718CSp3-iS00ccPIaQ0L5EvDukiw/Public";
-
-const DEFAULT_LOGO =
-  "https://i.ibb.co/G4wSTbqV/dafault.jpg";
-
-let teamsData = [];
-
-/* ================= UTIL ================= */
-
-function isValidHttpUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
-  }
+/* GET TOURNAMENT ID */
+function getTournamentId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id") || localStorage.getItem("lastTournament");
 }
 
-/* ================= LOAD DATA ================= */
+/* LOAD RESULTS */
+async function loadResults() {
+  const tournamentId = getTournamentId();
 
-fetch(SHEET_URL)
-  .then(res => {
-    if (!res.ok) throw new Error("Sheet fetch failed");
-    return res.json();
-  })
-  .then(data => {
-    if (!Array.isArray(data)) {
-      console.error("Sheet data is not an array");
-      return;
-    }
+  if (!tournamentId) {
+    showNoSelection();
+    return;
+  }
 
-    teamsData = data;
-    renderTeams(teamsData);
-  })
-  .catch(err => {
-    console.error("Sheet load error:", err.message);
-  });
+  console.log("Loading result for:", tournamentId);
 
-/* ================= RENDER TEAMS ================= */
+  // Try cache first
+  const cached = localStorage.getItem("result_" + tournamentId);
 
-function renderTeams(data) {
-  const container = document.querySelector(".teams-grid");
-  if (!container) return;
+  if (cached) {
+    renderTable(JSON.parse(cached));
+  }
 
-  container.innerHTML = "";
+  // Fetch fresh data
+  const { data, error } = await supabase
+    .from("match_results")
+    .select("*")
+    .eq("tournament_id", tournamentId)
+    .order("total_points", { ascending: false });
 
-  if (data.length === 0) {
-    container.innerHTML = `
-      <div class="not-found">
-        ❌ No teams found
-      </div>
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    document.getElementById("noTournamentMessage").style.display = "none";
+    document.getElementById("resultContainer").style.display = "block";
+  
+    renderTable([]);
+    return;
+  }
+
+  // Save cache
+  localStorage.setItem("result_" + tournamentId, JSON.stringify(data));
+  
+  window.teamsData = data;
+
+  renderTable(data);
+}
+
+/* RENDER TABLE */
+function renderTable(data) {
+  const tbody = document.querySelector("#resultTable tbody");
+  tbody.innerHTML = "";
+
+  document.getElementById("noTournamentMessage").style.display = "none";
+  document.getElementById("resultContainer").style.display = "block";
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding:20px;">
+          Results not available yet
+        </td>
+      </tr>
     `;
     return;
   }
 
-  data.forEach(team => {
-    const card = document.createElement("div");
-    card.className = "team-card";
+  data.forEach((player, index) => {
+    const row = document.createElement("tr");
 
-    const img = document.createElement("img");
-    const logoValue = team["Logo URL"];
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${player.team_name}</td>
+      <td>${player.in_game_name}</td>
+      <td>${player.kills || 0}</td>
+      <td>${player.placement || 0}</td>
+      <td>${player.total_points || 0}</td>
+    `;
 
-    img.src = isValidHttpUrl(logoValue) ? logoValue : DEFAULT_LOGO;
-    img.onerror = () => {
-      img.onerror = null;
-      img.src = DEFAULT_LOGO;
-    };
-
-    const name = document.createElement("h3");
-    name.textContent = team["Team Name"] || "Unnamed Team";
-
-    const id = document.createElement("p");
-    id.textContent = `SLOT NO: ${team["Team ID"] || "N/A"}`;
-
-    card.appendChild(img);
-    card.appendChild(name);
-    card.appendChild(id);
-
-    container.appendChild(card);
+    tbody.appendChild(row);
   });
 }
 
-/* ================= FILTER SEARCH ================= */
 
+/* ================= FILTER SEARCH ================= */
 function filterTeams() {
   const input = document
     .getElementById("teamSearchInput")
@@ -93,15 +97,31 @@ function filterTeams() {
     .toUpperCase();
 
   if (!input) {
-    renderTeams(teamsData);
+    renderTable(window.teamsData || []);
     return;
   }
 
-  const filtered = teamsData.filter(team => {
-    const teamId = team["Team ID"]?.toUpperCase() || "";
-    const teamName = team["Team Name"]?.toUpperCase() || "";
-    return teamId.includes(input) || teamName.includes(input);
+  const filtered = (window.teamsData || []).filter(team => {
+    const teamName = team.team_name?.toUpperCase() || "";
+    const ign = team.in_game_name?.toUpperCase() || "";
+    return teamName.includes(input) || ign.includes(input);
   });
 
-  renderTeams(filtered);
+  renderTable(filtered);
 }
+
+function showNoSelection() {
+  document.getElementById("noTournamentMessage").style.display = "block";
+  document.getElementById("resultContainer").style.display = "none";
+
+  const btn = document.getElementById("goBackBtn");
+
+  if (btn) {
+    btn.addEventListener("click", () => {
+      window.location.href = "/join.html";
+    });
+  }
+}
+
+/* RUN */
+loadResults();

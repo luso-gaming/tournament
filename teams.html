@@ -59,8 +59,33 @@
           <!--  <button onclick="filterTeams()">Search</button>  -->
         </div>
 
-        <div class="teams-grid">
-            <!-- Teams will be loaded here dynamically -->
+        <div class="teams">
+        
+            <!-- NO TOURNAMENT SELECTED -->
+            <div id="noTournamentMessage" style="display:none; text-align:center; padding:40px;">
+                <h2>Please select a tournament to see results</h2>
+                <button id="goBackBtn" class="back-btn">Go to Tournaments</button>
+            </div>
+        
+            <!-- RESULTS TABLE -->
+            <div id="resultContainer">
+                <h2>Match Results</h2>
+        
+                <table id="resultTable">
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Team</th>
+                      <th>IGN</th>
+                      <th>Kills</th>
+                      <th>Placement</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+            </div>
+        
         </div>
     </section>
 </main>
@@ -84,8 +109,7 @@
     <!-- SCRIPTS -->
     <script type="module" src="js/sidebar.js"></script>
     <script type="module" src="js/sidebar-loader.js"></script>
-    <script src="js/team.js"></script>
-    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="js/team.js"></script>    <script type="module" src="/js/auth.js"></script>
     <script type="module" src="/js/auth-ui.js"></script>
 
 </body>

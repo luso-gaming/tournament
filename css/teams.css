@@ -53,49 +53,84 @@
     box-shadow: 0 8px 18px rgba(37, 99, 235, 0.45);
 }
 
-.teams-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 25px;
+/* TABLE CONTAINER */
+#resultTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: 'Poppins', sans-serif;
+  background: #0f172a;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.team-card {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent */
-    backdrop-filter: blur(10px); /* Blur effect */
-    border-radius: 15px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    overflow: hidden; /* Ensures nothing overflows */
-    width: 85%; /* Container width */
-    padding: 20px;
-    transition: 0.3s;
-    margin: auto;
+/* HEADER */
+#resultTable thead {
+  background: linear-gradient(90deg, #1e3a8a, #2563eb);
 }
 
-.team-card:hover {
-    transform: translateY(-6px);
+#resultTable th {
+  padding: 14px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 0.5px;
 }
 
-.team-card img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin-bottom: 10px;
+/* BODY ROWS */
+#resultTable td {
+  padding: 12px;
+  text-align: center;
+  color: #e5e7eb;
+  font-size: 13px;
+  border-bottom: 1px solid #1f2937;
 }
 
-.team-card h3 {
-    font-size: 18px;
+/* ROW HOVER EFFECT */
+#resultTable tbody tr:hover {
+  background: #1e293b;
+  transition: 0.2s;
 }
 
+/* ALTERNATE ROW COLOR */
+#resultTable tbody tr:nth-child(even) {
+  background: #111827;
+}
+
+/* RANK STYLING */
+#resultTable td:first-child {
+  font-weight: bold;
+  color: #38bdf8;
+}
+
+/* TOP 3 HIGHLIGHT */
+#resultTable tbody tr:nth-child(1) td {
+  background: rgba(255, 215, 0, 0.1);
+  color: gold;
+  font-weight: bold;
+}
+
+#resultTable tbody tr:nth-child(2) td {
+  background: rgba(192, 192, 192, 0.1);
+  color: silver;
+}
+
+#resultTable tbody tr:nth-child(3) td {
+  background: rgba(205, 127, 50, 0.1);
+  color: #cd7f32;
+}
+
+/* TOTAL POINTS COLUMN */
+#resultTable td:last-child {
+  font-weight: bold;
+  color: #22c55e;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
-    .teams-section h1 {
-        font-size: 32px;
-    }
-
-    .team-search {
-        flex-direction: column;
-    }
-
-    .team-search button {
-        width: 100%;
-    }
+  #resultTable th,
+  #resultTable td {
+    padding: 8px;
+    font-size: 11px;
+  }
 }

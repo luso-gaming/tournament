@@ -297,15 +297,11 @@ function setTodayDate() {
 
 async function loadResultTournamentsByDate(date) {
 
-  console.log("Selected date:", date);
-
   const { data, error } = await supabase
     .from("tournaments")
     .select("id, title")
     .eq("status", "completed")
     .eq("start_date", date);
-
-  console.log("Tournaments found:", data);
 
   const select = document.getElementById("resultTournamentSelect");
   select.innerHTML = "";
@@ -331,36 +327,16 @@ async function loadResultTournamentsByDate(date) {
 
 async function loadMatchResults(tournamentId) {
 
-  console.log("Loading results for tournament:", tournamentId);
-
   const { data, error } = await supabase
     .from("match_results")
     .select("*")
     .eq("tournament_id", tournamentId)
     .order("slot_number", { ascending: true });
 
-  console.log("Supabase response:", data);
-  console.log("Supabase error:", error);
-
   const tbody = document.querySelector("#resultTable tbody");
-
-  if (!tbody) {
-    console.error("❌ tbody not found!");
-    return;
-  }
-
   tbody.innerHTML = "";
 
-  if (error) {
-    console.error("❌ Fetch error:", error);
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    console.warn("⚠ No data found for this tournament");
-    tbody.innerHTML = `<tr><td colspan="6">No Data Found</td></tr>`;
-    return;
-  }
+  if (error || !data) return;
 
   data.forEach(player => {
 
@@ -394,7 +370,7 @@ async function loadMatchResults(tournamentId) {
 
     updateTotal();
   });
- console.log("✅ Table rendered successfully");
+
 }
 
 
