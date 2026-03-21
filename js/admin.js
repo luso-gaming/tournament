@@ -447,7 +447,7 @@ document
 
 
 
-  
+
 // season section
 async function loadSeasonData() {
 
@@ -463,7 +463,7 @@ async function loadSeasonData() {
 
   document.getElementById("currentSeason").innerText =
     current
-      ? `${current.name} (${current.start_date} → ${current.end_date})`
+      ? `${current.name} (${current.season_code}) [${current.start_date} → ${current.end_date}]`
       : "No active season";
 
   /* UPCOMING SEASONS */
@@ -491,10 +491,11 @@ async function loadSeasonData() {
 document.getElementById("createSeasonBtn")?.addEventListener("click", async () => {
 
   const name = document.getElementById("seasonName").value;
+  const code = document.getElementById("seasonCode").value;
   const start = document.getElementById("seasonStart").value;
   const end = document.getElementById("seasonEnd").value;
 
-  if (!name || !start || !end) {
+  if (!name || !code || !start || !end) {
     alert("Fill all fields");
     return;
   }
@@ -504,6 +505,7 @@ document.getElementById("createSeasonBtn")?.addEventListener("click", async () =
     .insert([
       {
         name,
+        season_code: code,
         start_date: start,
         end_date: end,
         status: "upcoming"

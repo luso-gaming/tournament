@@ -134,3 +134,15 @@
     font-size: 11px;
   }
 }
+
+.highlight-row {
+  background: linear-gradient(90deg, #22c55e, #0ea5e9);
+  color: #000;
+  font-weight: bold;
+  transform: scale(1.01);
+  transition: 0.3s ease;
+}
+
+.highlight-row td {
+  padding: 14px;
+}

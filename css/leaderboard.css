@@ -38,25 +38,111 @@
 }
 
 
+/* ================= LEADERBOARD CONTAINER ================= */
+
 .leaderboard {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent */
-    backdrop-filter: blur(10px); /* Blur effect */
-    border-radius: 15px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    overflow: hidden; /* Ensures nothing overflows */
-    width: 85%; /* Container width */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    width: 85%;
     margin-left: 8%;
     margin-bottom: 2%;
+    padding: 10px 0;
 }
+
+/* ================= ROW ================= */
 
 .leaderboard-row {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    padding: 14px 20px;
-    border-bottom: 1px solid #0f172a;
-    transition: background 0.2s ease, transform 0.15s ease;
+    grid-template-columns: 70px 1fr 90px 110px;
+    align-items: center;
+    padding: 14px 18px;
+    margin: 6px 12px;
+    border-radius: 12px;
+    background: rgba(2, 6, 23, 0.8);
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.25s ease;
 }
 
+/* ================= HOVER ================= */
+
+.leaderboard-row:hover {
+    background: #0f172a;
+    transform: scale(1.02);
+}
+
+/* ================= RANK ================= */
+
+.rank {
+    font-weight: bold;
+    font-size: 18px;
+    color: #38bdf8;
+}
+
+/* ================= TEAM ================= */
+
+.team {
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+/* ================= KILLS ================= */
+
+.kills {
+    text-align: center;
+    font-weight: 600;
+    color: #facc15;
+}
+
+/* ================= POINTS ================= */
+
+.points {
+    text-align: right;
+    font-weight: bold;
+    color: #22c55e;
+}
+
+/* ================= TOP 3 SPECIAL ================= */
+
+.leaderboard-row:nth-child(1) {
+    border: 1px solid gold;
+    background: linear-gradient(135deg, #3b2f00, #1a1400);
+}
+
+.leaderboard-row:nth-child(2) {
+    border: 1px solid silver;
+    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+}
+
+.leaderboard-row:nth-child(3) {
+    border: 1px solid #cd7f32;
+    background: linear-gradient(135deg, #3a2414, #1a120a);
+}
+
+/* ================= EMPTY ================= */
+
+.leaderboard p {
+    text-align: center;
+    color: #f87171;
+    padding: 20px;
+    font-weight: 600;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+    .leaderboard-row {
+        grid-template-columns: 50px 1fr 70px 90px;
+        font-size: 13px;
+        padding: 12px;
+    }
+
+    .rank {
+        font-size: 14px;
+    }
+}
 /* HEADER */
 .leaderboard-row.header {
     font-weight: bold;
@@ -125,11 +211,6 @@
  
 
 @media (max-width: 600px) {
-    .leaderboard-row {
-        grid-template-columns: 1fr 2fr 1fr;
-        font-size: 14px;
-    }
-
     .team-search {
         flex-direction: column;
     }
@@ -137,4 +218,34 @@
     .team-search button {
         width: 100%;
     }
+}
+
+.leaderboard-info-box {
+  max-width: 500px;
+  margin: 15px auto 10px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+
+  background: linear-gradient(135deg, #0f172a, #020617);
+  border: 1px solid #1e293b;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+
+  color: #38bdf8;
+  transition: all 0.3s ease;
+}
+
+.user-rank-box {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 14px;
+  text-align: center;
+  border-radius: 12px;
+  font-weight: 600;
+
+  background: linear-gradient(135deg, #020617, #0f172a);
+  border: 1px solid #1e293b;
+  color: #38bdf8;
 }

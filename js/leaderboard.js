@@ -1,170 +1,281 @@
-/* ================= CONFIG ================= */
+import { supabase } from "/js/supabase.js";
 
-const SHEET_URL =
-  "https://opensheet.elk.sh/18iJoY4REDlBCEEw718CSp3-iS00ccPIaQ0L5EvDukiw/Public";
-
+let currentMode = "season";
 let leaderboardData = [];
-let currentMode = "Points"; // Default = Total Points
+let timerInterval; // 🔥 control timer
 
-/* ================= LOAD DATA ================= */
+/* ================= INIT ================= */
 
-fetch(SHEET_URL)
-  .then(res => {
-    if (!res.ok) throw new Error("Sheet fetch failed");
-    return res.json();
-  })
-  .then(data => {
-    if (!Array.isArray(data)) {
-      console.error("Sheet data is not an array");
-      return;
-    }
-
-    leaderboardData = data;
-    renderLeaderboard();
-  })
-  .catch(err => {
-    console.error("Sheet load error:", err.message);
-  });
-
-/* ================= LEADERBOARD RENDER ================= */
-
-function renderLeaderboard() {
-  const leaderboard = document.querySelector(".leaderboard");
-  if (!leaderboard) return;
-
-  leaderboard.innerHTML = "";
-
-
-    /* ================= TITLE UPDATE ================= */
-  const title = document.getElementById("leaderboardTitle");
-  
-  if (title) {
-    if (currentMode === "Today") {
-  
-      const dateFromSheet = leaderboardData[0]?.["Data"] || "";
-  
-      title.textContent = dateFromSheet
-        ? `${dateFromSheet} Leaderboard`
-        : "Leaderboard";
-  
-    } else {
-      title.textContent = "Final Leaderboard";
-    }
-  }
-
-
-  const sortedData = [...leaderboardData]
-    .map(team => ({
-      ...team,
-      Points: Number(team["Points"]) || 0,
-      Today: Number(team["Today"]) || 0
-    }))
-    .sort((a, b) => b[currentMode] - a[currentMode]);
-
-  sortedData.forEach((team, index) => {
-    const row = document.createElement("div");
-    row.className = "leaderboard-row";
-
-    row.dataset.name = (team["Team Name"] || "").toLowerCase();
-    row.dataset.id = (team["Team ID"] || "").toLowerCase();
-
-    let rankDisplay = index + 1;
-    
-    if (index === 0) rankDisplay = "🥇";
-    if (index === 1) rankDisplay = "🥈";
-    if (index === 2) rankDisplay = "🥉";
-    
-    row.innerHTML = `
-      <span class="rank">${rankDisplay}</span>
-      <span>${team["Team Name"] || "Unnamed Team"}</span>
-      <span>${team[currentMode]}</span>
-    `;
-    
-
-    leaderboard.appendChild(row);
-  });
-}
-
-/* ================= TOGGLE BUTTONS ================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.getElementById("leaderboardToggle");
-  if (!toggle) return;
-
-  const buttons = toggle.querySelectorAll("button");
-
-  // 🔥 Load saved mode
-  currentMode = localStorage.getItem("leaderboardMode") || "Points";
-
-  updateToggleUI();
-  renderLeaderboard();
-
-  buttons.forEach(button => {
-    button.addEventListener("click", () => {
-      const selectedMode = button.dataset.mode;
-
-      if (selectedMode === currentMode) return;
-
-      currentMode = selectedMode;
-      localStorage.setItem("leaderboardMode", currentMode);
-
-      updateToggleUI();
-      renderLeaderboard();
-    });
-  });
-
-  function updateToggleUI() {
-    buttons.forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.mode === currentMode);
-    });
-
-    toggle.classList.toggle("total-active", currentMode === "Points");
-  }
+  setupToggle();
+  loadSeasonLeaderboard();
+  loadSeasonInfoBox(); // ✅ default info
 });
 
+/* ================= TOGGLE ================= */
 
+function setupToggle() {
+  const toggle = document.getElementById("leaderboardToggle");
+  const buttons = toggle.querySelectorAll("button");
 
-/* ================= SEARCH (UNCHANGED) ================= */
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
 
-function searchLeaderboard() {
-  const input = document
-    .getElementById("leaderboardSearch")
-    .value
-    .toLowerCase()
-    .trim();
+      // Remove active from all
+      buttons.forEach(b => b.classList.remove("active"));
 
-  const rows = document.querySelectorAll(".leaderboard-row");
-  let found = false;
+      // Add active to clicked
+      btn.classList.add("active");
 
-  rows.forEach(row => {
-    const name = row.dataset.name;
-    const id = row.dataset.id;
+      // 🔥 MOVE SLIDER
+      if (btn.dataset.mode === "weekly") {
+        toggle.classList.add("total-active");
+      } else {
+        toggle.classList.remove("total-active");
+      }
 
-    if (!input || name.includes(input) || id.includes(input)) {
-      row.style.display = "grid";
-      found = true;
-    } else {
-      row.style.display = "none";
+      // 🔄 LOAD DATA
+      currentMode = btn.dataset.mode;
+
+      if (currentMode === "season") {
+        document.getElementById("leaderboardTitle").innerText = "Season Leaderboard";
+        loadSeasonLeaderboard();
+        loadSeasonInfoBox(); // ✅ show season info
+      } else {
+        document.getElementById("leaderboardTitle").innerText = "Weekly Leaderboard";
+        loadWeeklyLeaderboard();
+        startWeeklyTimer(); // ✅ show timer
+      }
+    });
+  });
+}
+
+/* ================= SEASON LEADERBOARD ================= */
+
+async function loadSeasonLeaderboard() {
+
+  const { data: season } = await supabase
+    .from("seasons")
+    .select("*")
+    .eq("status", "current")
+    .single();
+
+  const { data: tournaments } = await supabase
+    .from("tournaments")
+    .select("id")
+    .eq("season_id", season.id);
+
+  const ids = tournaments.map(t => t.id);
+  if (ids.length === 0) return;
+
+  const { data: results } = await supabase
+    .from("match_results")
+    .select("*")
+    .in("tournament_id", ids);
+
+  buildLeaderboard(results);
+}
+
+/* ================= WEEKLY LEADERBOARD ================= */
+
+async function loadWeeklyLeaderboard() {
+
+  const now = new Date();
+
+  const first = now.getDate() - now.getDay() + 1;
+  const last = first + 6;
+
+  const monday = new Date(now.setDate(first));
+  const sunday = new Date(now.setDate(last));
+
+  const start = monday.toISOString().split("T")[0];
+  const end = sunday.toISOString().split("T")[0];
+
+  const { data: tournaments } = await supabase
+    .from("tournaments")
+    .select("id")
+    .gte("start_date", start)
+    .lte("start_date", end);
+
+  const ids = tournaments.map(t => t.id);
+  if (ids.length === 0) return;
+
+  const { data: results } = await supabase
+    .from("match_results")
+    .select("*")
+    .in("tournament_id", ids);
+
+  buildLeaderboard(results);
+}
+
+/* ================= BUILD LEADERBOARD ================= */
+
+function buildLeaderboard(results) {
+
+  const map = {};
+
+  results.forEach(r => {
+
+    if (!map[r.team_name]) {
+      map[r.team_name] = {
+        team: r.team_name,
+        kills: 0,
+        points: 0
+      };
     }
+
+    map[r.team_name].kills += r.kills || 0;
+    map[r.team_name].points += r.total_points || 0;
   });
 
-  toggleNoResult(!found && input !== "");
+  leaderboardData = Object.values(map);
+  leaderboardData.sort((a, b) => b.points - a.points);
+
+  const top50 = leaderboardData.slice(0, 50);
+  renderLeaderboard(top50);
+  showUserRank(leaderboardData); // 🔥 NEW
 }
 
-/* ================= NO RESULT MESSAGE ================= */
+/* ================= RENDER ================= */
 
-function toggleNoResult(show) {
-  let msg = document.getElementById("leaderboardNotFound");
+function renderLeaderboard(data) {
 
-  if (!msg) {
-    msg = document.createElement("div");
-    msg.id = "leaderboardNotFound";
-    msg.className = "not-found";
-    msg.textContent = "❌ No team found";
-    document
-      .querySelector(".leaderboard-section")
-      .appendChild(msg);
+  const container = document.querySelector(".leaderboard");
+  container.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p style='text-align:center;'>No data available</p>";
+    return;
   }
 
-  msg.style.display = show ? "block" : "none";
+  data.forEach((team, index) => {
+
+    const div = document.createElement("div");
+    div.className = "leaderboard-row";
+
+    div.innerHTML = `
+      <span class="rank">#${index + 1}</span>
+      <span class="team">${team.team}</span>
+      <span class="kills">${team.kills}</span>
+      <span class="totalPoint">${team.points} pts</span>
+    `;
+
+    container.appendChild(div);
+  });
 }
 
+/* ================= SEARCH ================= */
+
+window.searchLeaderboard = function () {
+
+  const input = document.getElementById("leaderboardSearch").value.toUpperCase();
+
+  const filtered = leaderboardData.filter(team =>
+    team.team.toUpperCase().includes(input)
+  );
+
+  renderLeaderboard(filtered);
+};
+
+/* ================= INFO BOX ================= */
+
+/* 🟦 SEASON INFO */
+async function loadSeasonInfoBox() {
+
+  clearInterval(timerInterval);
+
+  const { data, error } = await supabase
+    .from("seasons")
+    .select("*")
+    .eq("status", "current")
+    .single();
+
+  if (error || !data) {
+    document.getElementById("infoText").innerText = "No active season";
+    return;
+  }
+
+  document.getElementById("infoText").innerText =
+    `${data.name} (${data.start_date} → ${data.end_date})`;
+}
+
+/* 🟨 WEEKLY TIMER */
+function startWeeklyTimer() {
+
+  clearInterval(timerInterval);
+
+  function updateTimer() {
+
+    const now = new Date();
+
+    const day = now.getDay();
+    const daysUntilReset = (8 - day) % 7;
+
+    const nextMonday = new Date(now);
+    nextMonday.setDate(now.getDate() + daysUntilReset);
+    nextMonday.setHours(0, 0, 0, 0);
+
+    const diff = nextMonday - now;
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("infoText").innerText =
+      `Weekly reset in: ${d}d ${h}h ${m}m ${s}s`;
+  }
+
+  updateTimer();
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+
+
+async function showUserRank(fullData) {
+
+  const rankEl = document.getElementById("userRankText");
+
+  // 🔐 Check login
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    rankEl.innerText = "Login to see your rank";
+    return;
+  }
+
+  // 🧠 Get user's team name
+  const { data: profile } = await supabase
+    .from("profiles") // ⚠️ change if needed
+    .select("team_name")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile || !profile.team_name) {
+    rankEl.innerText = "No team found";
+    return;
+  }
+
+  // 🔍 Find rank
+  const index = fullData.findIndex(
+    t => t.team === profile.team_name
+  );
+
+  if (index === -1) {
+    rankEl.innerText = "Unranked";
+    return;
+  }
+
+  const rank = index + 1;
+
+  // 🚫 Limit to 10,000
+  if (rank > 10000) {
+    rankEl.innerText = "Unranked";
+    return;
+  }
+
+  // 📊 Percentage based on FIXED 10,000
+  const percent = Math.ceil((rank / 10000) * 100);
+
+  rankEl.innerText = `Your Rank: #${rank} (${percent}%)`;
+}

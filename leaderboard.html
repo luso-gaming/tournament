@@ -47,13 +47,20 @@
     <!-- LEADERBOARD -->
     <section class="leaderboard-section">
         
+        <!-- TOGGLE -->
         <div class="leaderboard-toggle" id="leaderboardToggle">
           <div class="toggle-slider"></div>
-          <button data-mode="Today">Today</button>
-          <button data-mode="Points">Final</button>
+          <button class="active" data-mode="season">Season</button>
+          <button data-mode="weekly">Weekly</button>
         </div>
         
-        <h2 id="leaderboardTitle">Leaderboard</h2>
+        <!-- TITLE -->
+        <h2 id="leaderboardTitle">
+          Season Leaderboard
+        </h2>
+        
+
+
         <div class="team-search">
           <input
             type="text"
@@ -64,9 +71,19 @@
         <!--   <button onclick="searchLeaderboard()">Search</button> -->
         </div>
 
+        <div class="leaderboard-info-box" id="infoBox">
+          <p id="infoText">Loading...</p>
+        </div>
+
         <div class="leaderboard">
             <!-- Leaderboard rows added by JS -->
         </div>
+
+        <div id="userRankBox" class="user-rank-box">
+          <p id="userRankText">Loading your rank...</p>
+        </div>
+        
+        
     </section>
 </main>
     <!-- FOOTER -->
@@ -88,8 +105,7 @@
     <!-- SCRIPTS -->
     <script type="module" src="js/sidebar.js"></script>
     <script type="module" src="js/sidebar-loader.js"></script>
-    <script src="js/leaderboard.js"></script>
-    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="js/leaderboard.js"></script>    <script type="module" src="/js/auth.js"></script>
     <script type="module" src="/js/auth-ui.js"></script>
 
 

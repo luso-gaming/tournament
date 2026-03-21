@@ -53,7 +53,7 @@ async function loadResults() {
 }
 
 /* RENDER TABLE */
-function renderTable(data) {
+async function renderTable(data) {
   const tbody = document.querySelector("#resultTable tbody");
   tbody.innerHTML = "";
 
@@ -71,8 +71,28 @@ function renderTable(data) {
     return;
   }
 
+  // 🔐 Get logged-in user
+  const { data: { user } } = await supabase.auth.getUser();
+
+  let userTeam = null;
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles") // ⚠️ change if needed
+      .select("team_name")
+      .eq("id", user.id)
+      .single();
+
+    userTeam = profile?.team_name || null;
+  }
+
   data.forEach((player, index) => {
     const row = document.createElement("tr");
+
+    // 🎯 Highlight user team
+    if (userTeam && player.team_name === userTeam) {
+      row.classList.add("highlight-row");
+    }
 
     row.innerHTML = `
       <td>${index + 1}</td>
@@ -88,27 +108,6 @@ function renderTable(data) {
 }
 
 
-/* ================= FILTER SEARCH ================= */
-function filterTeams() {
-  const input = document
-    .getElementById("teamSearchInput")
-    .value
-    .trim()
-    .toUpperCase();
-
-  if (!input) {
-    renderTable(window.teamsData || []);
-    return;
-  }
-
-  const filtered = (window.teamsData || []).filter(team => {
-    const teamName = team.team_name?.toUpperCase() || "";
-    const ign = team.in_game_name?.toUpperCase() || "";
-    return teamName.includes(input) || ign.includes(input);
-  });
-
-  renderTable(filtered);
-}
 
 function showNoSelection() {
   document.getElementById("noTournamentMessage").style.display = "block";
