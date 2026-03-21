@@ -249,3 +249,45 @@
   border: 1px solid #1e293b;
   color: #38bdf8;
 }
+
+
+
+
+.skeleton {
+  display: inline-block;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    #1e293b 25%,
+    #334155 50%,
+    #1e293b 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Match your layout */
+.sk-rank {
+  width: 40px;
+  height: 14px;
+}
+
+.sk-team {
+  width: 120px;
+  height: 14px;
+}
+
+.sk-small {
+  width: 50px;
+  height: 14px;
+}
+
+.sk-rank-box {
+  width: 150px;
+  height: 20px;
+}

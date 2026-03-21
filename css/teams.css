@@ -146,3 +146,42 @@
 .highlight-row td {
   padding: 14px;
 }
+
+.skeleton {
+  display: inline-block;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    #1e293b 25%,
+    #334155 50%,
+    #1e293b 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Sizes */
+.sk-rank {
+  width: 30px;
+  height: 12px;
+}
+
+.sk-name {
+  width: 120px;
+  height: 12px;
+}
+
+.sk-small {
+  width: 40px;
+  height: 12px;
+}

@@ -282,3 +282,135 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.skeleton {
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    #1e293b 25%,
+    #334155 50%,
+    #1e293b 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Skeleton Sizes */
+.sk-img {
+  width: 100%;
+  height: 120px;
+}
+
+.sk-title {
+  width: 150px;
+  height: 16px;
+  margin-bottom: 8px;
+}
+
+.sk-desc {
+  width: 100%;
+  height: 12px;
+  margin: 10px 0;
+}
+
+.sk-small {
+  width: 60px;
+  height: 12px;
+  margin: 4px 0;
+}
+
+.sk-btn {
+  width: 120px;
+  height: 35px;
+  margin-top: 10px;
+}
+
+/* Container */
+.tournament-filter {
+  position: relative;
+  display: inline-flex; /* 🔥 content-based width */
+  background: #0f172a;
+  padding: 5px;
+  width: 290px;
+  border-radius: 10px;
+  border: 1px solid #334155;
+}
+
+/* Buttons */
+.tournament-filter button {
+  position: relative;
+  z-index: 2;
+  padding: 8px 14px; /* 🔥 small padding */
+  border: none;
+  background: transparent;
+  color: #cbd5f5;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: color 0.3s ease;
+}
+
+/* Active text */
+.tournament-filter button.active {
+  color: #fff;
+}
+
+/* Sliding background */
+.filter-slider {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  height: calc(100% - 10px);
+  width: 0;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* No Data Container */
+.no-data {
+  width: 50vh;
+  text-align: center;
+  padding: 40px 20px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  border: 1px solid #334155;
+  margin-top: 10px;
+  animation: fadeIn 0.4s ease;
+}
+
+
+/* Text */
+.no-data p {
+  color: #94a3b8;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Optional Icon */
+.no-data::before {
+  content: "🎮";
+  display: block;
+  font-size: 28px;
+  margin-bottom: 10px;
+  opacity: 0.7;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

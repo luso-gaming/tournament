@@ -1,5 +1,9 @@
 import { supabase } from "/js/supabase.js";
 
+let allPastCards = [];
+let myTournamentIds = new Set();
+let currentPastFilter = "all";
+
 function getBannerByType(type) {
   const banners = {
     elite: "/assets/images/elite.png",
@@ -9,8 +13,35 @@ function getBannerByType(type) {
   return banners[type] || "/assets/images/elite.png";
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+
+  const allBtn = document.getElementById("allPastBtn");
+  const myBtn = document.getElementById("myPastBtn");
+
+  if (allBtn && myBtn) {
+
+    // 🔥 Set initial slider
+    moveSlider(allBtn);
+
+    allBtn.addEventListener("click", () => {
+      currentPastFilter = "all";
+      setActiveBtn("allPastBtn");
+      moveSlider(allBtn); // 🔥 slide
+      renderPastTournaments();
+    });
+
+    myBtn.addEventListener("click", () => {
+      currentPastFilter = "my";
+      setActiveBtn("myPastBtn");
+      moveSlider(myBtn); // 🔥 slide
+      renderPastTournaments();
+    });
+  }
+});
+
 /* LOAD TOURNAMENTS */
 async function loadTournaments() {
+  showTournamentSkeleton(); 
   const { data, error } = await supabase
     .from("tournaments")
     .select("*")
@@ -34,6 +65,15 @@ async function loadTournaments() {
 
   const { data: { session } } = await supabase.auth.getSession();
   let joinedMap = {};
+
+  if (session) {
+    const { data: played } = await supabase
+      .from("participants")
+      .select("tournament_id")
+      .eq("user_id", session.user.id);
+  
+    played?.forEach(p => myTournamentIds.add(p.tournament_id));
+  }
 
   if (session) {
     const { data: joined } = await supabase
@@ -231,7 +271,13 @@ if (isCompleted) {
     }
 
     if (isCompleted) {
-      pastContainer.prepend(card); // newest completed on top
+    
+      // store all past tournament cards
+      allPastCards.push({
+        element: card,
+        tournamentId: t.id
+      });
+    
     } else {
       container.appendChild(card);
     }
@@ -241,7 +287,9 @@ if (isCompleted) {
       startCountdown(t.id, joinOpenTime);
     }
   }
-if (pastContainer.innerHTML === "") {
+renderPastTournaments();
+
+if (allPastCards.length === 0) {
   document.getElementById("pastTournamentSection").style.display = "none";
 }
 
@@ -340,5 +388,121 @@ function attachJoinHandlers() {
   });
 }
 
+
+function renderPastTournaments() {
+  const pastContainer = document.getElementById("pastTournamentList");
+  pastContainer.innerHTML = "";
+
+  let filtered = [];
+
+  if (currentPastFilter === "all") {
+    filtered = allPastCards;
+  } else {
+    filtered = allPastCards.filter(t =>
+      myTournamentIds.has(t.tournamentId)
+    );
+  }
+
+  if (filtered.length === 0) {
+  pastContainer.style.display = "flex";   // ⚠️ IMPORTANT
+  pastContainer.style.justifyContent = "center";
+  pastContainer.style.alignItems = "center";
+  pastContainer.style.border = "none";
+  pastContainer.style.backgroundColor = "#00000000";
+  pastContainer.innerHTML = `
+    <div class="no-data">
+      <p>No tournaments found</p>
+    </div>
+  `;
+    return;
+  }
+
+  filtered.reverse().forEach(t => {
+    pastContainer.appendChild(t.element);
+  });
+}
+
+function setActiveBtn(id) {
+  document.getElementById("allPastBtn").classList.remove("active");
+  document.getElementById("myPastBtn").classList.remove("active");
+
+  document.getElementById(id).classList.add("active");
+}
+
 /* RUN */
 loadTournaments();
+
+function showTournamentSkeleton() {
+  const container = document.getElementById("tournamentList");
+  const pastContainer = document.getElementById("pastTournamentList");
+
+  if (!container || !pastContainer) return;
+
+  container.innerHTML = "";
+  pastContainer.innerHTML = "";
+
+  // 🔥 Live tournaments skeleton
+  for (let i = 0; i < 3; i++) {
+    container.appendChild(createSkeletonCard());
+  }
+
+  // 🔥 Past tournaments skeleton
+  for (let i = 0; i < 3; i++) {
+    pastContainer.appendChild(createSkeletonCard());
+  }
+}
+
+function createSkeletonCard() {
+  const card = document.createElement("div");
+  card.className = "tournament";
+
+  card.innerHTML = `
+    <div class="tournament-card">
+
+      <div class="image-box">
+        <div class="skeleton sk-img"></div>
+      </div>
+
+      <div class="details-box">
+        <div class="detail">
+
+          <div class="upper-card">
+            <div class="skeleton sk-title"></div>
+            <div class="players">
+              <div class="skeleton sk-small"></div>
+              <div class="skeleton sk-small"></div>
+            </div>
+          </div>
+
+          <div class="skeleton sk-desc"></div>
+
+          <div id="bar">
+            <div class="skeleton sk-small"></div>
+            <div class="skeleton sk-small"></div>
+          </div>
+
+          <div class="bottom-card">
+            <div class="skeleton sk-small"></div>
+            <div class="skeleton sk-small"></div>
+          </div>
+
+          <div class="skeleton sk-btn"></div>
+
+        </div>
+      </div>
+
+    </div>
+  `;
+
+  return card;
+}
+
+function moveSlider(activeBtn) {
+  const slider = document.querySelector(".filter-slider");
+
+  const btnRect = activeBtn.getBoundingClientRect();
+  const parentRect = activeBtn.parentElement.getBoundingClientRect();
+
+  slider.style.width = btnRect.width + "px";
+  slider.style.transform = `translateX(${btnRect.left - parentRect.left}px)`;
+}

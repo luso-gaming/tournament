@@ -1,55 +1,76 @@
-/* Full screen center */
+/* Page */
 body {
   margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  font-family: Arial, sans-serif;
-  overflow: hidden;
+  background: #020617;
+  font-family: sans-serif;
 }
 
 /* Container */
-.signin-container {
-  text-align: center;
+.auth-loader {
+  padding: 20px;
 }
 
-/* TEXT BORDER EFFECT */
-.signin-text {
-  font-size: 42px;
-  font-weight: bold;
-  color: transparent;
-  -webkit-text-stroke: 1px white;   /* 🔥 Border on text */
-  letter-spacing: 2px;
-  animation: glow 2s ease-in-out infinite alternate;
-  
+/* Skeleton Base */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #0f172a 25%,
+    #1e293b 50%,
+    #0f172a 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite linear;
+  border-radius: 8px;
 }
 
-/* Glow animation
-@keyframes glow {
-  from {
-    text-shadow: 0 0 10px #00f0ff;
-  }
-  to {
-    text-shadow: 0 0 25px #00f0ff;
-  }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
- */
-/* Loader animation */
-.loader {
-  margin: 40px auto 0;
+
+/* Navbar */
+.nav-skeleton {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Profile */
+.profile-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.avatar {
   width: 50px;
   height: 50px;
-  border: 5px solid rgba(255,255,255,0.2);
-  border-top: 5px solid #00f0ff;
-  border-bottom: 5px solid #00f0ff;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
+.info {
+  flex: 1;
+}
+
+.line {
+  height: 12px;
+  width: 60%;
+  margin-bottom: 8px;
+}
+
+.line.small {
+  width: 40%;
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  height: 100px;
+  border-radius: 12px;
 }

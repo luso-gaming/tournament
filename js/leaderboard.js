@@ -54,6 +54,8 @@ function setupToggle() {
 
 async function loadSeasonLeaderboard() {
 
+  showLeaderboardSkeleton();
+
   const { data: season } = await supabase
     .from("seasons")
     .select("*")
@@ -72,13 +74,15 @@ async function loadSeasonLeaderboard() {
     .from("match_results")
     .select("*")
     .in("tournament_id", ids);
-
+  
   buildLeaderboard(results);
 }
 
 /* ================= WEEKLY LEADERBOARD ================= */
 
 async function loadWeeklyLeaderboard() {
+
+  showLeaderboardSkeleton();
 
   const now = new Date();
 
@@ -273,9 +277,42 @@ async function showUserRank(fullData) {
     rankEl.innerText = "Unranked";
     return;
   }
+if (rank <= 1000) {
+  rankEl.innerText = `Your Rank: #${rank}`;
+} else {
+  const percent = Math.floor(rank / 1000); // 1434 → 1%, 3245 → 3%
+  rankEl.innerText = `Your Rank: ${percent}%`;
+}
+}
 
-  // 📊 Percentage based on FIXED 10,000
-  const percent = Math.ceil((rank / 10000) * 100);
 
-  rankEl.innerText = `Your Rank: #${rank} (${percent}%)`;
+function showLeaderboardSkeleton(rows = 10) {
+  const container = document.querySelector(".leaderboard");
+
+  if (!container) {
+    console.error("❌ .leaderboard not found");
+    return;
+  }
+
+  container.innerHTML = "";
+
+  for (let i = 0; i < rows; i++) {
+    const div = document.createElement("div");
+    div.className = "leaderboard-row";
+
+    div.innerHTML = `
+      <span class="skeleton sk-rank"></span>
+      <span class="skeleton sk-team"></span>
+      <span class="skeleton sk-small"></span>
+      <span class="skeleton sk-small"></span>
+    `;
+
+    container.appendChild(div);
+  }
+
+  // 🧠 Your rank box skeleton
+  const rankBox = document.getElementById("yourRank");
+  if (rankBox) {
+    rankBox.innerHTML = `<div class="skeleton sk-rank-box"></div>`;
+  }
 }

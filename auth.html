@@ -8,10 +8,32 @@
 </head>
 <body>
 
-  <div class="signin-container">
-    <h1 class="signin-text">Signing you in...</h1>
-    <div class="loader"></div>
+  <div class="auth-loader">
+
+    <!-- Navbar Skeleton -->
+    <div class="nav-skeleton skeleton"></div>
+
+    <!-- Profile Section -->
+    <div class="profile-skeleton">
+      <div class="avatar skeleton"></div>
+      <div class="info">
+        <div class="line skeleton"></div>
+        <div class="line small skeleton"></div>
+      </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="cards">
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+    </div>
+
   </div>
+
 
   <script type="module">
     import { supabase } from "/js/supabase.js";

@@ -14,17 +14,22 @@ async function loadResults() {
     showNoSelection();
     return;
   }
+  
+
+  showSkeletonLoader();
+
 
   console.log("Loading result for:", tournamentId);
 
-  // Try cache first
   const cached = localStorage.getItem("result_" + tournamentId);
+  let finalData = null;
 
+  // ✅ Use cache first
   if (cached) {
-    renderTable(JSON.parse(cached));
+    finalData = JSON.parse(cached);
   }
 
-  // Fetch fresh data
+  // ✅ Fetch fresh data
   const { data, error } = await supabase
     .from("match_results")
     .select("*")
@@ -33,22 +38,26 @@ async function loadResults() {
 
   if (error) {
     console.error(error);
+    
+    // If API fails, fallback to cache
+    if (finalData) {
+      renderTable(finalData);
+    }
     return;
   }
 
   if (!data || data.length === 0) {
     document.getElementById("noTournamentMessage").style.display = "none";
     document.getElementById("resultContainer").style.display = "block";
-  
     renderTable([]);
     return;
   }
 
-  // Save cache
+  // ✅ Update cache
   localStorage.setItem("result_" + tournamentId, JSON.stringify(data));
-  
   window.teamsData = data;
 
+  // ✅ Render ONLY ONCE
   renderTable(data);
 }
 
@@ -124,3 +133,24 @@ function showNoSelection() {
 
 /* RUN */
 loadResults();
+
+
+function showSkeletonLoader(rows = 6) {
+  const tbody = document.querySelector("#resultTable tbody");
+  tbody.innerHTML = "";
+
+  for (let i = 0; i < rows; i++) {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td><div class="skeleton sk-rank"></div></td>
+      <td><div class="skeleton sk-name"></div></td>
+      <td><div class="skeleton sk-name"></div></td>
+      <td><div class="skeleton sk-small"></div></td>
+      <td><div class="skeleton sk-small"></div></td>
+      <td><div class="skeleton sk-small"></div></td>
+    `;
+
+    tbody.appendChild(row);
+  }
+}
