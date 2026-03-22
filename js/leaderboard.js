@@ -85,13 +85,20 @@ async function loadWeeklyLeaderboard() {
   showLeaderboardSkeleton();
 
   const now = new Date();
-
-  const first = now.getDate() - now.getDay() + 1;
-  const last = first + 6;
-
-  const monday = new Date(now.setDate(first));
-  const sunday = new Date(now.setDate(last));
-
+  
+  // Clone date (IMPORTANT)
+  const monday = new Date(now);
+  const day = monday.getDay();
+  
+  // Fix Sunday issue
+  const diff = day === 0 ? -6 : 1 - day;
+  
+  monday.setDate(monday.getDate() + diff);
+  
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  
+  // Format
   const start = monday.toISOString().split("T")[0];
   const end = sunday.toISOString().split("T")[0];
 
@@ -102,13 +109,20 @@ async function loadWeeklyLeaderboard() {
     .lte("start_date", end);
 
   const ids = tournaments.map(t => t.id);
-  if (ids.length === 0) return;
+  if (ids.length === 0) {
+    renderLeaderboard([]);
+    return;
+  }
 
   const { data: results } = await supabase
     .from("match_results")
     .select("*")
     .in("tournament_id", ids);
 
+  if (!results || results.length === 0) {
+    renderLeaderboard([]);
+    return;
+  }
   buildLeaderboard(results);
 }
 
