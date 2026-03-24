@@ -67,12 +67,15 @@ async function loadSeasonLeaderboard() {
     .select("id")
     .eq("season_id", season.id);
 
-  const ids = tournaments.map(t => t.id);
-  if (ids.length === 0) return;
+  const ids = tournaments?.map(t => t.id) || [];
+  if (ids.length === 0) {
+    renderLeaderboard([]);
+    return;
+  }
 
   const { data: results } = await supabase
     .from("match_results")
-    .select("*")
+    .select("team_name, kills, total_points")
     .in("tournament_id", ids);
   
   buildLeaderboard(results);
@@ -84,23 +87,7 @@ async function loadWeeklyLeaderboard() {
 
   showLeaderboardSkeleton();
 
-  const now = new Date();
-  
-  // Clone date (IMPORTANT)
-  const monday = new Date(now);
-  const day = monday.getDay();
-  
-  // Fix Sunday issue
-  const diff = day === 0 ? -6 : 1 - day;
-  
-  monday.setDate(monday.getDate() + diff);
-  
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  
-  // Format
-  const start = monday.toISOString().split("T")[0];
-  const end = sunday.toISOString().split("T")[0];
+  const { start, end } = getISTWeekRange();
 
   const { data: tournaments } = await supabase
     .from("tournaments")
@@ -108,7 +95,8 @@ async function loadWeeklyLeaderboard() {
     .gte("start_date", start)
     .lte("start_date", end);
 
-  const ids = tournaments.map(t => t.id);
+  const ids = tournaments?.map(t => t.id) || [];
+
   if (ids.length === 0) {
     renderLeaderboard([]);
     return;
@@ -123,6 +111,7 @@ async function loadWeeklyLeaderboard() {
     renderLeaderboard([]);
     return;
   }
+
   buildLeaderboard(results);
 }
 
@@ -212,9 +201,19 @@ async function loadSeasonInfoBox() {
     document.getElementById("infoText").innerText = "No active season";
     return;
   }
-
-  document.getElementById("infoText").innerText =
-    `${data.name} (${data.start_date} → ${data.end_date})`;
+  function formatDate(dateStr) {
+    return new Date(dateStr).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
+  }
+  document.getElementById("infoText").innerHTML = `
+    <span class="season-title">${data.name}</span><br>
+    <span class="season-dates">
+      ${formatDate(data.start_date)} → ${formatDate(data.end_date)}
+    </span>
+  `;
 }
 
 /* 🟨 WEEKLY TIMER */
@@ -222,28 +221,71 @@ function startWeeklyTimer() {
 
   clearInterval(timerInterval);
 
-  function updateTimer() {
+  let hasReset = false; // ✅ ONLY HERE
+  function getNextResetTime() {
+  const now = new Date();
 
-    const now = new Date();
+  // 🇮🇳 IST time
+  const istNow = new Date(
+    now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+  );
 
-    const day = now.getDay();
-    const daysUntilReset = (8 - day) % 7;
+  const resetHour = 5;
+  const resetMinute = 30;
 
-    const nextMonday = new Date(now);
-    nextMonday.setDate(now.getDate() + daysUntilReset);
-    nextMonday.setHours(0, 0, 0, 0);
+  let nextReset = new Date(istNow);
 
-    const diff = nextMonday - now;
+  const day = istNow.getDay();
 
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const m = Math.floor((diff / (1000 * 60)) % 60);
-    const s = Math.floor((diff / 1000) % 60);
+  let daysUntilMonday = (8 - day) % 7;
 
-    document.getElementById("infoText").innerText =
-      `Weekly reset in: ${d}d ${h}h ${m}m ${s}s`;
+  // If today is Monday after 5:30 AM → next week
+  if (
+    daysUntilMonday === 0 &&
+    (istNow.getHours() > resetHour ||
+      (istNow.getHours() === resetHour && istNow.getMinutes() >= resetMinute))
+  ) {
+    daysUntilMonday = 7;
   }
 
+  nextReset.setDate(istNow.getDate() + daysUntilMonday);
+  nextReset.setHours(resetHour, resetMinute, 0, 0);
+
+  return nextReset; // ✅ NO UTC CONVERSION
+}
+
+  function updateTimer() {
+  const now = new Date();
+  const nextReset = getNextResetTime();
+
+  const diff = nextReset - now;
+
+  if (diff <= 0 && !hasReset) {
+    hasReset = true;
+    loadWeeklyLeaderboard();
+    return;
+  }
+
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  let timeText = "";
+  
+  if (d > 1) {
+    timeText = `${d} days`;
+  } else if (d === 1) {
+    timeText = `1 day ${h}h`;
+  } else {
+    timeText = `${h}h ${m}m ${s}s`;
+  }
+  
+  document.getElementById("infoText").innerHTML = `
+    <span class="reset-title">RESET IN</span><br>
+    <span class="reset-time">${timeText}</span>
+  `;
+  }
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
 }
@@ -329,4 +371,48 @@ function showLeaderboardSkeleton(rows = 10) {
   if (rankBox) {
     rankBox.innerHTML = `<div class="skeleton sk-rank-box"></div>`;
   }
+}
+
+
+
+function getISTWeekRange() {
+
+  const now = new Date();
+
+  // 🇮🇳 Convert to IST (UTC + 5:30)
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const istNow = new Date(now.getTime() + istOffset);
+
+  // 🔥 SHIFT DAY START TO 5:30 AM
+  const resetHour = 5;
+  const resetMinute = 30;
+
+  if (
+    istNow.getHours() < resetHour ||
+    (istNow.getHours() === resetHour && istNow.getMinutes() < resetMinute)
+  ) {
+    istNow.setDate(istNow.getDate() - 1);
+  }
+
+  // 📅 Get Monday
+  const day = istNow.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+
+  const monday = new Date(istNow);
+  monday.setDate(istNow.getDate() + diff);
+  monday.setHours(resetHour, resetMinute, 0, 0);
+
+  // 📅 Sunday
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 7);
+  sunday.setHours(5, 29, 59, 999);;
+
+  // 🔁 Convert back to UTC for Supabase
+  const startUTC = new Date(monday.getTime() - istOffset);
+  const endUTC = new Date(sunday.getTime() - istOffset);
+
+  return {
+    start: startUTC.toISOString(),
+    end: endUTC.toISOString()
+  };
 }

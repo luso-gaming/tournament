@@ -1,9 +1,34 @@
 import { supabase } from "./supabase.js";
 
 function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("active");
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+
+  sidebar.classList.toggle("active");
+
+  if (overlay) {
+    overlay.classList.toggle("active"); // ✅ added safely
+  }
 }
 window.toggleSidebar = toggleSidebar;
+
+document.addEventListener("click", function (e) {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+
+  if (
+    sidebar &&
+    sidebar.classList.contains("active") &&
+    !sidebar.contains(e.target) &&
+    !e.target.closest(".menu-btn")
+  ) {
+    sidebar.classList.remove("active");
+
+    if (overlay) {
+      overlay.classList.remove("active");
+    }
+  }
+});
 /*  USER POINTS  */
 
 export async function loadUserPoints() {

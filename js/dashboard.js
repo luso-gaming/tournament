@@ -21,7 +21,12 @@ let lastUpdateDate = null;
 async function loadProfile() {
   const { data, error } = await supabase
     .from("profiles")
-    .select("team_name, in_game_name, points, last_name_update")
+    .select(`
+      team_name,
+      in_game_name,
+      points,
+      last_name_update
+    `)
     .eq("id", userId)
     .single();
 
@@ -30,6 +35,7 @@ async function loadProfile() {
     return;
   }
 
+  // BASIC INFO
   document.getElementById("userTeam").textContent =
     data.team_name || "Not set";
 
@@ -39,9 +45,46 @@ async function loadProfile() {
   document.getElementById("userPoints").innerText =
     data.points || 0;
 
+  // 📊 STATS
+  const kills = data.kills || 0;
+  const matches = data.matches || 0;
+  const kd = matches > 0 ? (kills / matches).toFixed(2) : "0.00";
+
+  document.getElementById("userKills").innerText = kills;
+  document.getElementById("userMatches").innerText = matches;
+  document.getElementById("userKD").innerText = kd;
+
   lastUpdateDate = data.last_name_update;
 }
 
+async function loadStats() {
+
+  const { data, error } = await supabase
+    .from("match_results")
+    .select("kills")
+    .eq("user_id", userId); // ⚠️ important
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  // 📊 CALCULATE STATS
+  let totalKills = 0;
+  let matches = data.length;
+
+  data.forEach(row => {
+    totalKills += row.kills || 0;
+  });
+
+  const kd = matches > 0 ? (totalKills / matches).toFixed(2) : "0.00";
+
+  // 🎯 UPDATE UI
+  document.getElementById("userKills").innerText = totalKills;
+  document.getElementById("userMatches").innerText = matches;
+  document.getElementById("userKD").innerText = kd;
+}
+await loadStats();
 await loadProfile();
 
 /* EDIT / SAVE LOGIC */
@@ -57,7 +100,8 @@ let editMode = false;
 editBtn.addEventListener("click", async () => {
 
   if (!editMode) {
-    // CHECK 14 DAY RULE
+
+    // ⛔ 14 DAY RULE
     if (lastUpdateDate) {
       const last = new Date(lastUpdateDate);
       const now = new Date();
@@ -69,7 +113,7 @@ editBtn.addEventListener("click", async () => {
       }
     }
 
-    // Switch to edit mode
+    // 👉 ENTER EDIT MODE
     editMode = true;
     editBtn.textContent = "Save";
 
@@ -92,6 +136,23 @@ editBtn.addEventListener("click", async () => {
       return;
     }
 
+    // 🔍 CHECK UNIQUE TEAM NAME
+    const { data: existingTeam } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("team_name", newTeam)
+      .neq("id", userId)
+      .maybeSingle();
+
+    if (existingTeam) {
+      alert("Team name already taken");
+      return;
+    }
+
+    // 🔄 UPDATE PROFILE
+    editBtn.disabled = true;
+    editBtn.textContent = "Saving...";
+
     const { error } = await supabase
       .from("profiles")
       .update({
@@ -101,19 +162,19 @@ editBtn.addEventListener("click", async () => {
       })
       .eq("id", userId);
 
+    editBtn.disabled = false;
+
     if (error) {
-      if (error.message.includes("unique")) {
-        alert("Team name already taken");
-      } else {
-        alert("Error updating profile");
-      }
+      alert("Error updating profile");
+      console.error(error);
       return;
     }
 
     alert("Profile updated successfully");
 
+    // 👉 EXIT EDIT MODE
     editMode = false;
-    editBtn.textContent = "Update";
+    editBtn.textContent = "Edit Profile";
 
     teamSpan.classList.remove("hidden");
     ignSpan.classList.remove("hidden");

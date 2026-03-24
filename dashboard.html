@@ -9,48 +9,107 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
+
 <body>
+
 <button id="backBtn" class="back-btn">⬅ Back</button>
-  <main class="dashboard">
-    <div class="dashboard-card">
-      <h1>My Dashboard</h1>
 
-      <div class="user-info">
-        <p><strong>Name:</strong></p>
-        <div class="fill"><span id="userName">Loading...</span></div>
-      
-        <p><strong>Email:</strong></p>
-        <div class="fill"><span id="userEmail">Loading...</span></div>
-      
-        <p><strong>Team Name:</strong></p>
+<main class="dashboard">
+
+  <div class="dashboard-card">
+
+    <!-- 🔥 HEADER -->
+    <h1>My Dashboard</h1>
+
+    <!-- 🧠 USER INFO -->
+    <div class="user-info">
+
+      <div class="info-row">
+        <label>Name</label>
         <div class="fill">
-          <span id="userTeam">Loading...</span>
-          <input type="text" id="teamInput" class="hidden" />
+          <span id="userName" class="skeleton-text">Loading...</span>
         </div>
-      
-        <p><strong>In Game Name:</strong></p>
-        <div class="fill">
-          <span id="userIgn">Loading...</span>
-          <input type="text" id="ignInput" class="hidden" />
-        </div>
-      
-        <button id="editProfileBtn" class="update-btn">Update</button>
       </div>
 
-      <hr>
-
-      <div class="user-points">
-        💰 Points: <strong id="userPoints">0</strong>
+      <div class="info-row">
+        <label>Email</label>
+        <div class="fill">
+          <span id="userEmail" class="skeleton-text">Loading...</span>
+        </div>
       </div>
 
-      <hr>
+      <div class="info-row">
+        <label>Team Name</label>
+        <div class="fill">
+          <span id="userTeam" class="skeleton-text">Loading...</span>
+          <input type="text" id="teamInput" class="hidden input-edit" />
+        </div>
+      </div>
 
-      <button class="logout-btn" id="logoutBtn">Logout</button>
+      <div class="info-row">
+        <label>In Game Name</label>
+        <div class="fill">
+          <span id="userIgn" class="skeleton-text">Loading...</span>
+          <input type="text" id="ignInput" class="hidden input-edit" />
+        </div>
+      </div>
+
+      <button id="editProfileBtn" class="update-btn">Edit Profile</button>
+
     </div>
-  </main>
 
-  <!-- JS -->
-  <script type="module" src="js/dashboard.js"></script>
+    <hr>
+
+    <!-- 📊 STATS SECTION -->
+    <div class="stats">
+
+      <div class="stat-box">
+        <p>Total Points</p>
+        <h2 id="userPoints">0</h2>
+      </div>
+
+      <div class="stat-box">
+        <p>Total Kills</p>
+        <h2 id="userKills">0</h2>
+      </div>
+
+      <div class="stat-box">
+        <p>Matches Played</p>
+        <h2 id="userMatches">0</h2>
+      </div>
+
+      <div class="stat-box">
+        <p>K/D Ratio</p>
+        <h2 id="userKD">0.00</h2>
+      </div>
+     
+
+    </div>
+
+    <hr>
+
+    <!-- 🎮 QUICK ACTIONS -->
+    <div class="actions">
+      <button class="action-btn" onclick="window.location.href='join.html'">
+        Join Tournament
+      </button>
+
+      <button class="action-btn" onclick="window.location.href='leaderboard.html'">
+        View Leaderboard
+      </button>
+    </div>
+
+    <hr>
+
+    <!-- 🚪 LOGOUT -->
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+
+  </div>
+
+</main>
+
+<!-- JS -->
+<script type="module" src="js/dashboard.js"></script>
 
 </body>
 </html>
