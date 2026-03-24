@@ -1,12 +1,33 @@
+.dashboard-header {
+  position: sticky;
+  top: 0;
+  background: #020617;
+  height: 50px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center title */
+  border-bottom: 1px solid #1e293b;
+  z-index: 100;
+}
+
+/* BACK BUTTON LEFT */
 .back-btn {
-  width: 100px;
-  padding: 8px 16px;
-  margin: 20px;
-  background: #e0e0e0;
-  color: rgb(52, 49, 49);
+  position: absolute;
+  left: 10px;
+  padding: 6px 10px;
+  background: #1e293b;
+  color: #38bdf8;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 14px;
+}
+
+/* CENTER TITLE */
+.page-title {
+  font-size: 36px;
+  color: #c8f838;
 }
 
 .back-btn:hover {
@@ -16,7 +37,6 @@
 }
 
 .dashboard {
-  min-height: calc(100vh - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,6 +58,11 @@
   margin-bottom: 25px;
 }
 
+.user-info{
+  position:relative;
+  top: 1;
+  margin-top: 10%;
+}
 .user-info p {
   font-size: 16px;
   margin-bottom: 10px;
@@ -238,7 +263,7 @@ hr {
 }
 
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .stats {
     grid-template-columns: 1fr;
   }
@@ -246,4 +271,13 @@ hr {
   .actions {
     flex-direction: column;
   }
+
+  .dashboard-header {
+    padding: 10px;
+  }
+
+  .page-title {
+    font-size: 16px;
+  }
+  
 }
