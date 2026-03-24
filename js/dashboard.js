@@ -30,12 +30,19 @@ async function loadProfile() {
     .eq("id", userId)
     .single();
 
+  console.log("Profile:", data);
+  console.log("Error:", error);
+
   if (error) {
     console.error(error);
     return;
   }
 
-  // BASIC INFO
+  if (!data) {
+    console.warn("No profile found");
+    return;
+  }
+
   document.getElementById("userTeam").textContent =
     data.team_name || "Not set";
 
@@ -45,31 +52,37 @@ async function loadProfile() {
   document.getElementById("userPoints").innerText =
     data.points || 0;
 
-  // 📊 STATS
-  const kills = data.kills || 0;
-  const matches = data.matches || 0;
-  const kd = matches > 0 ? (kills / matches).toFixed(2) : "0.00";
-
-  document.getElementById("userKills").innerText = kills;
-  document.getElementById("userMatches").innerText = matches;
-  document.getElementById("userKD").innerText = kd;
-
   lastUpdateDate = data.last_name_update;
 }
-
 async function loadStats() {
 
+  // 🔹 Get team name first
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("team_name")
+    .eq("id", userId)
+    .single();
+
+  if (!profile || !profile.team_name) {
+    console.warn("No team found");
+    return;
+  }
+
+  const teamName = profile.team_name;
+
+  // 🔹 Fetch match data using team name
   const { data, error } = await supabase
     .from("match_results")
     .select("kills")
-    .eq("user_id", userId); // ⚠️ important
+    .eq("team_name", teamName);
+
+  console.log("Match Data:", data);
 
   if (error) {
     console.error(error);
     return;
   }
 
-  // 📊 CALCULATE STATS
   let totalKills = 0;
   let matches = data.length;
 
@@ -79,13 +92,12 @@ async function loadStats() {
 
   const kd = matches > 0 ? (totalKills / matches).toFixed(2) : "0.00";
 
-  // 🎯 UPDATE UI
   document.getElementById("userKills").innerText = totalKills;
   document.getElementById("userMatches").innerText = matches;
   document.getElementById("userKD").innerText = kd;
 }
-await loadStats();
 await loadProfile();
+await loadStats();
 
 /* EDIT / SAVE LOGIC */
 
