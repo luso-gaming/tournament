@@ -30,18 +30,19 @@ async function loadProfile() {
     .eq("id", userId)
     .single();
 
-  console.log("Profile:", data);
-  console.log("Error:", error);
-
   if (error) {
     console.error(error);
     return;
   }
 
-  if (!data) {
-    console.warn("No profile found");
-    return;
-  }
+  if (!data) return;
+
+  // ✅ SET DATA
+  document.getElementById("userName").textContent =
+    session.user.user_metadata?.full_name || "Not provided";
+
+  document.getElementById("userEmail").textContent =
+    session.user.email;
 
   document.getElementById("userTeam").textContent =
     data.team_name || "Not set";
@@ -52,8 +53,18 @@ async function loadProfile() {
   document.getElementById("userPoints").innerText =
     data.points || 0;
 
+  // ✅ REMOVE SKELETON
+  removeSkeleton("userName");
+  removeSkeleton("userEmail");
+  removeSkeleton("userTeam");
+  removeSkeleton("userIgn");
+
   lastUpdateDate = data.last_name_update;
 }
+
+
+/* LOAD STATS DATA */
+
 async function loadStats() {
 
   // 🔹 Get team name first
@@ -197,6 +208,12 @@ editBtn.addEventListener("click", async () => {
     await loadProfile();
   }
 });
+
+
+function removeSkeleton(id) {
+  document.getElementById(id).classList.remove("skeleton-text");
+}
+
 
 /* BACK BUTTON */
 
