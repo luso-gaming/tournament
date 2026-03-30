@@ -64,33 +64,24 @@ async function loadProfile() {
 
 
 /* LOAD STATS DATA */
-
 async function loadStats() {
 
-  // 🔹 Get team name first
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("team_name")
-    .eq("id", userId)
-    .single();
-
-  if (!profile || !profile.team_name) {
-    console.warn("No team found");
-    return;
-  }
-
-  const teamName = profile.team_name;
-
-  // 🔹 Fetch match data using team name
   const { data, error } = await supabase
     .from("match_results")
     .select("kills")
-    .eq("team_name", teamName);
+    .eq("user_id", userId); // 🔐 secure
 
   console.log("Match Data:", data);
 
   if (error) {
     console.error(error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    document.getElementById("userKills").innerText = 0;
+    document.getElementById("userMatches").innerText = 0;
+    document.getElementById("userKD").innerText = "0.00";
     return;
   }
 
@@ -101,7 +92,7 @@ async function loadStats() {
     totalKills += row.kills || 0;
   });
 
-  const kd = matches > 0 ? (totalKills / matches).toFixed(2) : "0.00";
+  const kd = (totalKills / matches).toFixed(2);
 
   document.getElementById("userKills").innerText = totalKills;
   document.getElementById("userMatches").innerText = matches;
@@ -119,6 +110,34 @@ const teamInput = document.getElementById("teamInput");
 const ignInput = document.getElementById("ignInput");
 
 let editMode = false;
+
+function validateInput(team, ign) {
+
+  if (!team || !ign) return "All fields required";
+
+  if (team.length < 3 || team.length > 20)
+    return "Team name must be 3–20 characters";
+
+  if (ign.length < 3 || ign.length > 20)
+    return "IGN must be 3–20 characters";
+
+  const regex = /^[a-zA-Z0-9 ]+$/;
+
+  if (!regex.test(team)) return "Invalid team name";
+  if (!regex.test(ign)) return "Invalid IGN";
+
+  return null;
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, m => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[m]);
+}
 
 editBtn.addEventListener("click", async () => {
 
@@ -154,10 +173,16 @@ editBtn.addEventListener("click", async () => {
     const newTeam = teamInput.value.trim();
     const newIgn = ignInput.value.trim();
 
-    if (!newTeam || !newIgn) {
-      alert("Both fields are required");
+    const validationError = validateInput(newTeam, newIgn);
+
+    if (validationError) {
+      alert(validationError);
       return;
     }
+    
+    // 🔐 sanitize input
+    const safeTeam = escapeHTML(newTeam);
+    const safeIgn = escapeHTML(newIgn);
 
     // 🔍 CHECK UNIQUE TEAM NAME
     const { data: existingTeam } = await supabase
@@ -179,8 +204,8 @@ editBtn.addEventListener("click", async () => {
     const { error } = await supabase
       .from("profiles")
       .update({
-        team_name: newTeam,
-        in_game_name: newIgn,
+        team_name: safeTeam,
+        in_game_name: safeIgn,
         last_name_update: new Date()
       })
       .eq("id", userId);
