@@ -6,11 +6,11 @@ let currentPastFilter = "all";
 
 function getBannerByType(type) {
   const banners = {
-    elite: "/assets/images/elite.png",
-    pro: "/assets/images/pro.png",
-    legend: "/assets/images/legend.png"
+    elite: "/assets/images/elite.webp",
+    pro: "/assets/images/pro.webp",
+    legend: "/assets/images/legend.webp"
   };
-  return banners[type] || "/assets/images/elite.png";
+  return banners[type] || "/assets/images/elite.webp";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
