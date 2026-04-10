@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slider Test</title>
+
+<style>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0f172a;
+    font-family: Arial;
+}
+
+/* SLIDER */
+.slider {
+    max-width: 900px;
+    margin: 40px auto;
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+}
+
+/* SLIDES TRACK */
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* SINGLE SLIDE */
+.slide {
+    min-width: 100%;
+    position: relative;
+}
+
+/* IMAGE */
+.slide img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+/* TITLE */
+.slide-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* BUTTONS */
+.prev, .next {
+    position: absolute;
+    display: flex;
+    height: 40px;
+    width: 40px;
+    top: 50%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+</style>
+</head>
+
+<body>
+
+<!-- SLIDER -->
+<div class="slider">
+
+    <div class="slides">
+
+        <div class="slide">
+            <a href="#">
+                <img src="assets/blog1.jpg">
+                <div class="slide-title">Blog 1</div>
+            </a>
+        </div>
+
+        <div class="slide">
+            <a href="#">
+                <img src="assets/blog2.jpg">
+                <div class="slide-title">Blog 2</div>
+            </a>
+        </div>
+
+        <div class="slide">
+            <a href="#">
+                <img src="assets/blog3.jpg">
+                <div class="slide-title">Blog 3</div>
+            </a>
+        </div>
+
+        <div class="slide">
+            <a href="#">
+                <img src="assets/blog4.jpg">
+                <div class="slide-title">Blog 4</div>
+            </a>
+        </div>
+
+        <div class="slide">
+            <a href="#">
+                <img src="assets/blog5.jpg">
+                <div class="slide-title">Blog 5</div>
+            </a>
+        </div>
+
+    </div>
+
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+
+</div>
+
+<script>
+let index = 0;
+
+const slides = document.querySelector('.slides');
+const totalSlides = document.querySelectorAll('.slide').length;
+
+function showSlide(i) {
+    index = (i + totalSlides) % totalSlides;
+    slides.style.transform = `translateX(-${index * 100}%)`;
+}
+
+document.querySelector('.next').onclick = () => showSlide(index + 1);
+document.querySelector('.prev').onclick = () => showSlide(index - 1);
+
+// AUTO SLIDE
+setInterval(() => {
+    showSlide(index + 1);
+}, 3000);
+</script>
+
+</body>
+</html>

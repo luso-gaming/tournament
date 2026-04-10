@@ -166,9 +166,9 @@ footer {
 
 /* BACK BUTTON LEFT */
 .back-btn {
-  width: 150px;
+  width: max-content;
   margin: 10px;
-  padding: 6px 10px;
+  padding: 10px 15px;
   background: #1e293b;
   color: #38bdf8;
   border: none;
@@ -226,7 +226,13 @@ footer {
 /* BUTTONS */
 .prev, .next {
     position: absolute;
+    display: flex;
+    height: 40px;
+    width: 40px;
     top: 50%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
     transform: translateY(-50%);
     background: rgba(0,0,0,0.6);
     color: white;
@@ -235,6 +241,7 @@ footer {
     width: 45px;
     height: 45px;
     cursor: pointer;
+    border-radius: 50px;
 }
 
 .prev { left: 10px; }
