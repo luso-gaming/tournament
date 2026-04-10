@@ -10,6 +10,12 @@
     gap: 15px;
 }
 
+.logo {
+  height: 45px;       
+  width: auto;
+  object-fit: contain;
+}
+
 .menu-btn {
     font-size: 24px;
     background: none;

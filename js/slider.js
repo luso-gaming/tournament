@@ -1,32 +1,23 @@
-// Slider Script
+document.addEventListener("DOMContentLoaded", () => {
 
-let index = 0;
-
-window.addEventListener("DOMContentLoaded", () => {
+    let index = 0;
 
     const slides = document.querySelector('.slides');
-    const slideItems = document.querySelectorAll('.slide');
-    const nextBtn = document.querySelector('.next');
-    const prevBtn = document.querySelector('.prev');
+    const slide = document.querySelector('.slide');
+    const totalSlides = document.querySelectorAll('.slide').length;
 
-    if (!slides || slideItems.length === 0) {
-        return;
-    }
-
-    const totalSlides = slideItems.length;
+    const slideWidth = slide.clientWidth;
 
     function showSlide(i) {
         index = (i + totalSlides) % totalSlides;
-        slides.style.transform = `translateX(-${index * 100}%)`;
+        slides.style.transform = `translateX(-${index * slideWidth}px)`;
     }
 
-    // Buttons
-    nextBtn?.addEventListener('click', () => showSlide(index + 1));
-    prevBtn?.addEventListener('click', () => showSlide(index - 1));
+    document.querySelector('.next').onclick = () => showSlide(index + 1);
+    document.querySelector('.prev').onclick = () => showSlide(index - 1);
 
-    // Auto slide
     setInterval(() => {
         showSlide(index + 1);
-    }, 5000);
+    }, 3000);
 
 });

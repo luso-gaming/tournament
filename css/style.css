@@ -21,11 +21,6 @@ body {
   color: #ffffff;
 }
 
-.logo {
-  height: 45px;       
-  width: auto;
-  object-fit: contain;
-}
 
 p{
   color: #f1f1f1;
