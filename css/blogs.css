@@ -1,0 +1,98 @@
+/* ===== BLOG PAGE GLOBAL ===== */
+body {
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: Arial, sans-serif;
+    line-height: 1.7;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Headings */
+h1 {
+    font-size: 34px;
+    color: #38bdf8;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: #22c55e;
+    font-size: 22px;
+}
+
+/* Paragraph */
+p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* Meta text */
+p b {
+    color: #94a3b8;
+}
+
+/* BACK BUTTON LEFT */
+.back-btn {
+  width: 150px;
+  margin: 10px;
+  padding: 6px 10px;
+  background: #1e293b;
+  color: #38bdf8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+
+.back-btn:hover {
+    background: #0ea5e9;
+}
+
+/* Links */
+a {
+    color: #38bdf8;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Images (for future use) */
+.blog-image {
+    width: 100%;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+/* List Styling */
+ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+}

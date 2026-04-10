@@ -1,0 +1,281 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+}
+
+/* Header */
+header {
+    background: #020617;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    color: #38bdf8;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: #38bdf8;
+}
+
+/* Container */
+.container {
+    padding: 40px 20px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* Title */
+.title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.title h2 {
+    font-size: 32px;
+    color: #38bdf8;
+}
+
+.title p {
+    color: #cbd5f5;
+}
+
+/* Blog Grid */
+/* Blog Grid - Improved */
+.blogs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    padding: 10px;
+}
+
+/* Blog Card */
+.blog-card {
+    background: #020617;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hover Effect */
+.blog-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+}
+
+/* Image */
+.blog-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* Content */
+.blog-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.blog-content h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.blog-content p {
+    font-size: 14px;
+    color: #cbd5f5;
+    flex-grow: 1;
+}
+
+/* Button Link */
+.blog-content a {
+    margin-top: 15px;
+    color: #38bdf8;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.blog-content a:hover {
+    text-decoration: underline;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .blogs {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards */
+    }
+}
+
+/* 📱 Mobile Optimization */
+@media (max-width: 600px) {
+    .blogs {
+        grid-template-columns: 1fr; /* 1 card */
+    }
+
+    .container {
+        padding: 20px 10px;
+    }
+
+    .title h2 {
+        font-size: 24px;
+    }
+
+    .blog-card img {
+        height: 150px;
+    }
+
+    .blog-content h3 {
+        font-size: 16px;
+    }
+
+    .blog-content p {
+        font-size: 13px;
+    }
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #020617;
+    margin-top: 40px;
+    font-size: 14px;
+}
+
+/* BACK BUTTON LEFT */
+.back-btn {
+  width: 150px;
+  margin: 10px;
+  padding: 6px 10px;
+  background: #1e293b;
+  color: #38bdf8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-btn:hover {
+    background: #0ea5e9;
+}
+
+/* SLIDER */
+.slider {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;   /* ✅ FIX: keeps it aligned like container */
+    margin: 20px auto;   /* ✅ FIX: centers slider */
+    
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    min-width: 100%;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+/* Title Overlay */
+.slide-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Buttons */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+.prev:hover, .next:hover {
+    background: #38bdf8;
+}
+
+
+/* ENSURE SLIDES MOVE CORRECTLY */
+.slides {
+    display: flex;
+    width: 100%;
+}
+
+/* FORCE EACH SLIDE FULL WIDTH */
+.slide {
+    min-width: 100%;
+    flex-shrink: 0;
+}
+
+/* FIX IMAGE DISPLAY */
+.slide img {
+    display: block;
+    height: 500px;
+
+}
+
+/* FIX BUTTON OVERLAP */
+.prev, .next {
+    z-index: 10;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .slide img {
+        height: 300px;
+    }
+}
+
+/* MOBILE FIX */
+@media (max-width: 600px) {
+    .slide img {
+        height: 280px;
+    }
+}
