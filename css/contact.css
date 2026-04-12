@@ -58,3 +58,27 @@
 .help-button:hover {
   background: #1d4ed8;
 }
+
+.insta{
+  width:fit-content;
+  margin-bottom: 50px;
+  padding: 5px 5px;
+  background: linear-gradient(135deg, #e90e95, #fb2553);
+  color: rgb(0, 0, 0);
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(248, 56, 216, 0.3);
+}
+
+.insta a{
+  padding: 10px;
+  color: aliceblue;
+  padding-bottom: 15px;
+}
+
+.insta #dot{
+  width: 5px;
+  height: 5px;
+  border: 1px solid white;
+  border-radius: 50px;
+
+}

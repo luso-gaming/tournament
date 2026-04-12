@@ -42,3 +42,16 @@ li {
     background: #242438;
     border-left: 4px solid #444;
 }
+
+.social-links li {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+.social-links a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+.social-links a:hover {
+    text-decoration: underline;
+}

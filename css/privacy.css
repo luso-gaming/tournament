@@ -1,0 +1,183 @@
+/* ===== LUSO ESPORTS PRIVACY POLICY (PRO VERSION) ===== */
+
+.privacy-container {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 20px;
+    line-height: 1.8;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* HERO */
+.privacy-hero {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #0ee945, #38f888);
+    color: rgb(0, 0, 0);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(56,189,248,0.3);
+}
+
+.privacy-hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+}
+
+.privacy-hero p {
+    opacity: 0.9;
+    color: rgb(0, 0, 0);
+    font-size: 1.1rem;
+}
+
+.privacy-hero a {
+    color: rgb(0, 157, 255);
+}
+/* SECTION CARD */
+.privacy-section {
+    margin-bottom: 35px;
+    padding: 30px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    border-left: 4px solid #38bdf8;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+.privacy-section:hover {
+    transform: translateY(-5px);
+}
+
+/* HEADINGS */
+.privacy-section h2 {
+    color: #38bdf8;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.privacy-section h3 {
+    color: #0ea5e9;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+/* TEXT */
+.privacy-section p {
+    color: #cbd5f5;
+}
+
+/* DATA BOXES */
+.leaderboard-data,
+.private-data {
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    background: rgba(255,255,255,0.06);
+    border-left: 4px solid #10b981;
+}
+
+.private-data {
+    border-left-color: #ef4444;
+}
+
+.leaderboard-data h3,
+.private-data h3 {
+    color: #fff;
+}
+
+/* LISTS */
+.privacy-section ul,
+.privacy-section ol {
+    margin: 15px 0;
+    padding: 15px 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+
+.privacy-section li {
+    margin-bottom: 8px;
+    color: #e2e8f0;
+}
+
+/* TABLE */
+.third-party-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.third-party-table th {
+    background: #38bdf8;
+    color: white;
+    padding: 12px;
+}
+
+.third-party-table td {
+    padding: 12px;
+    background: rgba(255,255,255,0.05);
+    color: #e2e8f0;
+}
+
+.third-party-table tr:hover td {
+    background: rgba(56,189,248,0.1);
+}
+
+/* CONTACT GRID */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.contact-grid div {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #38bdf8;
+}
+
+.contact-grid strong {
+    color: #38bdf8;
+}
+
+/* NOTICE BOX */
+.notice {
+    background: rgba(245,158,11,0.1);
+    border-left: 4px solid #f59e0b;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* LINKS */
+a {
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .privacy-container {
+        margin: 20px;
+        padding: 10px;
+    }
+
+    .privacy-hero h1 {
+        font-size: 2rem;
+    }
+
+    .privacy-section {
+        padding: 20px;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}

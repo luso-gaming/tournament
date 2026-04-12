@@ -127,3 +127,9 @@ section button:hover {
         font-size: 36px;
     }
 }
+
+.support-btn{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background-color: #0ea5e9;
+}

@@ -185,3 +185,11 @@
   width: 40px;
   height: 12px;
 }
+
+.back-btn{
+  background: linear-gradient(135deg, #e7007b, #fb4456);
+  border-radius: 6px;
+  border: none;
+  padding: 10px;
+  margin-top: 20px;
+}
