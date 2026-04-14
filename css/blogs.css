@@ -82,6 +82,59 @@ li {
     margin-bottom: 8px;
 }
 
+.device-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: #020617;
+    color: white;
+}
+
+.device-table th, .device-table td {
+    padding: 12px;
+    border-bottom: 1px solid #1e293b;
+    text-align: left;
+}
+
+.device-table th {
+    background: #38bdf8;
+    color: #000;
+}
+
+.device-table tr:hover {
+    background: #1e293b;
+}
+
+/* Blog Featured Image */
+.container img {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    
+    border-radius: 12px;
+    object-fit: cover;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect (optional but looks premium) */
+.container img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .container img {
+        margin: 15px auto;
+        border-radius: 10px;
+    }
+}
+
 /* Mobile Responsive */
 @media (max-width: 600px) {
     .container {
