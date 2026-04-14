@@ -81,111 +81,113 @@
     <priority>0.7</priority>
   </url>
 
+
+  <!-- BLOG POSTS -->
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/avoid-cheating-bans.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/best-devices-bgmi-under-20000.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/best-gaming-apps.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/best-sensitivity-settings.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/bgmi-tournament-tips.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/build-gaming-team.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/earn-money-bgmi.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/erangel-landing-spots.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/esports-career-india.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/grow-esports-without-team.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/improve-aim-mobile-gaming.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/solo-vs-squad.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/stream-bgmi-youtube.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/top-10-esports-mistakes.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lusoesports.in/blogs/tournament-rules.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+
 </urlset>
-
-<!-- BLOG POSTS -->
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/avoid-cheating-bans.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/best-devices-bgmi-under-20000.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/best-gaming-apps.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/best-sensitivity-settings.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.9</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/bgmi-tournament-tips.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.9</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/build-gaming-team.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/earn-money-bgmi.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.9</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/erangel-landing-spots.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/esports-career-india.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.9</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/grow-esports-without-team.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.9</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/improve-aim-mobile-gaming.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.9</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/solo-vs-squad.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/stream-bgmi-youtube.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/top-10-esports-mistakes.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-
-<url>
-  <loc>https://www.lusoesports.in/blogs/tournament-rules.html</loc>
-  <lastmod>2026-04-12</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.9</priority>
-</url>
