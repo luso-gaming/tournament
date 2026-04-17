@@ -25,6 +25,8 @@ async function loadProfile() {
       team_name,
       in_game_name,
       points,
+      rank,
+      rank_points,
       last_name_update
     `)
     .eq("id", userId)
@@ -52,6 +54,42 @@ async function loadProfile() {
 
   document.getElementById("userPoints").innerText =
     data.points || 0;
+
+    const rank = data.rank || "Untrained 5";
+    const rankPoints = data.rank_points || 0;
+    
+    // 🏆 Set rank text
+    const rankEl = document.getElementById("userRank");
+    if (rankEl) {
+      rankEl.innerText = rank;
+    }
+    
+    // 📊 Progress bar (each sub-rank = 100 points)
+    const progress = rankPoints % 100;
+    const percent = (progress / 100) * 100;
+    
+    const progressBar = document.getElementById("rankProgressBar");
+    if (progressBar) {
+      progressBar.style.width = percent + "%";
+    }
+    
+    const pointsText = document.getElementById("rankPointsText");
+    if (pointsText) {
+      pointsText.innerText = `${progress} / 100 RP`;
+    }
+    
+    // 🎨 Rank color
+    if (rankEl) {
+      if (rank.includes("Bronze")) rankEl.style.background = "#cd7f32";
+      else if (rank.includes("Silver")) rankEl.style.background = "#c0c0c0";
+      else if (rank.includes("Gold")) rankEl.style.background = "#ffd700";
+      else if (rank.includes("Platinum")) rankEl.style.background = "#00e5ff";
+      else if (rank.includes("Diamond")) rankEl.style.background = "#3b82f6";
+      else if (rank.includes("Master")) rankEl.style.background = "#a855f7";
+      else if (rank.includes("Legend")) rankEl.style.background = "#ff0000";
+      else rankEl.style.background = "#64748b";
+    }
+
 
   // ✅ REMOVE SKELETON
   removeSkeleton("userName");
