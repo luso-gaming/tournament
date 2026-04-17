@@ -21,103 +21,121 @@
 
   <div class="dashboard-card">
 
-    <!-- 🧠 USER INFO -->
-    <div class="user-info">
-
-      <div class="info-row">
-        <label>Name</label>
-        <div class="fill">
-          <span id="userName" class="skeleton-text">Loading...</span>
-        </div>
-      </div>
-
-      <div class="info-row">
-        <label>Email</label>
-        <div class="fill">
-          <span id="userEmail" class="skeleton-text">Loading...</span>
-        </div>
-      </div>
-
-      <div class="info-row">
-        <label>Team Name</label>
-        <div class="fill">
-          <span id="userTeam" class="skeleton-text">Loading...</span>
-          <input type="text" id="teamInput" class="hidden input-edit" />
-        </div>
-      </div>
-
-      <div class="info-row">
-        <label>In Game Name</label>
-        <div class="fill">
-          <span id="userIgn" class="skeleton-text">Loading...</span>
-          <input type="text" id="ignInput" class="hidden input-edit" />
-        </div>
-      </div>
-
-      <button id="editProfileBtn" class="update-btn">Edit Profile</button>
-
+    <!-- 🖼️ PROFILE IMAGE -->
+    <div class="profile-header">
+      <img id="dashboardAvatar" class="dashboard-avatar" src="">
     </div>
-
+  
+    <!-- 🔘 TABS -->
+    <div class="dashboard-tabs">
+      <button class="tab-btn active" data-tab="profile">Profile</button>
+      <button class="tab-btn" data-tab="stats">Stats</button>
+    </div>
+  
+    <!-- 👤 PROFILE TAB -->
+    <div id="profileTab" class="tab-content active">
+  
+      <div class="user-info">
+  
+        <div class="info-row">
+          <label>Name</label>
+          <div class="fill">
+            <span id="userName" class="skeleton-text">Loading...</span>
+          </div>
+        </div>
+  
+        <div class="info-row">
+          <label>Email</label>
+          <div class="fill">
+            <span id="userEmail" class="skeleton-text">Loading...</span>
+          </div>
+        </div>
+  
+        <div class="info-row">
+          <label>Team Name</label>
+          <div class="fill">
+            <span id="userTeam" class="skeleton-text">Loading...</span>
+            <input type="text" id="teamInput" class="hidden input-edit" />
+          </div>
+        </div>
+  
+        <div class="info-row">
+          <label>In Game Name</label>
+          <div class="fill">
+            <span id="userIgn" class="skeleton-text">Loading...</span>
+            <input type="text" id="ignInput" class="hidden input-edit" />
+          </div>
+        </div>
+  
+        <button id="editProfileBtn" class="update-btn">Edit Profile</button>
+  
+      </div>
+  
+    </div>
+  
+    <!-- 📊 STATS TAB -->
+    <div id="statsTab" class="tab-content">
+  
+      <!-- 🏆 RANK -->
+      <div class="rank-section">
+        <h2>🏆 Rank</h2>
+      
+        <div class="rank-box">
+          <span id="userRank" class="rank-badge">Loading...</span>
+        </div>
+      
+        <div class="rank-progress">
+          <div id="rankProgressBar"></div>
+        </div>
+      
+        <p id="rankPointsText">0 / 100 RP</p>
+      </div>
+  
+      <!-- 📊 STATS -->
+      <div class="stats">
+  
+        <div class="stat-box">
+          <p>Total Points</p>
+          <h2 id="userPoints">0</h2>
+        </div>
+  
+        <div class="stat-box">
+          <p>Total Kills</p>
+          <h2 id="userKills">0</h2>
+        </div>
+  
+        <div class="stat-box">
+          <p>Matches Played</p>
+          <h2 id="userMatches">0</h2>
+        </div>
+  
+        <div class="stat-box">
+          <p>K/D Ratio</p>
+          <h2 id="userKD">0.00</h2>
+        </div>
+  
+      </div>
+  
+    </div>
+  
     <hr>
-
-    <div class="rank-section">
-      <h2>🏆 Rank</h2>
-    
-      <div class="rank-box">
-        <span id="userRank" class="rank-badge">Loading...</span>
-      </div>
-    
-      <div class="rank-progress">
-        <div id="rankProgressBar"></div>
-      </div>
-    
-      <p id="rankPointsText">0 / 100 RP</p>
-    </div>
-
-    <!-- 📊 STATS SECTION -->
-    <div class="stats">
-
-      <div class="stat-box">
-        <p>Total Points</p>
-        <h2 id="userPoints">0</h2>
-      </div>
-
-      <div class="stat-box">
-        <p>Total Kills</p>
-        <h2 id="userKills">0</h2>
-      </div>
-
-      <div class="stat-box">
-        <p>Matches Played</p>
-        <h2 id="userMatches">0</h2>
-      </div>
-
-      <div class="stat-box">
-        <p>K/D Ratio</p>
-        <h2 id="userKD">0.00</h2>
-      </div>
-     
-
-    </div>
-
-    <hr>
-
-    <!-- 🎮 QUICK ACTIONS -->
+  
+    <!-- 🎮 ACTIONS (unchanged) -->
     <div class="actions">
       <button class="action-btn" onclick="window.location.href='join.html'">
         Join Tournament
       </button>
-
+  
       <button class="action-btn" onclick="window.location.href='leaderboard.html'">
         View Leaderboard
       </button>
     </div>
-
+  
     <hr>
-
+  
     <!-- 🚪 LOGOUT -->
     <button class="logout-btn" id="logoutBtn">Logout</button>
-
+  
   </div>
 
 </main>

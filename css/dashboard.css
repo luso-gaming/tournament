@@ -36,6 +36,48 @@
 
 }
 
+.profile-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.dashboard-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid #38bdf8;
+  object-fit: cover;
+}
+
+.dashboard-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tab-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+  background: #0f172a;
+  color: white;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: #38bdf8;
+  color: #020617;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
 .dashboard {
   display: flex;
   align-items: center;

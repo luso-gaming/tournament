@@ -40,6 +40,11 @@ async function loadProfile() {
   if (!data) return;
 
   // ✅ SET DATA
+  document.getElementById("dashboardAvatar").src =
+  session.user.user_metadata?.avatar_url ||
+  `https://ui-avatars.com/api/?name=${session.user.email}`;
+
+  
   document.getElementById("userName").textContent =
     session.user.user_metadata?.full_name || "Not provided";
 
@@ -293,3 +298,20 @@ document
     await supabase.auth.signOut();
     window.location.href = "/index.html";
   });
+
+  // 🔘 TAB SWITCH
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+
+    document.querySelectorAll(".tab-btn")
+      .forEach(b => b.classList.remove("active"));
+
+    document.querySelectorAll(".tab-content")
+      .forEach(c => c.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    document.getElementById(btn.dataset.tab + "Tab")
+      .classList.add("active");
+  });
+});
