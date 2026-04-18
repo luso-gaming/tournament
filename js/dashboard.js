@@ -62,6 +62,9 @@ async function loadProfile() {
 
     const rank = data.rank || "Untrained 5";
     const rankPoints = data.rank_points || 0;
+    const rankParts = rank.split(" ");
+    const rankName = rankParts[0];
+    const rankNumber = rankParts[1] || "";
     
     // 🏆 Set rank text
     const rankEl = document.getElementById("userRank");
@@ -94,6 +97,26 @@ async function loadProfile() {
       else if (rank.includes("Legend")) rankEl.style.background = "#ff0000";
       else rankEl.style.background = "#64748b";
     }
+
+    const star = document.getElementById("trophyStar");
+    const numberEl = document.getElementById("trophyNumber");
+
+      // 🎯 Set number inside trophy
+      if (numberEl) {
+        numberEl.textContent = rankNumber;
+      }
+      
+      // 🎨 Set star color based on rank
+      if (star) {
+        if (rank.includes("Bronze")) star.setAttribute("fill", "#cd7f32");
+        else if (rank.includes("Silver")) star.setAttribute("fill", "#c0c0c0");
+        else if (rank.includes("Gold")) star.setAttribute("fill", "#ffd700");
+        else if (rank.includes("Platinum")) star.setAttribute("fill", "#00e5ff");
+        else if (rank.includes("Diamond")) star.setAttribute("fill", "#3b82f6");
+        else if (rank.includes("Master")) star.setAttribute("fill", "#a855f7");
+        else if (rank.includes("Legend")) star.setAttribute("fill", "#ff0000");
+        else star.setAttribute("fill", "#64748b");
+      }
 
 
   // ✅ REMOVE SKELETON
