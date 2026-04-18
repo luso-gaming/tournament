@@ -42,6 +42,7 @@
   text-align: center;
   justify-content: center;
   margin-bottom: 10px;
+  margin-left: 40%;
 }
 
 .badge {
@@ -125,7 +126,6 @@
 
 .user-info{
   position:relative;
-  top: 1;
   margin-top: 10%;
 }
 .user-info p {

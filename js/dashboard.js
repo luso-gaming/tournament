@@ -34,6 +34,7 @@ async function loadProfile() {
 
   if (error) {
     console.error(error);
+    alert("Failed to load profile");
     return;
   }
 
@@ -63,8 +64,8 @@ async function loadProfile() {
     const rank = data.rank || "Untrained 5";
     const rankPoints = data.rank_points || 0;
     const rankParts = rank.split(" ");
-    const rankName = rankParts[0];
-    const rankNumber = rankParts[1] || "";
+    const rankNumber = rankParts.pop() || "1";
+    const rankName = rankParts.join(" ");
     
     // 🏆 Set rank text
     const rankEl = document.getElementById("userRank");
@@ -79,6 +80,7 @@ async function loadProfile() {
     const progressBar = document.getElementById("rankProgressBar");
     if (progressBar) {
       progressBar.style.width = percent + "%";
+      progressBar.style.transition = "width 0.5s ease";
     }
     
     const pointsText = document.getElementById("rankPointsText");
@@ -86,38 +88,35 @@ async function loadProfile() {
       pointsText.innerText = `${progress} / 100 RP`;
     }
     
-    // 🎨 Rank color
-    if (rankEl) {
-      if (rank.includes("Bronze")) rankEl.style.background = "#cd7f32";
-      else if (rank.includes("Silver")) rankEl.style.background = "#c0c0c0";
-      else if (rank.includes("Gold")) rankEl.style.background = "#ffd700";
-      else if (rank.includes("Platinum")) rankEl.style.background = "#00e5ff";
-      else if (rank.includes("Diamond")) rankEl.style.background = "#3b82f6";
-      else if (rank.includes("Master")) rankEl.style.background = "#a855f7";
-      else if (rank.includes("Legend")) rankEl.style.background = "#ff0000";
-      else rankEl.style.background = "#64748b";
-    }
+  
+    
 
-    const star = document.getElementById("trophyStar");
-    const numberEl = document.getElementById("trophyNumber");
+const color = getRankColor(rank);
+const textColor = getTextColor(color);
 
-      // 🎯 Set number inside trophy
-      if (numberEl) {
-        numberEl.textContent = rankNumber;
-      }
-      
-      // 🎨 Set star color based on rank
-      if (star) {
-        if (rank.includes("Bronze")) star.setAttribute("fill", "#cd7f32");
-        else if (rank.includes("Silver")) star.setAttribute("fill", "#c0c0c0");
-        else if (rank.includes("Gold")) star.setAttribute("fill", "#ffd700");
-        else if (rank.includes("Platinum")) star.setAttribute("fill", "#00e5ff");
-        else if (rank.includes("Diamond")) star.setAttribute("fill", "#3b82f6");
-        else if (rank.includes("Master")) star.setAttribute("fill", "#a855f7");
-        else if (rank.includes("Legend")) star.setAttribute("fill", "#ff0000");
-        else star.setAttribute("fill", "#64748b");
-      }
+const stars = document.querySelectorAll(".rankStar");
+const circles = document.querySelectorAll(".rankCircle");
+const numbers = document.querySelectorAll(".rankNumber");
 
+if (rankEl) {
+  rankEl.style.background = color;
+}
+
+
+if (stars.length) {
+  stars.forEach(el => el.setAttribute("fill", color));
+}
+
+if (circles.length) {
+  circles.forEach(el => el.setAttribute("fill", color));
+}
+
+if (numbers.length) {
+  numbers.forEach(el => {
+    el.textContent = rankNumber;
+    el.setAttribute("fill", textColor);
+  });
+}
 
   // ✅ REMOVE SKELETON
   removeSkeleton("userName");
@@ -128,6 +127,22 @@ async function loadProfile() {
   lastUpdateDate = data.last_name_update;
 }
 
+function getRankColor(rank) {
+      if (rank.includes("Bronze")) return "#cd7f32";
+      if (rank.includes("Silver")) return "#c0c0c0";
+      if (rank.includes("Gold")) return "#ffd700";
+      if (rank.includes("Platinum")) return "#00e5ff";
+      if (rank.includes("Diamond")) return "#3b82f6";
+      if (rank.includes("Master")) return "#a855f7";
+      if (rank.includes("Legend")) return "#ff0000";
+      return "#64748b";
+    }
+
+    
+function getTextColor(bg) {
+  const darkColors = ["#3b82f6", "#a855f7", "#ff0000", "#64748b"];
+  return darkColors.includes(bg) ? "#fff" : "#000";
+}
 
 /* LOAD STATS DATA */
 async function loadStats() {
