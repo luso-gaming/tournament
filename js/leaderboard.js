@@ -322,9 +322,15 @@ async function showUserRank(fullData) {
   );
 
   if (index === -1) {
+
+  if (currentMode === "weekly") {
+    rankEl.innerText = "No participation this week";
+  } else {
     rankEl.innerText = "Unranked";
-    return;
   }
+
+  return;
+}
 
   const rank = index + 1;
 
