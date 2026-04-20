@@ -15,3 +15,10 @@ loginBtn.addEventListener("click", async () => {
     console.error(error);
   }
 });
+
+/* BACK BUTTON */
+
+document.getElementById("backBtn")
+  ?.addEventListener("click", () => {
+    window.history.back();
+  });

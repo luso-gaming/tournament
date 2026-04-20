@@ -17,6 +17,21 @@
   margin-bottom: 25px;
 }
 
+.back-btn {
+  width: max-content;
+  margin: 10px;
+  padding: 5px 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+
 .google-btn {
   width: 100%;
   padding: 14px;

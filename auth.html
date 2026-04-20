@@ -36,14 +36,60 @@
 
 
   <script type="module">
-    import { supabase } from "/js/supabase.js";
-    const { data } = await supabase.auth.getSession();
+  import { supabase } from "/js/supabase.js";
 
-    if (data.session) {
-      // login success
-      window.location.href = "/index.html";
+  async function handleAuthRedirect() {
+    const { data: { session }, error } = await supabase.auth.getSession();
+
+    if (error || !session) {
+      window.location.href = "/login.html";
+      return;
     }
-  </script>
+
+    const user = session.user;
+
+    // 🔍 CHECK IF PROFILE EXISTS
+    let { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("id, status")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    // 🆕 CREATE PROFILE IF NOT EXISTS
+    if (!profile) {
+      const { error: insertError } = await supabase
+        .from("profiles")
+        .insert({
+          id: user.id,
+          email: user.email,
+          status: "active"
+        });
+
+      if (insertError) {
+        console.error(insertError);
+        alert("Error creating profile");
+        return;
+      }
+
+      // reload profile after insert
+      profile = { status: "active" };
+    }
+
+    // 🚫 CHECK STATUS
+    if (profile.status !== "active") {
+      alert("Your account is suspended or deactivated.");
+
+      await supabase.auth.signOut();
+      window.location.href = "/login.html";
+      return;
+    }
+
+    // ✅ SUCCESS → REDIRECT
+    window.location.href = "/dashboard.html";
+  }
+
+  handleAuthRedirect();
+</script>
 
 </body>
 </html>

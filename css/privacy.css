@@ -1,4 +1,7 @@
 /* ===== LUSO ESPORTS PRIVACY POLICY (PRO VERSION) ===== */
+html {
+  scroll-behavior: smooth;
+}
 
 .privacy-container {
     max-width: 1000px;
