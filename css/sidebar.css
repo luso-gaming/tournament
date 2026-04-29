@@ -1,7 +1,8 @@
 .topbar {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent */
+    background:rgba(0, 0, 0, 0.751); /* Semi-transparent */
     backdrop-filter: blur(10px); /* Blur effect */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-bottom:1px solid rgba(255,255,255,.08);
     overflow: hidden; /* Ensures nothing overflows */
     color: #38bdf8;
     padding: 15px;
@@ -9,6 +10,8 @@
     align-items: center;
     gap: 15px;
 }
+
+
 
 .logo {
   height: 45px;       
@@ -178,7 +181,7 @@
 
 
 /* From Uiverse.io by 00Kubi */ 
-.card {
+.cards {
   width: 300px;
   height: 220px;
   background-color: rgb(255, 255, 255);

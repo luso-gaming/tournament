@@ -2,7 +2,7 @@ const rules = [
   { num:'01', title:'Fair Play',      body:'Any cheating, hacking, or bug exploiting is prohibited and results in immediate disqualification.' },
   { num:'02', title:'Team Roster',    body:'Each team needs 4-6 players. Roster changes are not allowed after registration closes.' },
   { num:'03', title:'Match Schedule', body:'Teams must be ready 10 minutes before match time. A 5-minute no-show results in a forfeit.' },
-  { num:'04', title:'Communication',  body:'All official communication is via Discord. Teams are responsible for staying updated on announcements.' },
+  { num:'04', title:'Communication',  body:'All official communication is via Socials. Teams are responsible for staying updated on announcements.' },
   { num:'05', title:'Prize Payout',   body:'Prizes are distributed within 7 business days. Winners must submit valid ID proof to claim.' },
   { num:'06', title:'Conduct',        body:'Toxic behavior or harassment in any form will result in a ban from current and future events.' },
   { num:'07', title:'Disputes',       body:'Disputes must be raised within 15 minutes of match end. Admin decisions are final and binding.' }
