@@ -1,3 +1,40 @@
+function makeDiaSVG() {
+  return '<svg width="12" height="8" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;flex-shrink:0;margin:0 4px;vertical-align:middle">' +
+    '<polygon points="6,0 12,4 6,8 0,4" fill="none" stroke="rgba(210,50,80,0.6)" stroke-width="1.2"/>' +
+    '</svg>';
+}
+
+function buildChain(words, type) {
+  var html = '';
+  words.forEach(function(w) {
+    if (type === 'diamond') {
+      html += '<span style="display:inline-flex;align-items:center;flex-shrink:0">' +
+        makeDiaSVG() +
+        '<span class="chain-text">' + w + '</span>' +
+        makeDiaSVG() +
+        '</span>';
+    } else {
+      html += '<span style="display:inline-flex;align-items:center;flex-shrink:0">' +
+        '<span class="chain-line" style="width:35px"></span>' +
+        '<span class="chain-dot"></span>' +
+        '<span class="chain-text">' + w + '</span>' +
+        '<span class="chain-dot"></span>' +
+        '<span class="chain-line" style="width:35px"></span>' +
+        '</span>';
+    }
+  });
+  return html + html; // duplicate for seamless loop
+}
+
+var c1 = document.getElementById('chain1');
+var c2 = document.getElementById('chain2');
+var c3 = document.getElementById('chain3');
+
+c1.innerHTML = buildChain(['FAIR PLAY','NO CHEATING','TEAM ROSTER','PLAY HARD','WIN FAIR','LUSO ESPORTS','COMPETE','PRIZE POOL'], 'diamond');
+c2.innerHTML = buildChain(['REGULATIONS','BOUNDARIES','RESTRICTIONS','DISCLAIMER','LIMITATIONS','CONSTRAINTS','CONDITIONS','ESPORTS','INDIA'], 'line');
+c3.innerHTML = buildChain(['REGISTER','COMPETE','WIN REWARDS','JOIN NOW','TOURNAMENTS','SKILL','ABILITY','COMPETITION'], 'diamond');
+
+
 const rules = [
   { num:'01', title:'Fair Play',      body:'Any cheating, hacking, or bug exploiting is prohibited and results in immediate disqualification.' },
   { num:'02', title:'Team Roster',    body:'Each team needs 4-6 players. Roster changes are not allowed after registration closes.' },

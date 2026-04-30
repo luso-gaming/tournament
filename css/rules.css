@@ -37,6 +37,83 @@ body { background: #0a0005; }
 
 .dot.on { background: #c1415a; }
 
+/* ── Marquee chains ── */
+.marquee-bg {
+  position: absolute;
+  inset: -60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Each chain is absolutely positioned and rotated */
+.marquee-chain {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-chain-1 {
+  top: 18%;
+  transform: rotate(50deg);
+  transform-origin: center center;
+}
+.marquee-chain-2 {
+  top: 48%;
+  transform: rotate(-30deg);
+  transform-origin: center center;
+}
+.marquee-chain-3 {
+  top: 65%;
+  transform: rotate(25deg);
+  transform-origin: center center;
+}
+
+.marquee-track {
+  display: inline-flex;
+  align-items: center;
+}
+
+.marquee-chain-1 .marquee-track { animation: go-left 12s linear infinite; }
+.marquee-chain-2 .marquee-track { animation: go-right 16s linear infinite; }
+.marquee-chain-3 .marquee-track { animation: go-left 10s linear infinite; }
+
+@keyframes go-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes go-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.chain-text {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  padding: 0 16px;
+  color: rgba(210, 50, 80, 0.55);
+  flex-shrink: 0;
+}
+
+.chain-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(210, 50, 80, 0.5);
+  flex-shrink: 0;
+}
+
+.chain-line {
+  display: inline-block;
+  height: 1.5px;
+  background: rgba(210, 50, 80, 0.4);
+  flex-shrink: 0;
+}
+
 
 body {
     line-height: 1.6;
