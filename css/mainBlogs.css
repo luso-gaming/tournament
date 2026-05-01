@@ -118,7 +118,101 @@ nav a:hover {
 }
 
 .blog-content a:hover {
-    text-decoration: underline;
+    text-decoration:none;
+}
+
+/* BLOG CARD */
+.blog-card{
+    background:#111;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:18px;
+    overflow:hidden;
+    transition:0.35s ease;
+    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+}
+
+.blog-card:hover{
+    transform:translateY(-8px);
+    border-color:#2dff6c;
+    box-shadow:0 15px 35px rgba(45, 255, 83, 0.25);
+}
+
+/* FULL CARD CLICKABLE */
+.blog-card a{
+    display:block;
+    text-decoration:none;
+    color:#fff;
+    height:100%;
+}
+
+/* IMAGE */
+.blog-card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+    transition:0.4s ease;
+}
+
+.blog-card:hover img{
+    transform:scale(1.06);
+}
+
+/* CONTENT */
+.blog-content{
+    padding:18px;
+}
+
+/* TITLE */
+.blog-content h3{
+    font-size:1.15rem;
+    font-weight:700;
+    line-height:1.4;
+    margin:0 0 10px;
+    color:#fff;
+}
+
+/* DESCRIPTION */
+.blog-content p{
+    font-size:0.95rem;
+    line-height:1.6;
+    color:#bdbdbd;
+    margin:0 0 12px;
+}
+
+/* BUTTON TEXT */
+.blog-content .button{
+    display:inline-block;
+    margin-top:6px;
+    font-weight:700;
+    font-size:0.95rem;
+    color:#00d9ff;
+    transition:0.3s ease;
+}
+
+.blog-card:hover .button{
+    color:#2dff8b;
+    transform:translateX(6px);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .blog-card img{
+        height:180px;
+    }
+
+    .blog-content{
+        padding:15px;
+    }
+
+    .blog-content h3{
+        font-size:1rem;
+    }
+
+    .blog-content p{
+        font-size:0.9rem;
+    }
 }
 
 /* Tablet */

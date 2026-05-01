@@ -118,6 +118,10 @@ body { background: #0a0005; }
 body {
     line-height: 1.6;
 }
+
+main {
+  padding: 0px 50px;
+}
 .container {
     max-width: 900px;
     margin: 10px auto;

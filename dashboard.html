@@ -1,339 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>User Dashboard | Luso Esports</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Common CSS -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0f">
+  <meta name="robots" content="noindex, nofollow">
+  <title>My Dashboard | Luso Esports</title>
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="dashboard-header">
-  <button id="backBtn" class="back-btn">Back</button>
-  <h1 class="page-title">Dashboard</h1>
+  <button id="backBtn" class="back-btn">← Back</button>
+  <span class="page-title">Dashboard</span>
 </div>
 
 <main class="dashboard">
-
   <div class="dashboard-card">
 
-    <!-- 🖼️ PROFILE IMAGE -->
+    <!-- PROFILE HERO -->
     <div class="profile-header">
-      <img id="dashboardAvatar" class="dashboard-avatar" src="">
-    
 
-    <div class="badge">  <!-- Trophy -->
-        <svg width="120px" height="180px" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
-          
-
-
-<!-- Star shape  -->
-          <polygon 
-            class="rankStar"
-            points="
-            100,40
-            115,60
-            142,58
-            140,85
-            160,100
-            140,115
-            142,142
-            115,140
-            100,160
-            85,140
-            58,142
-            60,115
-            40,100
-            60,85
-            58,58
-            85,60
-            "
-            fill="#DFA700"
-            stroke="#000"
-            stroke-width="1.5"/>
-       
-          <!-- Lines -->
-          <g stroke="#000" stroke-width="1.5" stroke-opacity="1">
-            <!-- Outer -->
-            <line x1="100" y1="40" x2="100" y2="100"/>
-            <line x1="142" y1="58" x2="100" y2="100"/>
-            <line x1="160" y1="100" x2="100" y2="100"/>
-            <line x1="142" y1="142" x2="100" y2="100"/>
-            <line x1="100" y1="160" x2="100" y2="100"/>
-            <line x1="58" y1="142" x2="100" y2="100"/>
-            <line x1="40" y1="100" x2="100" y2="100"/>
-            <line x1="58" y1="58" x2="100" y2="100"/>
-        
-            <!-- Inner -->
-            <line x1="115" y1="60" x2="100" y2="100"/>
-            <line x1="140" y1="85" x2="100" y2="100"/>
-            <line x1="140" y1="115" x2="100" y2="100"/>
-            <line x1="115" y1="140" x2="100" y2="100"/>
-            <line x1="85" y1="140" x2="100" y2="100"/>
-            <line x1="60" y1="115" x2="100" y2="100"/>
-            <line x1="60" y1="85" x2="100" y2="100"/>
-            <line x1="85" y1="60" x2="100" y2="100"/>
-           
-          </g>
-        
-          
-           <!-- Circle -->
-            <circle cx="100" cy="100" r="35" fill="#d9d9d9" stroke="#000" stroke-width="4"/>
-            <circle class="rankCircle" cx="100" cy="100" r="25" fill="#DFA700" stroke="#000" stroke-width="3"/>
-            
-
-            <text 
-              class="rankNumber"
-              x="100" 
-              y="110" 
-              text-anchor="middle" 
-              font-size="30" 
-              font-weight="bold" 
-              fill="#000">
-              1
-            </text>
-              
-  
-        </svg>
-
+      <div class="avatar-wrap">
+        <img id="dashboardAvatar" class="dashboard-avatar" src="" alt="Profile Avatar">
+        <div class="badge">
+          <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+            <polygon class="rankStar"
+              points="100,40 115,60 142,58 140,85 160,100 140,115 142,142 115,140 100,160 85,140 58,142 60,115 40,100 60,85 58,58 85,60"
+              fill="#f59e0b" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"/>
+            <g stroke="rgba(0,0,0,0.2)" stroke-width="1">
+              <line x1="100" y1="40" x2="100" y2="100"/>
+              <line x1="142" y1="58" x2="100" y2="100"/>
+              <line x1="160" y1="100" x2="100" y2="100"/>
+              <line x1="142" y1="142" x2="100" y2="100"/>
+              <line x1="100" y1="160" x2="100" y2="100"/>
+              <line x1="58" y1="142" x2="100" y2="100"/>
+              <line x1="40" y1="100" x2="100" y2="100"/>
+              <line x1="58" y1="58" x2="100" y2="100"/>
+              <line x1="115" y1="60" x2="100" y2="100"/>
+              <line x1="140" y1="85" x2="100" y2="100"/>
+              <line x1="140" y1="115" x2="100" y2="100"/>
+              <line x1="115" y1="140" x2="100" y2="100"/>
+              <line x1="85" y1="140" x2="100" y2="100"/>
+              <line x1="60" y1="115" x2="100" y2="100"/>
+              <line x1="60" y1="85" x2="100" y2="100"/>
+              <line x1="85" y1="60" x2="100" y2="100"/>
+            </g>
+            <circle cx="100" cy="100" r="35" fill="#1a1a24" stroke="rgba(245,158,11,0.4)" stroke-width="3"/>
+            <circle class="rankCircle" cx="100" cy="100" r="25" fill="#f59e0b" stroke="rgba(0,0,0,0.2)" stroke-width="2"/>
+            <text class="rankNumber" x="100" y="108"
+              text-anchor="middle" font-size="26" font-weight="bold" fill="#0d0d0f">1</text>
+          </svg>
         </div>
-
+      </div>
+    
     </div>
-  
-    <!-- 🔘 TABS -->
+
+    <!-- TABS -->
     <div class="dashboard-tabs">
       <button class="tab-btn active" data-tab="profile">Profile</button>
       <button class="tab-btn" data-tab="stats">Stats</button>
     </div>
-  
-    <!-- 👤 PROFILE TAB -->
+
+    <!-- PROFILE TAB -->
     <div id="profileTab" class="tab-content active">
-  
       <div class="user-info">
-  
+
         <div class="info-row">
           <label>Name</label>
           <div class="fill">
             <span id="userName" class="skeleton-text">Loading...</span>
           </div>
         </div>
-  
+
         <div class="info-row">
           <label>Email</label>
           <div class="fill">
             <span id="userEmail" class="skeleton-text">Loading...</span>
           </div>
         </div>
-  
+
         <div class="info-row">
           <label>Team Name</label>
           <div class="fill">
             <span id="userTeam" class="skeleton-text">Loading...</span>
-            <input type="text" id="teamInput" class="hidden input-edit" />
+            <input type="text" id="teamInput" class="hidden input-edit">
           </div>
         </div>
-  
+
         <div class="info-row">
-          <label>In Game Name</label>
+          <label>In-Game Name</label>
           <div class="fill">
             <span id="userIgn" class="skeleton-text">Loading...</span>
-            <input type="text" id="ignInput" class="hidden input-edit" />
+            <input type="text" id="ignInput" class="hidden input-edit">
           </div>
         </div>
-  
+
         <button id="editProfileBtn" class="update-btn">Edit Profile</button>
-  
       </div>
-  
     </div>
-  
-    <!-- 📊 STATS TAB -->
+
+    <!-- STATS TAB -->
     <div id="statsTab" class="tab-content">
-  
-      <!-- 🏆 RANK -->
+
+      <!-- RANK -->
       <div class="rank-section">
-        <h2>🏆 Rank</h2>
-      
-        <div class="rank-box">
+        <h2>🏆 Current Rank</h2>
 
-          <div class="trophy">  <!-- Trophy -->
-        <svg width="120px" height="180px" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
-          
-
-          <!-- Curved upper base (inward sides) -->
-          <path 
-            d="
-              M72 130
-              L125 140
-              Q115 175 115 230
-              L85 230
-              Q85 175 72 130
-              Z
-            "
-            fill="#bfbfbf"
-            stroke="#000"
-            stroke-width="2"/>
-            
-            <path 
-            d="
-              M82 130
-              L125 70
-              Q105 175 105 230
-              L95 230
-              Q85 85 85 130
-              Z
-            "
-            fill="#bfbfbf"
-            stroke="#000"
-            stroke-width="2"/>
-
-<!-- Star shape  -->
-          <polygon 
-            class="rankStar"
-            points="
-            100,40
-            115,60
-            142,58
-            140,85
-            160,100
-            140,115
-            142,142
-            115,140
-            100,160
-            85,140
-            58,142
-            60,115
-            40,100
-            60,85
-            58,58
-            85,60
-            "
-            fill="#DFA700"
-            stroke="#000"
-            stroke-width="1.5"/>
-       
-          <!-- Lines -->
-          <g stroke="#000" stroke-width="1.5" stroke-opacity="1">
-            <!-- Outer -->
-            <line x1="100" y1="40" x2="100" y2="100"/>
-            <line x1="142" y1="58" x2="100" y2="100"/>
-            <line x1="160" y1="100" x2="100" y2="100"/>
-            <line x1="142" y1="142" x2="100" y2="100"/>
-            <line x1="100" y1="160" x2="100" y2="100"/>
-            <line x1="58" y1="142" x2="100" y2="100"/>
-            <line x1="40" y1="100" x2="100" y2="100"/>
-            <line x1="58" y1="58" x2="100" y2="100"/>
-        
-            <!-- Inner -->
-            <line x1="115" y1="60" x2="100" y2="100"/>
-            <line x1="140" y1="85" x2="100" y2="100"/>
-            <line x1="140" y1="115" x2="100" y2="100"/>
-            <line x1="115" y1="140" x2="100" y2="100"/>
-            <line x1="85" y1="140" x2="100" y2="100"/>
-            <line x1="60" y1="115" x2="100" y2="100"/>
-            <line x1="60" y1="85" x2="100" y2="100"/>
-            <line x1="85" y1="60" x2="100" y2="100"/>
-           
-          </g>
-        
-          
-           <!-- Circle -->
-            <circle cx="100" cy="100" r="35" fill="#d9d9d9" stroke="#000" stroke-width="4"/>
-            <circle class="rankCircle" cx="100" cy="100" r="25" fill="#DFA700" stroke="#000" stroke-width="3"/>
-            
-
-            <text 
-              class="rankNumber"
-              x="100" 
-              y="110" 
-              text-anchor="middle" 
-              font-size="30" 
-              font-weight="bold" 
-              fill="#000">
-              1
-            </text>
-              <!-- ===== STAND / BASE ===== -->
-
-                <!-- Curved upper base -->
-
-              
-                <!-- Main base -->
-                <rect x="60" y="205" width="80" height="25" rx="5" fill="#999" stroke="#000" stroke-width="2"/>
-              
-                <!-- Bottom plate -->
-                <rect x="50" y="230" width="100" height="20" rx="5" fill="#666" stroke="#000" stroke-width="2"/>
-
-
-  
-        </svg>
-
+        <div class="trophy">
+          <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg" width="90" height="90">
+            <path d="M72 130 L125 140 Q115 175 115 230 L85 230 Q85 175 72 130 Z"
+              fill="#2a2a36" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+            <polygon class="rankStar"
+              points="100,40 115,60 142,58 140,85 160,100 140,115 142,142 115,140 100,160 85,140 58,142 60,115 40,100 60,85 58,58 85,60"
+              fill="#f59e0b" stroke="rgba(0,0,0,0.2)" stroke-width="1.5"/>
+            <circle cx="100" cy="100" r="35" fill="#1a1a24" stroke="rgba(245,158,11,0.4)" stroke-width="3"/>
+            <circle class="rankCircle" cx="100" cy="100" r="25" fill="#f59e0b" stroke="rgba(0,0,0,0.2)" stroke-width="2"/>
+            <text class="rankNumber" x="100" y="108"
+              text-anchor="middle" font-size="26" font-weight="bold" fill="#0d0d0f">1</text>
+            <rect x="60" y="205" width="80" height="20" rx="4" fill="#22222e" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <rect x="50" y="225" width="100" height="16" rx="4" fill="#1a1a24" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          </svg>
         </div>
 
+        <div class="rank-box">
           <span id="userRank" class="rank-badge">Loading...</span>
         </div>
-      
+
         <div class="rank-progress">
           <div id="rankProgressBar"></div>
         </div>
-      
         <p id="rankPointsText">0 / 100 RP</p>
       </div>
-  
-      <!-- 📊 STATS -->
+
+      <!-- STAT BOXES -->
       <div class="stats">
-  
         <div class="stat-box">
           <p>Total Points</p>
           <h2 id="userPoints">0</h2>
         </div>
-  
         <div class="stat-box">
           <p>Total Kills</p>
           <h2 id="userKills">0</h2>
         </div>
-  
         <div class="stat-box">
           <p>Matches Played</p>
           <h2 id="userMatches">0</h2>
         </div>
-  
         <div class="stat-box">
           <p>K/D Ratio</p>
           <h2 id="userKD">0.00</h2>
         </div>
-  
       </div>
-  
+
     </div>
-  
+
+    <!-- ACTIONS -->
     <hr>
-  
-    <!-- 🎮 ACTIONS (unchanged) -->
     <div class="actions">
-      <button class="action-btn" onclick="window.location.href='join.html'">
-        Join Tournament
-      </button>
-  
-      <button class="action-btn" onclick="window.location.href='leaderboard.html'">
-        View Leaderboard
-      </button>
+      <button class="action-btn" onclick="window.location.href='join.html'">Join Tournament</button>
+      <button class="action-btn" onclick="window.location.href='leaderboard.html'">View Leaderboard</button>
     </div>
-  
     <hr>
-  
-    <!-- 🚪 LOGOUT -->
-    <button class="logout-btn" id="logoutBtn">Logout</button>
-  
+
+    <!-- LOGOUT -->
+    <div class="logout-section">
+      <button class="logout-btn" id="logoutBtn">Sign Out</button>
+    </div>
+
   </div>
-
 </main>
-
-<!-- JS -->
+<!-- js-->
 <script type="module" src="js/dashboard.js"></script>
-
 </body>
 </html>
