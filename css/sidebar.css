@@ -1,53 +1,52 @@
 .topbar {
-    background:rgba(0, 0, 0, 0.751); /* Semi-transparent */
-    backdrop-filter: blur(10px); /* Blur effect */
+    background: rgba(0, 0, 0, 0.751);
+    backdrop-filter: blur(10px);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    border-bottom:1px solid rgba(255,255,255,.08);
-    overflow: hidden; /* Ensures nothing overflows */
-    color: #38bdf8;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+    overflow: hidden;
+    color: #e8ff00;
     padding: 15px;
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-
-
 .logo {
-  height: 45px;       
-  width: auto;
-  object-fit: contain;
+    height: 45px;
+    width: auto;
+    object-fit: contain;
 }
 
 .menu-btn {
     font-size: 24px;
     background: none;
     border: none;
-    color: #38bdf8;
+    color: #e8ff00;
     cursor: pointer;
 }
+
 /* SIDEBAR */
 
 #sidebarOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-  backdrop-filter: blur(10px);
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 998;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 998;
 }
 
 #sidebarOverlay {
-  opacity: 0;
-  transition: 0.9s;
+    opacity: 0;
+    transition: 0.9s;
 }
 
 #sidebarOverlay.active {
-  display: block;
-  opacity: 1;
+    display: block;
+    opacity: 1;
 }
 
 .sidebar {
@@ -56,7 +55,7 @@
     left: -260px;
     width: 260px;
     height: 100%;
-    background: #020617;
+    background: #0a0a0a;
     padding: 20px;
     transition: 0.3s;
     z-index: 1000;
@@ -100,236 +99,245 @@
 }
 
 .sidebar ul li a:hover {
-    background: #0f172a;
-    color: #38bdf8;
+    background: #141400;
+    color: #e8ff00;
     transform: translateX(6px);
 }
 
 .sidebar ul li a.active {
-    background: #38bdf8;
-    color: #020617;
+    background: #e8ff00;
+    color: #0a0a0a;
     font-weight: bold;
 }
 
-
 .auth-btn {
-  align-items: center;
-  gap: 8px;
-
-  padding: 10px 18px;
-  border-radius: 10px;
-
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  border: none;
-  outline: none;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
 }
 
 .points {
-  display: inline-flex;
-  margin-left:auto;
-  align-items: center;
-  gap: 8px;
-  background-color: #0f0901b1;
-  color: #00ff08;
-  border: 1px solid #1f3b66;
-  padding: 10px 18px;
-  border-radius: 10px;
-
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-
+    display: inline-flex;
+    margin-left: auto;
+    align-items: center;
+    gap: 8px;
+    background-color: #0f0901b1;
+    color: #00ff08;
+    border: 1px solid #2a3a00;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .auth-btn.login {
-  background: linear-gradient(135deg, #0066ff, #00b3ff);
-  color: #ffffff;
+    background: linear-gradient(135deg, #b8cc00, #e8ff00);
+    color: #0a0a0a;
 }
 
 .auth-btn.login:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0, 102, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(232, 255, 0, 0.3);
 }
 
 .nav-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  object-fit: cover;
-  cursor: pointer;
-  border: 2px solid #38bdf8;
-  transition: 0.3s;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #e8ff00;
+    transition: 0.3s;
 }
 
 .nav-avatar:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px #38bdf8;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #e8ff00;
 }
 
-.auth-btn, #accountBtn {
-  display: none;
+.auth-btn,
+#accountBtn {
+    display: none;
 }
 
+/* COOKIE BANNER */
 
-
-
-/* From Uiverse.io by 00Kubi */ 
-.cards {
-  width: 300px;
-  height: 220px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 30px;
-  gap: 13px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.062);
+#cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    background: #0f0f0f;
+    border-top: 2px solid #e8ff00;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#cookieSvg {
-  width: 50px;
+#cookie-banner.show {
+    transform: translateY(0);
 }
 
-#cookieSvg g path {
-  fill: rgb(97, 81, 81);
+#cookie-banner .cookie-text {
+    flex: 1;
+    min-width: 260px;
 }
 
-.cookieHeading {
-  font-size: 1.2em;
-  font-weight: 800;
-  color: rgb(26, 26, 26);
+#cookie-banner .cookie-text p {
+    margin: 0;
+    font-size: 13px;
+    color: #cccccc;
+    line-height: 1.6;
 }
 
-.cookieDescription {
-  text-align: center;
-  font-size: 0.7em;
-  font-weight: 600;
-  color: rgb(99, 99, 99);
+#cookie-banner .cookie-text a {
+    color: #e8ff00;
+    text-decoration: underline;
+    font-weight: 500;
 }
 
-.cookieDescription a {
-  --tw-text-opacity: 1;
-  color: rgb(59 130 246);
+#cookie-banner .cookie-text a:hover {
+    color: #ffffff;
 }
 
-.cookieDescription a:hover {
-  -webkit-text-decoration-line: underline;
-  text-decoration-line: underline;
+#cookie-banner .cookie-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 4px 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.buttonContainer {
-  display: flex;
-  gap: 20px;
-  flex-direction: row;
+#cookie-banner .cookie-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #e8ff00;
+    border-radius: 50%;
 }
 
-.acceptButton {
-  width: 80px;
-  height: 30px;
-  background-color: #7b57ff;
-  transition-duration: .2s;
-  border: none;
-  color: rgb(241, 241, 241);
-  cursor: pointer;
-  font-weight: 600;
-  border-radius: 20px;
-  box-shadow: 0 4px 6px -1px #977ef3, 0 2px 4px -1px #977ef3;
-  transition: all .6s ease;
+#cookie-banner .cookie-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    align-items: center;
 }
 
-.declineButton {
-  width: 80px;
-  height: 30px;
-  background-color: #dadada;
-  transition-duration: .2s;
-  color: rgb(46, 46, 46);
-  border: none;
-  cursor: not-allowed;
-  font-weight: 600;
-  border-radius: 20px;
-  box-shadow: 0 4px 6px -1px #bebdbd, 0 2px 4px -1px #bebdbd;
-  transition: all .6s ease;
+#cookie-accept {
+    background: #e8ff00;
+    color: #0f0f0f;
+    border: none;
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.1s;
 }
 
-.declineButton:hover {
-  background-color: #ebebeb;
-  box-shadow: 0 10px 15px -3px #bebdbd, 0 4px 6px -2px #bebdbd;
-  transition-duration: .2s;
+#cookie-accept:hover {
+    background: #f5ff4d;
+    transform: scale(1.03);
 }
 
-.acceptButton:hover {
-  background-color: #9173ff;
-  box-shadow: 0 10px 15px -3px #977ef3, 0 4px 6px -2px #977ef3;
-  transition-duration: .2s;
-} 
-
-#cookiePopup {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 9999;
-  animation: slideUp 0.4s ease;
+#cookie-accept:active {
+    transform: scale(0.97);
 }
+
+#cookie-decline {
+    background: transparent;
+    color: #888888;
+    border: 1px solid #333333;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+#cookie-decline:hover {
+    color: #cccccc;
+    border-color: #e8ff00;
+}
+
+@media (max-width: 600px) {
+    #cookie-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+    }
+
+    #cookie-banner .cookie-actions {
+        width: 100%;
+    }
+
+    #cookie-accept {
+        flex: 1;
+    }
+}
+
+/* LOADER */
 
 .loader {
-  transform: translateZ(1px);
+    transform: translateZ(1px);
 }
 
 .loader:after {
-  content: 'TC';
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 16px;
-  font-size: 8px;
-  font-weight: bold;
-  background: #FFD700;
-  color: #DAA520;
-  border: 3px double;
-  box-sizing: border-box;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .1);
-  animation: coin-flip 123s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    content: 'TC';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 16px;
+    font-size: 8px;
+    font-weight: bold;
+    background: #FFD700;
+    color: #DAA520;
+    border: 3px double;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .1);
+    animation: coin-flip 123s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 
 @keyframes coin-flip {
-  0%, 100% {
-    animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
-  }
+    0%, 100% {
+        animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+    }
 
-  0% {
-    transform: rotateY(0deg);
-  }
+    0% {
+        transform: rotateY(0deg);
+    }
 
-  50% {
-    transform: rotateY(1800deg);
-    animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
-  }
+    50% {
+        transform: rotateY(1800deg);
+        animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+    }
 
-  100% {
-    transform: rotateY(3600deg);
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+    100% {
+        transform: rotateY(3600deg);
+    }
 }

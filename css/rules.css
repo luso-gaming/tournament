@@ -40,7 +40,7 @@ body { background: #0a0005; }
 /* ── Marquee chains ── */
 .marquee-bg {
   position: absolute;
-  inset: -60px;
+  inset: 60px;
   pointer-events: none;
   z-index: 0;
 }
@@ -120,7 +120,7 @@ body {
 }
 
 main {
-  padding: 0px 50px;
+    padding: 0px 50px;
 }
 .container {
     max-width: 900px;
@@ -160,4 +160,9 @@ h1 {
     padding: 15px;
     background-color: #242438;
     border-left: 4px solid #444;
+}
+@media(max-width:950px){
+  main {
+    padding: 0px 10px;
+  }
 }

@@ -221,7 +221,7 @@ if (isCompleted) {
                     <p style="color:rgb(135, 231, 9); font-weight:bold;">${userSlot}</p>
                   `
                   : `
-                    <span>Entry Fee</span>
+                    <span>Registration Fee</span>
                     <p>${t.entry_points === 0 ? "Free" : t.entry_points + " TC"}</p>
                   `
                 }

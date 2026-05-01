@@ -14,27 +14,33 @@ fetch('/sidebar.html')
       handleAuthUI();
     });
 
-    // ===== COOKIE POPUP =====
-    const popup = document.getElementById("cookiePopup");
-    if (!popup) return;
-
-    const acceptBtn = popup.querySelector(".acceptButton");
-    const declineBtn = popup.querySelector(".declineButton");
-
-    if (localStorage.getItem("cookieConsent")) {
-      popup.style.display = "none";
-    }
-
-    acceptBtn.addEventListener("click", () => {
-      localStorage.setItem("cookieConsent", "accepted");
-      popup.style.display = "none";
-    });
-
-    declineBtn.addEventListener("click", () => {
-      localStorage.setItem("cookieConsent", "declined");
-      popup.style.display = "none";
-    });
-
+    (function () {
+      var banner = document.getElementById('cookie-banner');
+      var consent = localStorage.getItem('luso_cookie_consent');
+   
+      // Only show if user hasn't decided yet
+      if (!consent) {
+        setTimeout(function () {
+          banner.classList.add('show');
+        }, 800);
+      }
+   
+      document.getElementById('cookie-accept').addEventListener('click', function () {
+        localStorage.setItem('luso_cookie_consent', 'accepted');
+        banner.style.transition = 'transform 0.3s ease';
+        banner.style.transform = 'translateY(100%)';
+        // Enable Google Analytics if you want (optional)
+        // window['ga-disable-UA-XXXXXXXX-X'] = false;
+      });
+   
+      document.getElementById('cookie-decline').addEventListener('click', function () {
+        localStorage.setItem('luso_cookie_consent', 'declined');
+        banner.style.transition = 'transform 0.3s ease';
+        banner.style.transform = 'translateY(100%)';
+        // Disable Google Analytics tracking on decline (optional)
+        // window['ga-disable-UA-XXXXXXXX-X'] = true;
+      });
+    })();
   })
   .catch(err => console.error("Sidebar load error:", err));
 

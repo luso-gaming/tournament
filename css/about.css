@@ -59,3 +59,9 @@ li {
 .social-links a:hover {
     text-decoration: underline;
 }
+
+@media(max-width:950px){
+  main {
+    padding: 0px 10px;
+  }
+}
