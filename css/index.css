@@ -32,7 +32,7 @@
 .logo {
     font-size: 22px;
     font-weight: bold;
-    color: #e8ff00;
+    color: #DAFF02;
 }
 
 nav ul {
@@ -49,11 +49,11 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #e8ff00;
+    color: #DAFF02;
 }
 
 .hero {
-    background: 
+    background:
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../assets/back.jpg");
     background-size: cover;
     background-position: center;
@@ -86,14 +86,15 @@ nav ul li a:hover {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    background: #e8ff00;
-    color: #0a0a0a;
+    background: #DAFF02;
+    color: #201E1F;
     font-weight: bold;
     transition: 0.3s;
 }
 
 .hero button:hover {
-    background: #f5ff4d;
+    background: #FE572A;
+    color: #ffffff;
 }
 
 section {
@@ -105,7 +106,7 @@ section {
 section h2 {
     font-size: 32px;
     margin-bottom: 20px;
-    color: #e8ff00;
+    color: #DAFF02;
 }
 
 section p,
@@ -129,14 +130,15 @@ section button {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    background: #e8ff00;
-    color: #0a0a0a;
+    background: #DAFF02;
+    color: #201E1F;
     font-weight: bold;
     transition: 0.3s;
 }
 
 section button:hover {
-    background: #f5ff4d;
+    background: #FE572A;
+    color: #ffffff;
 }
 
 @media (max-width: 768px) {
@@ -155,10 +157,11 @@ section button:hover {
     }
 }
 
-.support-btn{
+.support-btn {
     margin-top: 10px;
     margin-bottom: 20px;
-    background-color: #f5ff4d;
+    background-color: #FE572A;
+    color: #ffffff;
 }
 
 * {
@@ -169,7 +172,7 @@ section button:hover {
 
 body {
     font-family: Inter, Arial, sans-serif;
-    background: #050505;
+    background: #201E1F;
     color: #fff;
     line-height: 1.6;
 }
@@ -194,12 +197,22 @@ a {
 }
 
 .btn1 {
-    background: #32d46b;
-    color: #000;
+    background: #DAFF02;
+    color: #201E1F;
+}
+
+.btn1:hover {
+    background: #FE572A;
+    color: #ffffff;
 }
 
 .btn2 {
     border: 1px solid rgba(255, 255, 255, .18);
+}
+
+.btn2:hover {
+    border-color: #DAFF02;
+    color: #DAFF02;
 }
 
 .heros {
@@ -240,10 +253,10 @@ a {
 }
 
 .card {
-    background: #111;
+    background: #2a2829;
     padding: 24px;
     border-radius: 26px;
-    border: 1px solid rgba(0, 0, 0, 0.958);
+    border: 1px solid rgba(218, 255, 2, 0.08);
 }
 
 .card h3 {
