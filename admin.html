@@ -3,129 +3,249 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>Admin Panel – Luso Esports</title>
 
   <!-- 🔒 HIDE FROM GOOGLE -->
   <meta name="robots" content="noindex, nofollow">
-
-  <!-- OPTIONAL EXTRA -->
   <meta name="googlebot" content="noindex, nofollow">
 
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
 </head>
 <body>
 
-  <header class="admin-header">
-    <h1>Admin Panel</h1>
-    <div class="admin-right">
-      <span id="adminEmail"></span>
-      <button id="logoutBtn">Logout</button>
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-logo">⚡</span>
+      <div>
+        <div class="brand-name">LUSO</div>
+        <div class="brand-sub">Admin Panel</div>
+      </div>
     </div>
 
+    <nav class="sidebar-nav">
+      <button id="navCreate" class="nav-btn active">
+        <span class="nav-icon">🏆</span>
+        <span>Tournaments</span>
+      </button>
+      <button id="navResults" class="nav-btn">
+        <span class="nav-icon">📊</span>
+        <span>Match Results</span>
+      </button>
+      <button id="navSeason" class="nav-btn">
+        <span class="nav-icon">🗓</span>
+        <span>Seasons</span>
+      </button>
+    </nav>
 
-  <!-- 🔥 NAV BUTTONS -->
-  <div class="admin-nav">
-    <button id="navCreate" class="active">Create Tournament</button>
-    <button id="navResults">Match Results</button>
-    <button id="navSeason">Seasons</button>
-  </div>
-
-  </header>
-  <!-- ================= CREATE SECTION ================= -->
-  <div id="createSection">
-
-    <!-- CREATE TOURNAMENT -->
-    <section class="tournament-card">
-      <h2>Create Tournament</h2>
-      <form id="tournamentForm">
-        <input name="title" placeholder="Tournament Name" required /> 
-        <input type="date" name="start_date" required />
-        <input type="time" name="start_time" required />
-        <select name="type">
-          <option value="elite">Elite</option>
-          <option value="pro">Pro</option>
-          <option value="legend">Legend</option>
-        </select>
-        <select name="status">
-          <option value="upcoming">Upcoming</option>
-          <option value="live">Live</option>
-          <option value="completed">Completed</option>
-        </select>
-        <textarea name="description"></textarea>
-        <button type="submit">Create</button>
-      </form>
-    </section>
-
-    <!-- TOURNAMENT LIST -->
-    <section class="card">
-      <h2>All Tournaments</h2>
-      <div id="tournamentsContainer"></div>
-    </section>
-
-  </div>
-
-  <!-- ================= RESULT SECTION ================= -->
-  <div id="resultSection" style="display:none;">
-
-    <section class="card">
-      <h2>Enter Match Results</h2>
-
-      <!-- DATE FILTER -->
-      <input type="date" id="resultDate" />
-
-      <!-- TOURNAMENT SELECT -->
-      <select id="resultTournamentSelect"></select>
-
-      <!-- RESULT TABLE -->
-      <table id="resultTable">
-        <thead>
-          <tr>
-            <th>Slot</th>
-            <th>Team</th>
-            <th>IGN</th>
-            <th>Kills</th>
-            <th>Placement</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-      <button id="saveResultsBtn">Save Results</button>
-    </section>
-
-  </div>
-  
-  <!-- ================= SEASON SECTION ================= -->
-  <section id="seasonSection" class="card" style="display:none;">
-    <h2>Manage Seasons</h2>
-  
-    <!-- CURRENT SEASON -->
-    <div class="season-box">
-      <h3>Current Season</h3>
-      <p id="currentSeason">Loading...</p>
+    <div class="sidebar-footer">
+      <div class="admin-email-wrap">
+        <div class="admin-avatar">A</div>
+        <div>
+          <div class="admin-label">Logged in as</div>
+          <div id="adminEmail" class="admin-email-text">—</div>
+        </div>
+      </div>
+      <button id="logoutBtn" class="logout-btn">↩ Logout</button>
     </div>
-  
-    <!-- CREATE SEASON -->
-    <div class="season-box">
-      <h3>Create New Season</h3>
-      <input type="text" id="seasonName" placeholder="Season Name (e.g. Season 1)" />
-      <input type="text" id="seasonCode" placeholder="Season Code (e.g. S1)" />
-      <input type="date" id="seasonStart" />
-      <input type="date" id="seasonEnd" />
-      <button id="createSeasonBtn">Create Season</button>
+  </aside>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <main class="main">
+
+    <!-- ══ PAGE: CREATE TOURNAMENT ══ -->
+    <div id="createSection" class="page">
+
+      <div class="page-header">
+        <div>
+          <div class="page-eyebrow">Admin</div>
+          <h1 class="page-title">Tournaments</h1>
+        </div>
+      </div>
+
+      <div class="two-col">
+
+        <!-- Create Form -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-icon">➕</span>
+            <span class="panel-title">Create New Tournament</span>
+          </div>
+          <form id="tournamentForm" class="form-grid">
+            <div class="field">
+              <label>Tournament Name</label>
+              <input name="title" placeholder="e.g. Sunday Squad Finals" required />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Date</label>
+                <input type="date" name="start_date" required />
+              </div>
+              <div class="field">
+                <label>Time</label>
+                <input type="time" name="start_time" required />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Type</label>
+                <select name="type">
+                  <option value="elite">Elite</option>
+                  <option value="pro">Pro</option>
+                  <option value="legend">Legend</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Status</label>
+                <select name="status">
+                  <option value="upcoming">Upcoming</option>
+                  <option value="live">Live</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Description <span class="optional">(optional)</span></label>
+              <textarea name="description" placeholder="Brief tournament description..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Create Tournament</button>
+          </form>
+        </div>
+
+        <!-- Tournament List -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-icon">📋</span>
+            <span class="panel-title">All Tournaments</span>
+          </div>
+          <div id="tournamentsContainer" class="tournament-list"></div>
+        </div>
+
+      </div>
     </div>
-  
-    <!-- UPCOMING SEASON -->
-    <div class="season-box">
-      <h3>Upcoming Season</h3>
-      <select id="upcomingSeasonSelect"></select>
-      <button id="setUpcomingBtn">Set as Upcoming</button>
+
+    <!-- ══ PAGE: MATCH RESULTS ══ -->
+    <div id="resultSection" class="page" style="display:none;">
+
+      <div class="page-header">
+        <div>
+          <div class="page-eyebrow">Admin</div>
+          <h1 class="page-title">Match Results</h1>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-icon">📊</span>
+          <span class="panel-title">Enter Results</span>
+        </div>
+
+        <div class="results-filters">
+          <div class="field">
+            <label>Date</label>
+            <input type="date" id="resultDate" />
+          </div>
+          <div class="field">
+            <label>Tournament</label>
+            <select id="resultTournamentSelect"></select>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table id="resultTable">
+            <thead>
+              <tr>
+                <th>Slot</th>
+                <th>Team</th>
+                <th>IGN</th>
+                <th>Kills</th>
+                <th>Placement</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="results-action">
+          <button id="saveResultsBtn" class="btn-primary">💾 Save Results</button>
+        </div>
+      </div>
+
     </div>
-  
-  </section>
+
+    <!-- ══ PAGE: SEASONS ══ -->
+    <div id="seasonSection" class="page" style="display:none;">
+
+      <div class="page-header">
+        <div>
+          <div class="page-eyebrow">Admin</div>
+          <h1 class="page-title">Seasons</h1>
+        </div>
+      </div>
+
+      <div class="three-col">
+
+        <!-- Current Season -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-icon">🟢</span>
+            <span class="panel-title">Current Season</span>
+          </div>
+          <div id="currentSeason" class="season-display">Loading...</div>
+        </div>
+
+        <!-- Create Season -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-icon">➕</span>
+            <span class="panel-title">Create New Season</span>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Season Name</label>
+              <input type="text" id="seasonName" placeholder="e.g. Season 1" />
+            </div>
+            <div class="field">
+              <label>Season Code</label>
+              <input type="text" id="seasonCode" placeholder="e.g. S1" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Start Date</label>
+                <input type="date" id="seasonStart" />
+              </div>
+              <div class="field">
+                <label>End Date</label>
+                <input type="date" id="seasonEnd" />
+              </div>
+            </div>
+            <button id="createSeasonBtn" class="btn-primary">Create Season</button>
+          </div>
+        </div>
+
+        <!-- Upcoming Season -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-icon">⏭</span>
+            <span class="panel-title">Set Upcoming Season</span>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Select Season</label>
+              <select id="upcomingSeasonSelect"></select>
+            </div>
+            <button id="setUpcomingBtn" class="btn-primary">Set as Upcoming</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
   <script type="module" src="js/admin.js"></script> 
 </body>
 </html>
