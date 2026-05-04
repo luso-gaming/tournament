@@ -78,107 +78,171 @@ async function loadTournaments() {
   attachAdminActions();
 }
 
+/* ================= MODAL HELPERS ================= */
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) { modal.style.display = "flex"; document.body.style.overflow = "hidden"; }
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) { modal.style.display = "none"; document.body.style.overflow = ""; }
+}
+
+// Close on overlay click or X button
+document.addEventListener("click", (e) => {
+  // X buttons and cancel buttons with data-modal
+  if (e.target.classList.contains("modal-close")) {
+    const modalId = e.target.dataset.modal;
+    if (modalId) closeModal(modalId);
+  }
+  // Click outside modal box
+  if (e.target.classList.contains("modal-overlay")) {
+    closeModal(e.target.id);
+  }
+});
+
+// Close on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    ["modalEditAll","modalEditIDP","modalEditStatus"].forEach(closeModal);
+  }
+});
+
+/* ================= MODAL SAVE HANDLERS ================= */
+
+// SAVE EDIT ALL
+document.getElementById("saveEditAll")?.addEventListener("click", async () => {
+  const id    = document.getElementById("editAllId").value;
+  const title = document.getElementById("editAllTitle").value.trim();
+  if (!title) { alert("Tournament name is required"); return; }
+
+  const { error } = await supabase
+    .from("tournaments")
+    .update({
+      title,
+      description: document.getElementById("editAllDesc").value,
+      type:        document.getElementById("editAllType").value,
+      status:      document.getElementById("editAllStatus").value,
+      start_date:  document.getElementById("editAllDate").value,
+      start_time:  document.getElementById("editAllTime").value,
+    })
+    .eq("id", id);
+
+  if (error) { alert(error.message); return; }
+  closeModal("modalEditAll");
+  loadTournaments();
+});
+
+// SAVE EDIT IDP
+document.getElementById("saveEditIDP")?.addEventListener("click", async () => {
+  const id   = document.getElementById("editIDPId").value;
+  const room = document.getElementById("editRoomID").value.trim();
+  const pass = document.getElementById("editRoomPass").value.trim();
+  if (!room || !pass) { alert("Both Room ID and Password are required"); return; }
+
+  const { error } = await supabase
+    .from("tournaments")
+    .update({ room_id: room, room_password: pass })
+    .eq("id", id);
+
+  if (error) { alert(error.message); return; }
+  closeModal("modalEditIDP");
+  loadTournaments();
+});
+
+// SAVE EDIT STATUS
+document.getElementById("saveEditStatus")?.addEventListener("click", async () => {
+  const id        = document.getElementById("editStatusId").value;
+  const selected  = document.querySelector('input[name="newStatus"]:checked');
+  if (!selected)  { alert("Please select a status"); return; }
+  const newStatus = selected.value;
+
+  const { error } = await supabase
+    .from("tournaments")
+    .update({ status: newStatus })
+    .eq("id", id);
+
+  if (error) { alert(error.message); return; }
+
+  if (newStatus === "completed") {
+    const { error: rpcError } = await supabase.rpc("finalize_tournament", { p_tournament_id: id });
+    if (rpcError) { console.error(rpcError); alert("Error initializing results"); return; }
+  }
+
+  closeModal("modalEditStatus");
+  loadTournaments();
+});
+
+/* ================= ATTACH ACTIONS ================= */
 function attachAdminActions() {
+
   // DELETE
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
       if (!confirm("Are you sure you want to delete this tournament?")) return;
 
-      const { error } = await supabase
-        .from("tournaments")
-        .delete()
-        .eq("id", id);
-
+      const { error } = await supabase.from("tournaments").delete().eq("id", id);
       if (error) alert(error.message);
-      else {
-        alert("Tournament deleted");
-        loadTournaments();
-      }
+      else loadTournaments();
     });
   });
 
-  // EDIT ALL
+  // OPEN EDIT ALL MODAL — pre-fill with current values
   document.querySelectorAll(".edit-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
 
-      const title = prompt("Enter new title:");
-      if (!title) return;
-      const description = prompt("Enter description:");
-      const type = prompt("Type (elite / pro / legend):", "elite");
-      const status = prompt("Status (upcoming / live / completed):", "upcoming");
-      const start_date = prompt("Start date (YYYY-MM-DD):");
-      const start_time = prompt("Start time (HH:MM):");
+      const { data, error } = await supabase
+        .from("tournaments").select("*").eq("id", id).single();
 
-      const { error } = await supabase
-        .from("tournaments")
-        .update({ title, description, type, status, start_date, start_time })
-        .eq("id", id);
+      if (error || !data) { alert("Could not load tournament"); return; }
 
-      if (error) alert(error.message);
-      else {
-        alert("Tournament updated");
-        loadTournaments();
-      }
+      document.getElementById("editAllId").value       = id;
+      document.getElementById("editAllTitle").value    = data.title || "";
+      document.getElementById("editAllDesc").value     = data.description || "";
+      document.getElementById("editAllDate").value     = data.start_date || "";
+      document.getElementById("editAllTime").value     = data.start_time || "";
+      document.getElementById("editAllType").value     = data.type || "elite";
+      document.getElementById("editAllStatus").value   = data.status || "upcoming";
+
+      openModal("modalEditAll");
     });
   });
 
-  // EDIT ROOM ID & PASSWORD
+  // OPEN EDIT IDP MODAL — pre-fill
   document.querySelectorAll(".edit-room-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
 
-      const newRoomID = prompt("Enter new Room ID:");
-      if (!newRoomID) return;
+      const { data, error } = await supabase
+        .from("tournaments").select("room_id, room_password").eq("id", id).single();
 
-      const newRoomPass = prompt("Enter new Room Password:");
-      if (!newRoomPass) return;
+      document.getElementById("editIDPId").value    = id;
+      document.getElementById("editRoomID").value   = (data && data.room_id) ? data.room_id : "";
+      document.getElementById("editRoomPass").value = (data && data.room_password) ? data.room_password : "";
 
-      const { error } = await supabase
-        .from("tournaments")
-        .update({ room_id: newRoomID, room_password: newRoomPass })
-        .eq("id", id);
-
-      if (error) alert(error.message);
-      else {
-        alert("Room ID & Password updated");
-        loadTournaments();
-      }
+      openModal("modalEditIDP");
     });
   });
 
-  // EDIT STATUS ONLY
+  // OPEN EDIT STATUS MODAL — pre-select current status
   document.querySelectorAll(".edit-status-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
-      const newStatus = prompt("Enter new status (upcoming / live / completed):");
-      if (!newStatus) return;
 
-      const { error } = await supabase
-        .from("tournaments")
-        .update({ status: newStatus })
-        .eq("id", id);
+      const { data, error } = await supabase
+        .from("tournaments").select("title, status").eq("id", id).single();
 
-      if (error) {
-        alert(error.message);
-        return;
-      }
+      document.getElementById("editStatusId").value = id;
+      document.getElementById("editStatusTournamentName").textContent = (data && data.title) ? data.title : "—";
 
-      if (newStatus === "completed") {
-        const { error: rpcError } = await supabase.rpc("finalize_tournament", {
-          p_tournament_id: id
-        });
+      // Pre-select current status radio
+      const radios = document.querySelectorAll('input[name="newStatus"]');
+      radios.forEach(r => { r.checked = (data && r.value === data.status); });
 
-        if (rpcError) {
-          console.error(rpcError);
-          alert("Error initializing results");
-          return;
-        }
-      }
-
-      alert("Status updated");
-      loadTournaments();
+      openModal("modalEditStatus");
     });
   });
 }

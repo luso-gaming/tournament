@@ -53,48 +53,62 @@ nav ul li a:hover {
 }
 
 .hero {
-    background:
-    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../assets/back.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    position: relative;
     height: 85vh;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
+}
+
+/* 🎥 Video */
+.hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0.6;
+}
+
+
+
+.hero-soldier {
+    position: absolute;
+    right: 3%;
+    bottom: 0;
+    height: 100%;
+    z-index: 3;
+
+    /* 🔥 Bottom fade effect */
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, black 25%);
+    mask-image: linear-gradient(to top, transparent 0%, black 25%);
+}
+
+/* 🧠 Content */
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    z-index: 4;
+    width: 100%;
     padding: 20px;
+    margin-top: 300px;
 }
 
 .hero h1 {
     color: #ffffff;
-    font-size: 48px;
-    margin-bottom: 15px;
+    font-size: 80px;
+    width: 50%;
+    margin-right: 50%;
 }
 
 .hero p {
     color: #e5e7eb;
-    font-size: 18px;
-    max-width: 600px;
-    margin-bottom: 30px;
-}
-
-.hero button {
-    padding: 14px 28px;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background: #DAFF02;
-    color: #201E1F;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.hero button:hover {
-    background: #FE572A;
-    color: #ffffff;
+    font-size: 32px;
+    width: 100%;
+    text-align: right;
+    padding-left: 50%;
 }
 
 section {
@@ -141,21 +155,7 @@ section button:hover {
     color: #ffffff;
 }
 
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        gap: 10px;
-    }
 
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .hero h1 {
-        font-size: 36px;
-    }
-}
 
 .support-btn {
     margin-top: 10px;
@@ -311,5 +311,46 @@ section h2 {
 
     .heros h2 {
         font-size: 46px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .hero p {
+        font-size: 24px;
+    }
+
+    .hero-soldier {
+        height: 80%;
+        right: -200px;
+        top: 0px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero h1 {
+        font-size: 24px;
+    }
+
+    .hero p {
+        font-size: 12px;
+    }
+
+
+    .hero-soldier {
+        height: 80%;
+        right: -200px;
+        top: 0px;
     }
 }

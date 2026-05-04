@@ -246,6 +246,122 @@
 
   </main>
 
-  <script type="module" src="js/admin.js"></script> 
+  <!-- ══════════ MODAL: EDIT ALL ══════════ -->
+  <div id="modalEditAll" class="modal-overlay" style="display:none;">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-title">✏️ Edit Tournament</div>
+        <button class="modal-close" data-modal="modalEditAll">✕</button>
+      </div>
+      <div class="modal-body form-grid">
+        <input type="hidden" id="editAllId" />
+        <div class="field">
+          <label>Tournament Name</label>
+          <input type="text" id="editAllTitle" placeholder="Tournament name" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Date</label>
+            <input type="date" id="editAllDate" />
+          </div>
+          <div class="field">
+            <label>Time</label>
+            <input type="time" id="editAllTime" />
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Type</label>
+            <select id="editAllType">
+              <option value="elite">Elite</option>
+              <option value="pro">Pro</option>
+              <option value="legend">Legend</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select id="editAllStatus">
+              <option value="upcoming">Upcoming</option>
+              <option value="live">Live</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Description <span class="optional">(optional)</span></label>
+          <textarea id="editAllDesc" placeholder="Tournament description..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel modal-close" data-modal="modalEditAll">Cancel</button>
+        <button id="saveEditAll" class="btn-primary">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ MODAL: EDIT IDP ══════════ -->
+  <div id="modalEditIDP" class="modal-overlay" style="display:none;">
+    <div class="modal modal-sm">
+      <div class="modal-head">
+        <div class="modal-title">🔑 Edit Room ID & Password</div>
+        <button class="modal-close" data-modal="modalEditIDP">✕</button>
+      </div>
+      <div class="modal-body form-grid">
+        <input type="hidden" id="editIDPId" />
+        <div class="field">
+          <label>Room ID</label>
+          <input type="text" id="editRoomID" placeholder="Enter Room ID" />
+        </div>
+        <div class="field">
+          <label>Room Password</label>
+          <input type="text" id="editRoomPass" placeholder="Enter Room Password" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel modal-close" data-modal="modalEditIDP">Cancel</button>
+        <button id="saveEditIDP" class="btn-primary">Update IDP</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ MODAL: EDIT STATUS ══════════ -->
+  <div id="modalEditStatus" class="modal-overlay" style="display:none;">
+    <div class="modal modal-sm">
+      <div class="modal-head">
+        <div class="modal-title">🔄 Update Status</div>
+        <button class="modal-close" data-modal="modalEditStatus">✕</button>
+      </div>
+      <div class="modal-body form-grid">
+        <input type="hidden" id="editStatusId" />
+        <div class="field">
+          <label>Tournament</label>
+          <div id="editStatusTournamentName" class="modal-info-text">—</div>
+        </div>
+        <div class="field">
+          <label>New Status</label>
+          <div class="status-options">
+            <label class="status-radio">
+              <input type="radio" name="newStatus" value="upcoming" />
+              <span class="status-pill upcoming">⏳ Upcoming</span>
+            </label>
+            <label class="status-radio">
+              <input type="radio" name="newStatus" value="live" />
+              <span class="status-pill live">🔴 Live</span>
+            </label>
+            <label class="status-radio">
+              <input type="radio" name="newStatus" value="completed" />
+              <span class="status-pill completed">✅ Completed</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel modal-close" data-modal="modalEditStatus">Cancel</button>
+        <button id="saveEditStatus" class="btn-primary">Update Status</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
 </body>
 </html>

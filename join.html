@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Tournament</title>
+    <title>Join Tournament – Luso Esports</title>
     <meta name="description" content="Luso Esports organizes free BGMI tournaments with fair play, live leaderboards, team registrations, and transparent results for Indian gamers.">
     <meta name="keywords" content="Luso Esports, BGMI tournament, free BGMI tournament, BGMI leaderboard, esports India, BGMI teams, online BGMI competition">
     <meta name="author" content="Luso Esports">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.lusoesports.in/join.html">
-    
+
     <!-- OPEN GRAPH -->
     <meta property="og:title" content="Join BGMI Tournament – Luso Esports">
     <meta property="og:description" content="Register now to join free BGMI tournaments on Luso Esports with fair play and live leaderboards.">
@@ -18,90 +18,101 @@
     <meta property="og:image" content="https://www.lusoesports.in/assets/og-image.png">
     <meta property="og:image:type" content="image/png">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
 
-    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+
     <link rel="stylesheet" href="css/join.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/style.css">
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966566597501065"
-     crossorigin="anonymous"></script>
-
-        <!-- Google tag (gtag.js) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966566597501065" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S91PP8ZTL"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-7S91PP8ZTL');
     </script>
-</head> 
+</head>
 <body>
 
-    <div id="sidebar-container"></div> 
-<main>
+    <div id="sidebar-container"></div>
 
-    <!-- PAGE TITLE -->
-    <section class="tournament">
-        <h1>BGMI Tournaments</h1>
-    </section>
+    <main class="join-main">
 
-    <!-- LIVE + UPCOMING TOURNAMENTS -->
-    <section class="tournament-list" id="tournamentList">
-        <!-- Active tournaments injected here -->
-    </section>
+        <!-- HERO -->
+        <section class="join-hero">
+            <div class="hero-noise"></div>
+            <div class="join-hero-inner">
+                <div class="join-hero-eyebrow">
+                    <span class="live-dot"></span>
+                    BGMI Competitive
+                </div>
+                <h1 class="join-hero-title">Tournaments</h1>
+                <p class="join-hero-sub">Join free skill-based BGMI tournaments. Compete, rank up, dominate.</p>
+            </div>
+        </section>
 
-    <!-- PAST TOURNAMENTS -->
-    <section class="tournament-list" id="pastTournamentSection">
-        <h2  id="pastTournamenth2" >Past Tournaments</h2>
-        <div class="tournament-filter">
-          <div class="filter-slider"></div>
-        
-          <button id="allPastBtn" class="active">All Tournaments</button>
-          <button id="myPastBtn">Your Tournaments</button>
-        </div>
-        <div id="pastTournamentList"></div>
-    </section>
+        <!-- ACTIVE TOURNAMENTS -->
+        <section class="join-section">
+            <div class="section-label">
+                <span class="label-dot accent"></span>
+                Active &amp; Upcoming
+            </div>
+            <div class="tournament-list" id="tournamentList"></div>
+        </section>
 
-    <!-- RULES -->
-    <section class="rules" id="rules">
-        <h2>Rules & Regulations</h2>
-        <ul>
-            <li>No hacking, cheating, or use of third-party apps.</li>
-            <li>Only registered players are allowed in the room.</li>
-            <li>Late entry will not be allowed.</li>
-            <li>Misbehavior may result in disqualification.</li>
-            <li>Organizer’s decision will be final.</li>
-        </ul>
-    </section>
+        <!-- PAST TOURNAMENTS -->
+        <section class="join-section" id="pastTournamentSection">
+            <div class="section-label">
+                <span class="label-dot muted"></span>
+                Past Tournaments
+            </div>
+            <div class="tournament-filter">
+                <div class="filter-slider"></div>
+                <button id="allPastBtn" class="active">All Tournaments</button>
+                <button id="myPastBtn">Your Tournaments</button>
+            </div>
+            <div class="tournament-list" id="pastTournamentList"></div>
+        </section>
 
-</main>
+        <!-- RULES -->
+        <section class="rules-section" id="rules">
+            <div class="rules-inner">
+                <div class="section-label">
+                    <span class="label-dot orange"></span>
+                    Rules &amp; Regulations
+                </div>
+                <ul class="rules-list">
+                    <li>No hacking, cheating, or use of third-party apps.</li>
+                    <li>Only registered players are allowed in the room.</li>
+                    <li>Late entry will not be allowed.</li>
+                    <li>Misbehaviour may result in disqualification.</li>
+                    <li>Organizer's decision will be final.</li>
+                </ul>
+            </div>
+        </section>
 
+    </main>
 
-    <!-- FOOTER -->
-    <footer>
+    <footer class="join-footer">
         <div class="footer-links">
             <a href="/about.html">About Us</a>
             <span>|</span>
             <a href="/privacy-policy.html">Privacy Policy</a>
             <span>|</span>
-            <a href="/terms.html">Terms & Conditions</a>
+            <a href="/terms.html">Terms &amp; Conditions</a>
             <span>|</span>
             <a href="/contact.html">Contact</a>
         </div>
-
-        <p class="footer-copy">
-            © 2026 Luso Esports. All rights reserved.
-        </p>
+        <p class="footer-copy">© 2026 Luso Esports. All rights reserved.</p>
     </footer>
-<script type="module" src="/js/join.js"></script>
-<script type="module" src="js/sidebar.js"></script>
-<script type="module" src="js/sidebar-loader.js"></script>
-<script type="module" src="/js/auth.js"></script>
-<script type="module" src="/js/auth-ui.js"></script>
 
+    <script type="module" src="/js/join.js"></script>
+    <script type="module" src="js/sidebar.js"></script>
+    <script type="module" src="js/sidebar-loader.js"></script>
+    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="/js/auth-ui.js"></script>
 </body>
 </html>
