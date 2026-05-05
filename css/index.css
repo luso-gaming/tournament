@@ -296,6 +296,26 @@ section h2 {
     transform: none;
 }
 
+@media (max-width: 1200px) {
+
+    .hero h1 {
+        font-size: 80px;
+        width: 80%;
+        
+    }
+
+    .hero-content {
+        padding: 20px;
+        margin-top: 700px;
+    }
+
+    .hero-soldier {
+        height: 80%;
+        right: -200px;
+        top: 0px;
+    }
+}
+
 @media (max-width: 950px) {
     .heros, .grid2, .grid3, .grid4 {
         grid-template-columns: 1fr;
@@ -314,7 +334,7 @@ section h2 {
     }
 
     .hero h1 {
-        font-size: 40px;
+        font-size: 62px;
     }
 
     .hero p {
@@ -326,7 +346,20 @@ section h2 {
         right: -200px;
         top: 0px;
     }
+
+    .hero-content {
+        padding: 20px;
+        margin-top: 600px;
+    }
 }
+
+@media (width: 1024px) and (height: 600px) {
+    .hero-content {
+        padding: 20px;
+        margin-top: 70px;
+    }
+}
+
 
 @media (max-width: 768px) {
     nav {
@@ -340,13 +373,43 @@ section h2 {
     }
 
     .hero h1 {
-        font-size: 24px;
+        font-size: 62px;
+        width: 80%;
+        
     }
 
     .hero p {
-        font-size: 12px;
+        font-size: 24px;
     }
 
+
+    .hero-soldier {
+        height: 80%;
+        right: -200px;
+        top: 0px;
+    }
+
+    .hero-content {
+        margin-top: 400px;
+    }
+}
+
+@media (max-width: 450px) {
+
+    .hero h1 {
+        font-size: 40px;
+        width: 100%;
+        
+    }
+    .hero p {
+        font-size: 16px;
+        padding-left: 30%;
+    }
+
+    .hero-content {
+        padding: 20px;
+        margin-top: 300px;
+    }
 
     .hero-soldier {
         height: 80%;

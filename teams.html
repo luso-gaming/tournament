@@ -3,42 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- TITLE -->
-    <title>Match result – Luso Esports</title>
-
-    <!-- SEO (HIDDEN PAGE) -->
+    <title>Match Result – Luso Esports</title>
     <meta name="description" content="View match result and player lineups in Luso Esports BGMI tournaments.">
     <meta name="keywords" content="Luso Esports teams, BGMI teams, esports squads India">
     <meta name="author" content="Luso Esports">
-
-    <!-- 🔒 HIDE FROM GOOGLE -->
     <meta name="robots" content="noindex, follow">
     <meta name="googlebot" content="noindex, follow">
-
-    <!-- CANONICAL -->
     <link rel="canonical" href="https://www.lusoesports.in/teams.html">
 
     <!-- OPEN GRAPH -->
-    <meta property="og:title" content="Teams – Luso Esports">
-    <meta property="og:description" content="Explore registered teams and squads participating in Luso Esports tournaments.">
+    <meta property="og:title" content="Match Result – Luso Esports">
+    <meta property="og:description" content="Explore match results and squads participating in Luso Esports tournaments.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.lusoesports.in/teams.html">
     <meta property="og:image" content="https://www.lusoesports.in/assets/og-image.png">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/teams.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
 
-    <!-- ADSENSE -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966566597501065"
-    crossorigin="anonymous"></script>
-
-    <!-- GOOGLE ANALYTICS -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966566597501065" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S91PP8ZTL"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -49,66 +36,119 @@
 </head>
 <body>
 
-    <!-- SIDEBAR -->
     <div id="sidebar-container"></div>
-<main>
-    <!-- REGISTERED TEAMS -->
-    <section class="teams-section">
-        <h1>Registered Teams</h1>
 
+    <main class="results-main">
 
-        <div class="teams">
-        
-            <!-- NO TOURNAMENT SELECTED -->
-            <div id="noTournamentMessage" style="display:none; text-align:center; padding:40px;">
-                <h2>Please select a tournament to see results</h2>
-                <button id="goBackBtn" class="back-btn">Go to Tournaments</button>
+        <!-- HERO -->
+        <section class="results-hero">
+            <div class="hero-bg-text">RESULTS</div>
+            <div class="results-hero-inner">
+                <div class="results-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Match Summary
+                </div>
+                <h1 class="results-title">Leaderboard</h1>
+                <p class="results-sub">Final standings sorted by total points — kills + placement</p>
             </div>
-        
-            <!-- RESULTS TABLE -->
-            <div id="resultContainer">
-                <h2>Match Results</h2>
-        
-                <table id="resultTable">
-                  <thead>
-                    <tr>
-                      <th>Rank</th>
-                      <th>Team</th>
-                      <th>IGN</th>
-                      <th>Kills</th>
-                      <th>Placement</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
-            </div>
-        
+        </section>
+
+        <!-- NO TOURNAMENT MESSAGE -->
+        <div id="noTournamentMessage" class="no-tournament" style="display:none;">
+            <div class="no-tournament-icon">🎮</div>
+            <h2>No tournament selected</h2>
+            <p>Please select a tournament to view its match results.</p>
+            <button id="goBackBtn" class="back-btn">← Back to Tournaments</button>
         </div>
-    </section>
-</main>
+
+        <!-- RESULT SECTION -->
+        <div id="resultContainer" class="result-container">
+
+            <!-- TOP 3 PODIUM -->
+            <section class="podium-section" id="podiumSection" style="display:none;">
+                <div class="podium-wrap">
+                    <!-- 2nd place -->
+                    <div class="podium-card podium-2" id="podium2">
+                        <div class="podium-medal">🥈</div>
+                        <div class="podium-rank">#2</div>
+                        <div class="podium-name" id="p2name">—</div>
+                        <div class="podium-ign" id="p2ign">—</div>
+                        <div class="podium-pts" id="p2pts">0 pts</div>
+                        <div class="podium-bar podium-bar-2"></div>
+                    </div>
+                    <!-- 1st place -->
+                    <div class="podium-card podium-1" id="podium1">
+                        <div class="podium-crown">👑</div>
+                        <div class="podium-medal">🥇</div>
+                        <div class="podium-rank">#1</div>
+                        <div class="podium-name" id="p1name">—</div>
+                        <div class="podium-ign" id="p1ign">—</div>
+                        <div class="podium-pts" id="p1pts">0 pts</div>
+                        <div class="podium-bar podium-bar-1"></div>
+                    </div>
+                    <!-- 3rd place -->
+                    <div class="podium-card podium-3" id="podium3">
+                        <div class="podium-medal">🥉</div>
+                        <div class="podium-rank">#3</div>
+                        <div class="podium-name" id="p3name">—</div>
+                        <div class="podium-ign" id="p3ign">—</div>
+                        <div class="podium-pts" id="p3pts">0 pts</div>
+                        <div class="podium-bar podium-bar-3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FULL RESULTS TABLE -->
+            <section class="table-section">
+                <div class="table-header-row">
+                    <div class="table-label">
+                        <span class="label-dot"></span>
+                        Full Results
+                    </div>
+                    <div class="table-legend">
+                        <span class="legend-item"><span class="legend-dot you"></span>Your Team</span>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table id="resultTable">
+                        <thead>
+                            <tr>
+                                <th class="col-rank">Rank</th>
+                                <th class="col-team">Team</th>
+                                <th class="col-ign">IGL</th>
+                                <th class="col-kills">Kills</th>
+                                <th class="col-place">Place</th>
+                                <th class="col-total">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
     <!-- FOOTER -->
-    <footer>
+    <footer class="results-footer">
         <div class="footer-links">
             <a href="/about.html">About Us</a>
             <span>|</span>
             <a href="/privacy-policy.html">Privacy Policy</a>
             <span>|</span>
-            <a href="/terms.html">Terms & Conditions</a>
+            <a href="/terms.html">Terms &amp; Conditions</a>
             <span>|</span>
             <a href="/contact.html">Contact</a>
         </div>
-
-        <p class="footer-copy">
-            © 2026 Luso Esports. All rights reserved.
-        </p>
+        <p class="footer-copy">© 2026 Luso Esports. All rights reserved.</p>
     </footer>
 
-    <!-- SCRIPTS -->
     <script type="module" src="js/sidebar.js"></script>
     <script type="module" src="js/sidebar-loader.js"></script>
-    <script type="module" src="js/team.js"></script>    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="js/team.js"></script>
+    <script type="module" src="/js/auth.js"></script>
     <script type="module" src="/js/auth-ui.js"></script>
-
 </body>
 </html>
