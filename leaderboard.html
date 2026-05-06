@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard</title>
+    <title>Leaderboard – Luso Esports</title>
     <meta name="description" content="Luso Esports organizes free BGMI tournaments with fair play, live leaderboards, team registrations, and transparent results for Indian gamers.">
     <meta name="keywords" content="Luso Esports, BGMI tournament, free BGMI tournament, BGMI leaderboard, esports India, BGMI teams, online BGMI competition">
     <meta name="author" content="Luso Esports">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.lusoesports.in/leaderboard.html">
-    
+
     <!-- OPEN GRAPH -->
     <meta property="og:title" content="Leaderboard – Luso Esports">
     <meta property="og:description" content="View live BGMI tournament leaderboards, rankings, points, and match results on Luso Esports.">
@@ -18,96 +18,135 @@
     <meta property="og:image" content="https://www.lusoesports.in/assets/og-image.png">
     <meta property="og:image:type" content="image/png">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/leaderboard.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966566597501065"
-     crossorigin="anonymous"></script>
-
-        <!-- Google tag (gtag.js) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966566597501065" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S91PP8ZTL"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-7S91PP8ZTL');
     </script>
 </head>
 <body>
 
-    <!-- SIDEBAR -->
     <div id="sidebar-container"></div>
-<main>
-    <!-- LEADERBOARD -->
-    <section class="leaderboard-section">
-        <div class="leaderboard-info-box" id="infoBox">
-          <p id="infoText">Loading...</p>
-        </div>
-        <!-- TOGGLE -->
-        <div class="leaderboard-toggle" id="leaderboardToggle">
-          <div class="toggle-slider"></div>
-          <button class="active" data-mode="season">Season</button>
-          <button data-mode="weekly">Weekly</button>
-        </div>
-        
-        <!-- TITLE -->
-        <h2 id="leaderboardTitle">
-          Season Leaderboard
-        </h2>
-        
 
+    <main class="lb-main">
 
-        <div class="team-search">
-          <input
-            type="text"
-            id="leaderboardSearch"
-            placeholder="Search by Team ID or Team Name"
-            onkeyup="searchLeaderboard()"
-          >
-        <!--   <button onclick="searchLeaderboard()">Search</button> -->
-        </div>
+        <!-- HERO -->
+        <section class="lb-hero">
+            <div class="lb-hero-bg">RANK</div>
+            <div class="lb-hero-inner">
+                <div class="lb-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Live Rankings
+                </div>
+                <h1 class="lb-title">Leaderboard</h1>
 
-        
+                <!-- INFO BOX (season info / weekly timer) -->
+                <div class="lb-info-box" id="infoBox">
+                    <p id="infoText">Loading...</p>
+                </div>
+            </div>
+        </section>
 
-        <div class="leaderboard">
-            <!-- Leaderboard rows added by JS -->
-        </div>
+        <section class="lb-body">
 
-        <div id="userRankBox" class="user-rank-box">
-          <p id="userRankText">Loading your rank...</p>
-        </div>
-        
-        
-    </section>
-</main>
+            <!-- ── CONTROLS ROW ── -->
+            <div class="lb-controls">
+
+                <!-- Season / Weekly toggle -->
+                <div class="lb-toggle" id="leaderboardToggle">
+                    <div class="toggle-slider"></div>
+                    <button class="active" data-mode="season">Season</button>
+                    <button data-mode="weekly">Weekly</button>
+                </div>
+
+                <!-- Type filter chips -->
+                <div class="lb-filters" id="typeFilters">
+                    <button class="filter-chip active" data-type="all">All</button>
+                    <button class="filter-chip" data-type="elite">
+                        <span class="chip-dot elite-dot"></span>Elite
+                    </button>
+                    <button class="filter-chip" data-type="pro">
+                        <span class="chip-dot pro-dot"></span>Pro
+                    </button>
+                    <button class="filter-chip" data-type="legend">
+                        <span class="chip-dot legend-dot"></span>Legend
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- ── TITLE ── -->
+            <div class="lb-title-row">
+                <div class="lb-section-label">
+                    <span class="label-dot"></span>
+                    <span id="leaderboardTitle">Season Leaderboard</span>
+                </div>
+                <div class="lb-count" id="lbCount"></div>
+            </div>
+
+            <!-- ── SEARCH ── -->
+            <div class="lb-search-wrap">
+                <div class="lb-search">
+                    <span class="search-icon">⌕</span>
+                    <input
+                        type="text"
+                        id="leaderboardSearch"
+                        placeholder="Search team name..."
+                        onkeyup="searchLeaderboard()"
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+
+            <!-- ── TABLE HEADER ── -->
+            <div class="lb-table-head">
+                <span class="col-rank">Rank</span>
+                <span class="col-team">Team</span>
+                <span class="col-kills">Kills</span>
+                <span class="col-pts">Points</span>
+            </div>
+
+            <!-- ── ROWS ── -->
+            <div class="leaderboard" id="leaderboardContainer"></div>
+
+            <!-- ── YOUR RANK ── -->
+            <div class="user-rank-box" id="userRankBox">
+                <div class="user-rank-label">Your Rank</div>
+                <div class="user-rank-value" id="userRankText">Loading...</div>
+            </div>
+
+        </section>
+
+    </main>
+
     <!-- FOOTER -->
-    <footer>
+    <footer class="lb-footer">
         <div class="footer-links">
             <a href="/about.html">About Us</a>
             <span>|</span>
             <a href="/privacy-policy.html">Privacy Policy</a>
             <span>|</span>
-            <a href="/terms.html">Terms & Conditions</a>
+            <a href="/terms.html">Terms &amp; Conditions</a>
             <span>|</span>
             <a href="/contact.html">Contact</a>
         </div>
-
-        <p class="footer-copy">
-            © 2026 Luso Esports. All rights reserved.
-        </p>
+        <p class="footer-copy">© 2026 Luso Esports. All rights reserved.</p>
     </footer>
-    <!-- SCRIPTS -->
+
     <script type="module" src="js/sidebar.js"></script>
     <script type="module" src="js/sidebar-loader.js"></script>
-    <script type="module" src="js/leaderboard.js"></script>    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="js/leaderboard.js"></script>
+    <script type="module" src="/js/auth.js"></script>
     <script type="module" src="/js/auth-ui.js"></script>
-
-
 </body>
 </html>

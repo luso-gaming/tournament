@@ -1,59 +1,72 @@
 import { supabase } from "/js/supabase.js";
 
 let currentMode = "season";
-let leaderboardData = [];
-let timerInterval; // 🔥 control timer
+let currentTypeFilter = "all";   // NEW: all | elite | pro | legend
+let leaderboardData = [];        // full sorted data for current mode+filter
+let timerInterval;
 
 /* ================= INIT ================= */
-
 document.addEventListener("DOMContentLoaded", () => {
   setupToggle();
+  setupTypeFilters();   // NEW
   loadSeasonLeaderboard();
-  loadSeasonInfoBox(); // ✅ default info
+  loadSeasonInfoBox();
 });
 
-/* ================= TOGGLE ================= */
-
+/* ================= SEASON / WEEKLY TOGGLE ================= */
 function setupToggle() {
-  const toggle = document.getElementById("leaderboardToggle");
+  const toggle  = document.getElementById("leaderboardToggle");
   const buttons = toggle.querySelectorAll("button");
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-
-      // Remove active from all
       buttons.forEach(b => b.classList.remove("active"));
-
-      // Add active to clicked
       btn.classList.add("active");
 
-      // 🔥 MOVE SLIDER
       if (btn.dataset.mode === "weekly") {
         toggle.classList.add("total-active");
       } else {
         toggle.classList.remove("total-active");
       }
 
-      // 🔄 LOAD DATA
       currentMode = btn.dataset.mode;
 
       if (currentMode === "season") {
-        document.getElementById("leaderboardTitle").innerText = "Season Leaderboard";
+        document.getElementById("leaderboardTitle").textContent = "Season Leaderboard";
         loadSeasonLeaderboard();
-        loadSeasonInfoBox(); // ✅ show season info
+        loadSeasonInfoBox();
       } else {
-        document.getElementById("leaderboardTitle").innerText = "Weekly Leaderboard";
+        document.getElementById("leaderboardTitle").textContent = "Weekly Leaderboard";
         loadWeeklyLeaderboard();
-        startWeeklyTimer(); // ✅ show timer
+        startWeeklyTimer();
+      }
+    });
+  });
+}
+
+/* ================= TYPE FILTER CHIPS ================= */
+function setupTypeFilters() {
+  const chips = document.querySelectorAll(".filter-chip");
+
+  chips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      chips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+
+      currentTypeFilter = chip.dataset.type;
+
+      // Reload with new filter
+      if (currentMode === "season") {
+        loadSeasonLeaderboard();
+      } else {
+        loadWeeklyLeaderboard();
       }
     });
   });
 }
 
 /* ================= SEASON LEADERBOARD ================= */
-
 async function loadSeasonLeaderboard() {
-
   showLeaderboardSkeleton();
 
   const { data: season } = await supabase
@@ -62,12 +75,24 @@ async function loadSeasonLeaderboard() {
     .eq("status", "current")
     .single();
 
-  const { data: tournaments } = await supabase
+  if (!season) {
+    renderLeaderboard([]);
+    return;
+  }
+
+  // Build tournament query with optional type filter
+  let tourneyQuery = supabase
     .from("tournaments")
-    .select("id")
+    .select("id, type")
     .eq("season_id", season.id);
 
+  if (currentTypeFilter !== "all") {
+    tourneyQuery = tourneyQuery.eq("type", currentTypeFilter);
+  }
+
+  const { data: tournaments } = await tourneyQuery;
   const ids = tournaments?.map(t => t.id) || [];
+
   if (ids.length === 0) {
     renderLeaderboard([]);
     return;
@@ -77,24 +102,28 @@ async function loadSeasonLeaderboard() {
     .from("match_results")
     .select("team_name, kills, total_points")
     .in("tournament_id", ids);
-  
-  buildLeaderboard(results);
+
+  buildLeaderboard(results || []);
 }
 
 /* ================= WEEKLY LEADERBOARD ================= */
-
 async function loadWeeklyLeaderboard() {
-
   showLeaderboardSkeleton();
 
   const { start, end } = getISTWeekRange();
 
-  const { data: tournaments } = await supabase
+  // Build tournament query with optional type filter
+  let tourneyQuery = supabase
     .from("tournaments")
-    .select("id")
+    .select("id, type")
     .gte("start_date", start)
     .lte("start_date", end);
 
+  if (currentTypeFilter !== "all") {
+    tourneyQuery = tourneyQuery.eq("type", currentTypeFilter);
+  }
+
+  const { data: tournaments } = await tourneyQuery;
   const ids = tournaments?.map(t => t.id) || [];
 
   if (ids.length === 0) {
@@ -116,79 +145,100 @@ async function loadWeeklyLeaderboard() {
 }
 
 /* ================= BUILD LEADERBOARD ================= */
-
 function buildLeaderboard(results) {
-
   const map = {};
 
   results.forEach(r => {
-
     if (!map[r.team_name]) {
-      map[r.team_name] = {
-        team: r.team_name,
-        kills: 0,
-        points: 0
-      };
+      map[r.team_name] = { team: r.team_name, kills: 0, points: 0 };
     }
-
-    map[r.team_name].kills += r.kills || 0;
+    map[r.team_name].kills  += r.kills || 0;
     map[r.team_name].points += r.total_points || 0;
   });
 
-  leaderboardData = Object.values(map);
-  leaderboardData.sort((a, b) => b.points - a.points);
+  leaderboardData = Object.values(map).sort((a, b) => b.points - a.points);
 
   const top50 = leaderboardData.slice(0, 50);
+
+  // Update count label
+  const countEl = document.getElementById("lbCount");
+  if (countEl) {
+    countEl.textContent = `Top ${top50.length} teams`;
+  }
+
   renderLeaderboard(top50);
-  showUserRank(leaderboardData); // 🔥 NEW
+  showUserRank(leaderboardData);
 }
 
 /* ================= RENDER ================= */
-
 function renderLeaderboard(data) {
-
-  const container = document.querySelector(".leaderboard");
+  const container = document.getElementById("leaderboardContainer");
   container.innerHTML = "";
 
   if (!data || data.length === 0) {
-    container.innerHTML = "<p style='text-align:center;'>No data available</p>";
+    const empty = document.createElement("div");
+    empty.className = "lb-empty";
+    const p = document.createElement("p");
+    p.textContent = "No data available for this filter";
+    empty.appendChild(p);
+    container.appendChild(empty);
     return;
   }
 
   data.forEach((team, index) => {
+    const row = document.createElement("div");
+    row.className = "leaderboard-row";
+    row.style.animationDelay = `${index * 30}ms`;
 
-    const div = document.createElement("div");
-    div.className = "leaderboard-row";
+    // rank class for top 3
+    if (index === 0) row.classList.add("rank-1");
+    if (index === 1) row.classList.add("rank-2");
+    if (index === 2) row.classList.add("rank-3");
 
-    div.innerHTML = `
-      <span class="rank">#${index + 1}</span>
-      <span class="team">${team.team}</span>
-      <span class="kills">${team.kills}</span>
-      <span class="totalPoint">${team.points} pts</span>
-    `;
+    // Rank cell
+    const rankSpan = document.createElement("span");
+    rankSpan.className = "rank";
+    const medals = ["🥇","🥈","🥉"];
+    rankSpan.textContent = index < 3 ? medals[index] : `#${index + 1}`;
+    row.appendChild(rankSpan);
 
-    container.appendChild(div);
+    // Team cell
+    const teamCol = document.createElement("span");
+    teamCol.className = "team-col";
+
+    const teamName = document.createElement("span");
+    teamName.className = "team-name";
+    teamName.textContent = team.team;
+    teamCol.appendChild(teamName);
+    row.appendChild(teamCol);
+
+    // Kills
+    const killsSpan = document.createElement("span");
+    killsSpan.className = "kills";
+    killsSpan.textContent = team.kills;
+    row.appendChild(killsSpan);
+
+    // Points
+    const ptsSpan = document.createElement("span");
+    ptsSpan.className = "totalPoint";
+    ptsSpan.textContent = team.points + " pts";
+    row.appendChild(ptsSpan);
+
+    container.appendChild(row);
   });
 }
 
 /* ================= SEARCH ================= */
-
 window.searchLeaderboard = function () {
-
-  const input = document.getElementById("leaderboardSearch").value.toUpperCase();
-
+  const input    = document.getElementById("leaderboardSearch").value.toUpperCase();
   const filtered = leaderboardData.filter(team =>
     team.team.toUpperCase().includes(input)
   );
-
   renderLeaderboard(filtered);
 };
 
-/* ================= INFO BOX ================= */
-
-/* 🟦 SEASON INFO */
+/* ================= SEASON INFO BOX ================= */
 async function loadSeasonInfoBox() {
-
   clearInterval(timerInterval);
 
   const { data, error } = await supabase
@@ -197,201 +247,164 @@ async function loadSeasonInfoBox() {
     .eq("status", "current")
     .single();
 
+  const infoEl = document.getElementById("infoText");
+
   if (error || !data) {
-    document.getElementById("infoText").innerText = "No active season";
+    infoEl.textContent = "No active season";
     return;
   }
+
   function formatDate(dateStr) {
     return new Date(dateStr).toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric"
+      day: "numeric", month: "short", year: "numeric"
     });
   }
-  document.getElementById("infoText").innerHTML = `
-    <span class="season-title">${data.name}</span><br>
-    <span class="season-dates">
-      ${formatDate(data.start_date)} → ${formatDate(data.end_date)}
-    </span>
-  `;
+
+  // Use textContent-safe approach
+  infoEl.innerHTML = "";
+
+  const title = document.createElement("span");
+  title.className = "season-title";
+  title.textContent = data.name;
+
+  const dates = document.createElement("span");
+  dates.className = "season-dates";
+  dates.textContent = `${formatDate(data.start_date)} → ${formatDate(data.end_date)}`;
+
+  infoEl.appendChild(title);
+  infoEl.appendChild(document.createElement("br"));
+  infoEl.appendChild(dates);
 }
 
-/* 🟨 WEEKLY TIMER */
+/* ================= WEEKLY TIMER ================= */
 function startWeeklyTimer() {
-
   clearInterval(timerInterval);
+  let hasReset = false;
 
-  let hasReset = false; // ✅ ONLY HERE
   function getNextResetTime() {
-  const now = new Date();
+    const now    = new Date();
+    const istNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+    const resetHour = 5, resetMinute = 30;
 
-  // 🇮🇳 IST time
-  const istNow = new Date(
-    now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-  );
+    let daysUntilMonday = (8 - istNow.getDay()) % 7;
 
-  const resetHour = 5;
-  const resetMinute = 30;
+    if (
+      daysUntilMonday === 0 &&
+      (istNow.getHours() > resetHour ||
+        (istNow.getHours() === resetHour && istNow.getMinutes() >= resetMinute))
+    ) {
+      daysUntilMonday = 7;
+    }
 
-  let nextReset = new Date(istNow);
-
-  const day = istNow.getDay();
-
-  let daysUntilMonday = (8 - day) % 7;
-
-  // If today is Monday after 5:30 AM → next week
-  if (
-    daysUntilMonday === 0 &&
-    (istNow.getHours() > resetHour ||
-      (istNow.getHours() === resetHour && istNow.getMinutes() >= resetMinute))
-  ) {
-    daysUntilMonday = 7;
+    const nextReset = new Date(istNow);
+    nextReset.setDate(istNow.getDate() + daysUntilMonday);
+    nextReset.setHours(resetHour, resetMinute, 0, 0);
+    return nextReset;
   }
-
-  nextReset.setDate(istNow.getDate() + daysUntilMonday);
-  nextReset.setHours(resetHour, resetMinute, 0, 0);
-
-  return nextReset; // ✅ NO UTC CONVERSION
-}
 
   function updateTimer() {
-  const now = new Date();
-  const nextReset = getNextResetTime();
+    const diff     = getNextResetTime() - new Date();
+    const infoEl   = document.getElementById("infoText");
 
-  const diff = nextReset - now;
+    if (diff <= 0 && !hasReset) {
+      hasReset = true;
+      loadWeeklyLeaderboard();
+      return;
+    }
 
-  if (diff <= 0 && !hasReset) {
-    hasReset = true;
-    loadWeeklyLeaderboard();
-    return;
+    const d = Math.floor(diff / (1000*60*60*24));
+    const h = Math.floor((diff / (1000*60*60)) % 24);
+    const m = Math.floor((diff / (1000*60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    let timeText = d > 1 ? `${d} days` : d === 1 ? `1 day ${h}h` : `${h}h ${m}m ${s}s`;
+
+    infoEl.innerHTML = "";
+
+    const label = document.createElement("span");
+    label.className   = "reset-title";
+    label.textContent = "Reset In";
+
+    const time = document.createElement("span");
+    time.className   = "reset-time";
+    time.textContent = timeText;
+
+    infoEl.appendChild(label);
+    infoEl.appendChild(document.createElement("br"));
+    infoEl.appendChild(time);
   }
 
-  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const m = Math.floor((diff / (1000 * 60)) % 60);
-  const s = Math.floor((diff / 1000) % 60);
-
-  let timeText = "";
-  
-  if (d > 1) {
-    timeText = `${d} days`;
-  } else if (d === 1) {
-    timeText = `1 day ${h}h`;
-  } else {
-    timeText = `${h}h ${m}m ${s}s`;
-  }
-  
-  document.getElementById("infoText").innerHTML = `
-    <span class="reset-title">RESET IN</span><br>
-    <span class="reset-time">${timeText}</span>
-  `;
-  }
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
 }
 
-
-
+/* ================= USER RANK ================= */
 async function showUserRank(fullData) {
-
-  const rankEl = document.getElementById("userRankText");
-
-  // 🔐 Check login
+  const rankEl    = document.getElementById("userRankText");
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    rankEl.innerText = "Login to see your rank";
+    rankEl.textContent = "Login to see your rank";
     return;
   }
 
-  // 🧠 Get user's team name
   const { data: profile } = await supabase
-    .from("profiles") // ⚠️ change if needed
+    .from("profiles")
     .select("team_name")
     .eq("id", user.id)
     .single();
 
-  if (!profile || !profile.team_name) {
-    rankEl.innerText = "No team found";
+  if (!profile?.team_name) {
+    rankEl.textContent = "No team found";
     return;
   }
 
-  // 🔍 Find rank
-  const index = fullData.findIndex(
-    t => t.team === profile.team_name
-  );
+  const index = fullData.findIndex(t => t.team === profile.team_name);
 
   if (index === -1) {
-
-  if (currentMode === "weekly") {
-    rankEl.innerText = "No participation this week";
-  } else {
-    rankEl.innerText = "Unranked";
+    rankEl.textContent = currentMode === "weekly" ? "No participation this week" : "Unranked";
+    return;
   }
-
-  return;
-}
 
   const rank = index + 1;
-
-  // 🚫 Limit to 10,000
   if (rank > 10000) {
-    rankEl.innerText = "Unranked";
-    return;
+    rankEl.textContent = "Unranked";
+  } else if (rank <= 1000) {
+    rankEl.textContent = `#${rank}`;
+  } else {
+    const percent = Math.floor(rank / 1000);
+    rankEl.textContent = `Top ${percent}%`;
   }
-if (rank <= 1000) {
-  rankEl.innerText = `Your Rank: #${rank}`;
-} else {
-  const percent = Math.floor(rank / 1000); // 1434 → 1%, 3245 → 3%
-  rankEl.innerText = `Your Rank: ${percent}%`;
-}
 }
 
-
+/* ================= SKELETON ================= */
 function showLeaderboardSkeleton(rows = 10) {
-  const container = document.querySelector(".leaderboard");
-
-  if (!container) {
-    console.error("❌ .leaderboard not found");
-    return;
-  }
-
+  const container = document.getElementById("leaderboardContainer");
+  if (!container) return;
   container.innerHTML = "";
 
   for (let i = 0; i < rows; i++) {
-    const div = document.createElement("div");
-    div.className = "leaderboard-row";
+    const row = document.createElement("div");
+    row.className = "leaderboard-row";
+    row.style.animationDelay = `${i * 30}ms`;
 
-    div.innerHTML = `
-      <span class="skeleton sk-rank"></span>
-      <span class="skeleton sk-team"></span>
-      <span class="skeleton sk-small"></span>
-      <span class="skeleton sk-small"></span>
-    `;
+    ["sk-rank","sk-team","sk-small","sk-small"].forEach(cls => {
+      const span = document.createElement("span");
+      span.className = `skeleton ${cls}`;
+      row.appendChild(span);
+    });
 
-    container.appendChild(div);
-  }
-
-  // 🧠 Your rank box skeleton
-  const rankBox = document.getElementById("yourRank");
-  if (rankBox) {
-    rankBox.innerHTML = `<div class="skeleton sk-rank-box"></div>`;
+    container.appendChild(row);
   }
 }
 
-
-
+/* ================= IST WEEK RANGE ================= */
 function getISTWeekRange() {
-
-  const now = new Date();
-
-  // 🇮🇳 Convert to IST (UTC + 5:30)
+  const now       = new Date();
   const istOffset = 5.5 * 60 * 60 * 1000;
-  const istNow = new Date(now.getTime() + istOffset);
+  const istNow    = new Date(now.getTime() + istOffset);
 
-  // 🔥 SHIFT DAY START TO 5:30 AM
-  const resetHour = 5;
-  const resetMinute = 30;
+  const resetHour = 5, resetMinute = 30;
 
   if (
     istNow.getHours() < resetHour ||
@@ -400,25 +413,19 @@ function getISTWeekRange() {
     istNow.setDate(istNow.getDate() - 1);
   }
 
-  // 📅 Get Monday
-  const day = istNow.getDay();
+  const day  = istNow.getDay();
   const diff = day === 0 ? -6 : 1 - day;
 
   const monday = new Date(istNow);
   monday.setDate(istNow.getDate() + diff);
   monday.setHours(resetHour, resetMinute, 0, 0);
 
-  // 📅 Sunday
   const sunday = new Date(monday);
   sunday.setDate(monday.getDate() + 7);
-  sunday.setHours(5, 29, 59, 999);;
+  sunday.setHours(5, 29, 59, 999);
 
-  // 🔁 Convert back to UTC for Supabase
   const startUTC = new Date(monday.getTime() - istOffset);
-  const endUTC = new Date(sunday.getTime() - istOffset);
+  const endUTC   = new Date(sunday.getTime() - istOffset);
 
-  return {
-    start: startUTC.toISOString(),
-    end: endUTC.toISOString()
-  };
+  return { start: startUTC.toISOString(), end: endUTC.toISOString() };
 }
