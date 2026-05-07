@@ -554,6 +554,47 @@ body {
 }
 
 /* =====================
+   TINY SCREENS — under 480px
+   Hide IGN column so table fits
+===================== */
+@media (max-width: 479px) {
+  /* Hide IGN header (3rd th) */
+  #resultTable thead tr th:nth-child(3) {
+    display: none;
+  }
+
+  /* Hide IGN data cells (3rd td) */
+  #resultTable tbody tr td:nth-child(3) {
+    display: none;
+  }
+
+  /* Tighten remaining cell padding */
+  #resultTable th,
+  #resultTable td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  /* Team name — allow wrap on small screens */
+  #resultTable td:nth-child(2) {
+    white-space: normal;
+    word-break: break-word;
+    text-align: left;
+    padding-left: 10px;
+  }
+
+  /* Remove min-width so table fits without scrolling */
+  #resultTable {
+    min-width: unset;
+  }
+
+  /* Hide IGN from podium cards too — saves space */
+  .podium-ign {
+    display: none;
+  }
+}
+
+/* =====================
    DESKTOP — 1024px+
 ===================== */
 @media (min-width: 1024px) {

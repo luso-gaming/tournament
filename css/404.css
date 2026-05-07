@@ -1,0 +1,301 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #050816;
+    color: white;
+
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Background Glow */
+
+.bg-glow{
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.35;
+    z-index: 0;
+}
+
+.glow-1{
+    top: -150px;
+    left: -120px;
+    background: #6c2bff;
+}
+
+.glow-2{
+    bottom: -150px;
+    right: -120px;
+    background: #00cfff;
+}
+
+/* Grid Overlay */
+
+.grid-overlay{
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+
+    background-size: 50px 50px;
+
+    z-index: 0;
+}
+
+/* Container */
+
+.container{
+    position: relative;
+    z-index: 2;
+
+    width: 90%;
+    max-width: 750px;
+
+    text-align: center;
+
+    padding: 40px;
+}
+
+/* Logo */
+
+.logo-text{
+    font-size: 1rem;
+    letter-spacing: 5px;
+    color: #c7c7c7;
+
+    margin-bottom: 30px;
+}
+
+.logo-text span{
+    color: #00d5ff;
+}
+
+/* 404 */
+
+.error-code{
+    font-size: 10rem;
+    font-weight: 800;
+    line-height: 1;
+
+    background: linear-gradient(
+        90deg,
+        #00d5ff,
+        #7a5cff,
+        #ff3df2
+    );
+
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow{
+
+    from{
+        filter: drop-shadow(0 0 10px rgba(0,213,255,0.4));
+    }
+
+    to{
+        filter: drop-shadow(0 0 25px rgba(122,92,255,0.9));
+    }
+}
+
+/* Title */
+
+.title{
+    margin-top: 10px;
+
+    font-size: 2rem;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+}
+
+/* Description */
+
+.description{
+    margin-top: 25px;
+
+    color: #b5b5b5;
+
+    line-height: 1.8;
+    font-size: 1rem;
+
+    max-width: 600px;
+
+    margin-inline: auto;
+}
+
+/* Buttons */
+
+.buttons{
+    margin-top: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    flex-wrap: wrap;
+}
+
+.btn{
+    padding: 15px 32px;
+
+    border-radius: 14px;
+
+    text-decoration: none;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    transition: 0.3s ease;
+
+    cursor: pointer;
+}
+
+/* Primary Button */
+
+.primary-btn{
+    background: linear-gradient(
+        90deg,
+        #00cfff,
+        #6f5cff
+    );
+
+    color: white;
+    border: none;
+}
+
+.primary-btn:hover{
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 30px rgba(0, 207, 255, 0.25);
+}
+
+/* Secondary Button */
+
+.secondary-btn{
+    background: rgba(255,255,255,0.05);
+
+    border: 1px solid rgba(255,255,255,0.15);
+
+    color: white;
+
+    backdrop-filter: blur(10px);
+}
+
+.secondary-btn:hover{
+    transform: translateY(-5px);
+
+    background: rgba(255,255,255,0.1);
+}
+
+/* Floating Particles */
+
+.particle{
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: white;
+
+    opacity: 0.15;
+
+    animation: float linear infinite;
+}
+
+.p1{
+    width: 5px;
+    height: 5px;
+    left: 10%;
+    animation-duration: 12s;
+}
+
+.p2{
+    width: 7px;
+    height: 7px;
+    left: 28%;
+    animation-duration: 16s;
+}
+
+.p3{
+    width: 4px;
+    height: 4px;
+    left: 50%;
+    animation-duration: 14s;
+}
+
+.p4{
+    width: 6px;
+    height: 6px;
+    left: 72%;
+    animation-duration: 18s;
+}
+
+.p5{
+    width: 8px;
+    height: 8px;
+    left: 90%;
+    animation-duration: 15s;
+}
+
+@keyframes float{
+
+    from{
+        transform: translateY(110vh);
+    }
+
+    to{
+        transform: translateY(-120px);
+    }
+}
+
+/* Responsive */
+
+@media(max-width: 768px){
+
+    .error-code{
+        font-size: 6rem;
+    }
+
+    .title{
+        font-size: 1.4rem;
+    }
+
+    .description{
+        font-size: 0.9rem;
+    }
+
+    .container{
+        padding: 20px;
+    }
+
+    .btn{
+        width: 100%;
+    }
+}
