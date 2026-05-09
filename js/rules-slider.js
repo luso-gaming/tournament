@@ -30,7 +30,7 @@ var c1 = document.getElementById('chain1');
 var c2 = document.getElementById('chain2');
 var c3 = document.getElementById('chain3');
 
-c1.innerHTML = buildChain(['FAIR PLAY','NO CHEATING','TEAM ROSTER','PLAY HARD','WIN FAIR','LUSO ESPORTS','COMPETE','PRIZE POOL'], 'diamond');
+c1.innerHTML = buildChain(['FAIR PLAY','NO CHEATING','TEAM ROSTER','PLAY HARD','WIN FAIR','LUSO ESPORTS','COMPETE','PRIZE POOL',], 'diamond');
 c2.innerHTML = buildChain(['REGULATIONS','BOUNDARIES','RESTRICTIONS','DISCLAIMER','LIMITATIONS','CONSTRAINTS','CONDITIONS','ESPORTS','INDIA'], 'line');
 c3.innerHTML = buildChain(['REGISTER','COMPETE','WIN REWARDS','JOIN NOW','TOURNAMENTS','SKILL','ABILITY','COMPETITION'], 'diamond');
 

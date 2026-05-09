@@ -76,76 +76,6 @@ strong { color: var(--text); }
   user-select: none;
 }
 
-/* ── Marquee — keep original class names for JS compatibility ── */
-.marquee-bg {
-  position: absolute;
-  inset: -40px;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.marquee-chain {
-  position: absolute;
-  left: -20%;
-  width: 140%;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.marquee-chain-1 {
-  top: 18%;
-  transform: rotate(50deg);
-  transform-origin: center center;
-}
-.marquee-chain-2 {
-  top: 48%;
-  transform: rotate(-30deg);
-  transform-origin: center center;
-}
-.marquee-chain-3 {
-  top: 72%;
-  transform: rotate(25deg);
-  transform-origin: center center;
-}
-
-.marquee-track {
-  display: inline-flex;
-  align-items: center;
-}
-
-.marquee-chain-1 .marquee-track { animation: go-left  12s linear infinite; }
-.marquee-chain-2 .marquee-track { animation: go-right 16s linear infinite; }
-.marquee-chain-3 .marquee-track { animation: go-left  10s linear infinite; }
-
-@keyframes go-left  { 0% { transform: translateX(0); }    100% { transform: translateX(-50%); } }
-@keyframes go-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-
-/* These classes are set inline by JS but defining here for fallback */
-.chain-text {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  padding: 0 12px;
-  color: rgba(218, 255, 2, 0.3);  /* brand accent instead of original red */
-  flex-shrink: 0;
-}
-
-.chain-dot {
-  display: inline-block;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: rgba(218,255,2,0.25);
-  flex-shrink: 0;
-}
-
-.chain-line {
-  display: inline-block;
-  height: 1.5px;
-  background: rgba(218,255,2,0.2);
-  flex-shrink: 0;
-}
 
 /* Hero content */
 .rules-hero-inner {
@@ -192,14 +122,91 @@ strong { color: var(--text); }
   line-height: 1.7;
 }
 
+/* ── Marquee — keep original class names for JS compatibility ── */
+.marquee-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.marquee-chain {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-chain-1 {
+  width: 150%;
+  transform: rotate(50deg);
+  transform-origin: center center;
+}
+.marquee-chain-2 {
+  top: 78%;
+  transform: rotate(-30deg);
+  transform-origin: center center;
+}
+.marquee-chain-3 {
+  top: 72%;
+  width: 200%;
+  transform: rotate(25deg);
+  transform-origin: center center;
+}
+
+.marquee-track{
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+
+    gap: 20px;
+    white-space: nowrap;
+}
+
+.marquee-chain-1 .marquee-track { animation: go-left  12s linear infinite; }
+.marquee-chain-2 .marquee-track { animation: go-right 16s linear infinite; }
+.marquee-chain-3 .marquee-track { animation: go-left  10s linear infinite; }
+
+@keyframes go-left  { 0% { transform: translateX(0); }    100% { transform: translateX(-50%); } }
+@keyframes go-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+/* These classes are set inline by JS but defining here for fallback */
+.chain-text {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  padding: 0 12px;
+  color: rgba(218, 255, 2, 0.3);  /* brand accent instead of original red */
+  flex-shrink: 0;
+}
+
+.chain-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(218,255,2,0.25);
+  flex-shrink: 0;
+}
+
+.chain-line {
+  display: inline-block;
+  height: 1.5px;
+  background: rgba(218,255,2,0.2);
+  flex-shrink: 0;
+}
+
 /* =====================
    SLIDER SECTION
 ===================== */
 .slider-section {
-  background: #0a0005;  /* matches original slider bg */
-  padding: 28px 0 20px;
+  background: #0a0005;  
   border-bottom: 1px solid var(--border);
+  position: relative;
   overflow: hidden;
+  width: 100%;
+  min-height: 500px;
 }
 
 .slider-header {
@@ -209,7 +216,6 @@ strong { color: var(--text); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
   flex-wrap: wrap;
   gap: 8px;
 }
@@ -598,14 +604,3 @@ strong { color: var(--text); }
   .slider-header { padding: 0 32px; }
 }
 
-/* =====================
-   RESPONSIVE — marquee calibration
-   (mirrors original rules.css media queries)
-===================== */
-@media (max-width: 950px) {
-  .marquee-bg { inset: 20px; }
-}
-
-@media (max-width: 1500px) {
-  .marquee-bg { inset: 60px; }
-}
