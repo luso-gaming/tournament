@@ -1,45 +1,518 @@
-        body {
-            line-height: 1.6;
-        }
+/* =====================
+   VARIABLES
+===================== */
+:root {
+  --bg:            #201E1F;
+  --bg-card:       #272425;
+  --bg-raised:     #2e2b2c;
+  --bg-surface:    #333031;
+  --accent:        #DAFF02;
+  --accent-dim:    rgba(218,255,2,0.08);
+  --orange:        #FE572A;
+  --text:          #f1f0ed;
+  --text-muted:    #9b9aa3;
+  --text-faint:    #55545e;
+  --border:        rgba(255,255,255,0.07);
+  --border-accent: rgba(218,255,2,0.22);
+  --danger:        #f87171;
+  --warning:       #fb923c;
+  --yellow:        #facc15;
+  --purple:        #c084fc;
+  --success:       #4ade80;
+  --tap-min:       48px;
 
-        .container {
-            max-width: 900px;
-            margin: 10px auto;
-            background:rgba(14, 14, 14, 0.841);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.08);
-        }
+  /* severity colors */
+  --minor-bg:     rgba(250,204,21,0.06);
+  --minor-border: rgba(250,204,21,0.2);
+  --minor-accent: #facc15;
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #f5f1f1;
-        }
+  --moderate-bg:     rgba(251,146,60,0.06);
+  --moderate-border: rgba(251,146,60,0.2);
+  --moderate-accent: #fb923c;
 
-        .h2 {
-            margin-top: 30px;
-            color: #f8f8f8;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 5px;
-        }
+  --major-bg:     rgba(248,113,113,0.07);
+  --major-border: rgba(248,113,113,0.25);
+  --major-accent: #f87171;
 
-        ul {
-            margin-top: 10px;
-            padding-left: 20px;
-        }
+  --misuse-bg:     rgba(192,132,252,0.06);
+  --misuse-border: rgba(192,132,252,0.2);
+  --misuse-accent: #c084fc;
+}
 
-        li {
-            margin-bottom: 8px;
-        }
+/* =====================
+   RESET
+===================== */
+*, *::before, *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { opacity: 0.8; text-decoration: underline; }
+strong { color: var(--text); }
 
-        .section {
-            margin-bottom: 25px;
-        }
+/* =====================
+   SCROLL REVEAL
+===================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.revealed { opacity: 1; transform: none; }
 
-        .note {
-            margin-top: 30px;
-            padding: 15px;
-            background: #242438;
-            border-left: 4px solid #444;
-        }
+/* =====================
+   HERO — mobile first
+===================== */
+.pun-main { padding-bottom: 80px; }
+
+.pun-hero {
+  position: relative;
+  padding: 44px 16px 36px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: linear-gradient(155deg, #1f0000 0%, var(--bg) 55%);
+}
+
+.pun-hero-bg {
+  position: absolute;
+  right: -10px; bottom: -30px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 90px;
+  color: rgba(248,113,113,0.04);
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
+.pun-hero-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pun-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--danger);
+  margin-bottom: 12px;
+}
+
+.eyebrow-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.eyebrow-dot.red { background: var(--danger); animation: blink 1.5s ease-in-out infinite; }
+
+@keyframes blink {
+  0%,100% { opacity:1; }
+  50%      { opacity:0.3; }
+}
+
+.pun-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.pun-intro {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+/* Severity legend */
+.severity-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-dot.yellow { background: var(--yellow); }
+.legend-dot.orange { background: var(--warning); }
+.legend-dot.red    { background: var(--danger); }
+.legend-dot.purple { background: var(--purple); }
+
+/* =====================
+   BODY
+===================== */
+.pun-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* =====================
+   VIOLATION CARD — base
+===================== */
+.violation-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+/* severity themes */
+.violation-card.minor   { background: var(--minor-bg);    border-color: var(--minor-border); }
+.violation-card.moderate{ background: var(--moderate-bg); border-color: var(--moderate-border); }
+.violation-card.major   { background: var(--major-bg);    border-color: var(--major-border); }
+.violation-card.misuse  { background: var(--misuse-bg);   border-color: var(--misuse-border); }
+
+/* Card header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+}
+
+.card-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.2;
+}
+
+.minor   .card-num { color: var(--minor-accent); }
+.moderate .card-num { color: var(--moderate-accent); }
+.major   .card-num { color: var(--major-accent); }
+.misuse  .card-num { color: var(--misuse-accent); }
+
+.card-header-body { flex: 1; }
+
+/* severity badges */
+.severity-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.yellow-badge { background: rgba(250,204,21,0.12); color: var(--yellow);  border: 1px solid rgba(250,204,21,0.25); }
+.orange-badge { background: rgba(251,146,60,0.12); color: var(--warning); border: 1px solid rgba(251,146,60,0.25); }
+.red-badge    { background: rgba(248,113,113,0.12);color: var(--danger);  border: 1px solid rgba(248,113,113,0.25); }
+.purple-badge { background: rgba(192,132,252,0.12);color: var(--purple);  border: 1px solid rgba(192,132,252,0.25); }
+
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.card-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* Card body */
+.card-body { padding: 20px; }
+
+.two-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Violation & punishment blocks */
+.violation-block, .punishment-block {
+  flex: 1;
+}
+
+.block-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.block-label::before {
+  content: '';
+  width: 16px; height: 1px;
+  background: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.red-label { color: var(--danger); }
+.red-label::before { background: var(--danger); }
+
+.violation-block ul,
+.punishment-block ul {
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.violation-block li,
+.punishment-block li {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.violation-block li::marker { color: var(--text-faint); }
+.punishment-block li::marker { color: var(--danger); }
+
+/* =====================
+   ADMIN CARD
+===================== */
+.admin-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(218,255,2,0.04);
+}
+
+.admin-icon { font-size: 26px; flex-shrink: 0; }
+
+.admin-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.admin-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-points {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-point {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.ap-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.admin-point p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* =====================
+   AGREEMENT NOTE
+===================== */
+.agreement-note {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: rgba(218,255,2,0.04);
+  border: 1px solid rgba(218,255,2,0.15);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.note-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+
+.note-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+.note-body p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* =====================
+   APPEAL ROW
+===================== */
+.appeal-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding-bottom: 20px;
+}
+
+.appeal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  align-items: center;
+  transition: border-color 0.2s;
+}
+
+.appeal-card:hover { border-color: var(--border-accent); }
+
+.appeal-icon { font-size: 22px; margin-bottom: 4px; }
+
+.appeal-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+
+.appeal-link {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.appeal-link:hover { text-decoration: underline; opacity: 1; }
+
+/* =====================
+   FOOTER
+===================== */
+.pun-footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 24px 16px;
+  margin-top: 48px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2px;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); opacity: 1; text-decoration: none; }
+.footer-links span    { color: var(--text-faint); font-size: 12px; }
+
+.footer-copy {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-family: 'Space Mono', monospace;
+}
+
+/* =====================
+   TABLET — 600px+
+===================== */
+@media (min-width: 600px) {
+  .pun-hero   { padding: 56px 28px 44px; }
+  .pun-title  { font-size: 72px; }
+  .pun-hero-bg { font-size: 160px; }
+  .pun-body   { padding: 32px 24px 0; }
+
+  .two-col    { flex-direction: row; }
+
+  .appeal-row { grid-template-columns: repeat(3, 1fr); }
+
+  .card-header { padding: 20px 24px; }
+  .card-body   { padding: 22px 24px; }
+}
+
+/* =====================
+   DESKTOP — 1024px+
+===================== */
+@media (min-width: 1024px) {
+  .pun-hero    { padding: 64px 40px 52px; }
+  .pun-title   { font-size: 88px; }
+  .pun-hero-bg { font-size: 220px; bottom: -50px; }
+  .pun-body    { padding: 40px 32px 0; }
+
+  @media (hover: hover) {
+    .violation-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .violation-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+  }
+}

@@ -112,6 +112,8 @@ body {
    NO TOURNAMENT
 ===================== */
 .no-tournament {
+  display: flex;
+  flex-direction: column;
   max-width: 420px;
   margin: 60px auto;
   padding: 40px 20px;
