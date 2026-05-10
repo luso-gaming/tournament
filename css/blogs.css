@@ -34,6 +34,161 @@ body {
   overflow-x: hidden;
 }
 
+/* ===== BLOG PAGE GLOBAL ===== */
+body {
+    background: #201E1F;
+    color: #e2e8f0;
+    font-family: Arial, sans-serif;
+    line-height: 1.7;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Headings */
+h1 {
+    font-size: 34px;
+    color: #DAFF02;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: #DAFF02;
+    font-size: 22px;
+}
+
+/* Paragraph */
+p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* Meta text */
+p b {
+    color: #94a3b8;
+}
+
+/* BACK BUTTON LEFT */
+.back-btn {
+  width: max-content;
+  margin: 10px;
+  padding: 10px 20px;
+  background: #201E1F;
+  color: #DAFF02;
+  border: 2px solid #c7ea00;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+
+.back-btn:hover {
+    background: #DAFF02;
+    color: #000;
+}
+
+/* Links */
+a {
+    color: #639efc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #166af2;
+}
+
+/* Images (for future use) */
+.blog-image {
+    width: 100%;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+/* List Styling */
+ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+.device-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: #020617;
+    color: white;
+}
+
+.device-table th, .device-table td {
+    padding: 12px;
+    border-bottom: 1px solid #1e293b;
+    text-align: left;
+}
+
+.device-table th {
+    background: #DAFF02;
+    color: #000;
+}
+
+.device-table tr:hover {
+    background: #1e293b;
+}
+
+/* Blog Featured Image */
+.container img {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    
+    border-radius: 12px;
+    object-fit: cover;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect (optional but looks premium) */
+.container img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .container img {
+        margin: 15px auto;
+        border-radius: 10px;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+}
+
 /* =====================
    ARTICLE HERO — full bleed image with overlay
 ===================== */
@@ -203,6 +358,8 @@ body {
   min-width: 0;
 }
 
+
+
 /* ── Hero image inside article (fallback/mobile) ── */
 .article-hero-img {
   width: 100%;
@@ -267,6 +424,8 @@ body {
   transition: text-decoration-color 0.2s;
 }
 .article-content a:hover { text-decoration-color: var(--accent); }
+
+
 
 /* ── tip list ── */
 .tip-list {

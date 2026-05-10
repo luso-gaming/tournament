@@ -39,8 +39,13 @@
   import { supabase } from "/js/supabase.js";
 
   async function handleAuthRedirect() {
-    const { data: { session }, error } = await supabase.auth.getSession();
 
+    const {
+      data: { session },
+      error
+    } = await supabase.auth.getSession();
+
+    // ❌ NOT LOGGED IN
     if (error || !session) {
       window.location.href = "/login.html";
       return;
@@ -48,15 +53,24 @@
 
     const user = session.user;
 
-    // 🔍 CHECK IF PROFILE EXISTS
-    let { data: profile, error: profileError } = await supabase
+    // 🔍 CHECK PROFILE
+    let {
+      data: profile,
+      error: profileError
+    } = await supabase
       .from("profiles")
-      .select("id, status")
+      .select(`
+        id,
+        status,
+        team_name,
+        in_game_name
+      `)
       .eq("id", user.id)
       .maybeSingle();
 
     // 🆕 CREATE PROFILE IF NOT EXISTS
     if (!profile) {
+
       const { error: insertError } = await supabase
         .from("profiles")
         .insert({
@@ -71,20 +85,41 @@
         return;
       }
 
-      // reload profile after insert
-      profile = { status: "active" };
+      // TEMP PROFILE OBJECT
+      profile = {
+        status: "active",
+        team_name: null,
+        in_game_name: null
+      };
     }
 
-    // 🚫 CHECK STATUS
+    // 🚫 ACCOUNT STATUS CHECK
     if (profile.status !== "active") {
+
       alert("Your account is suspended or deactivated.");
 
       await supabase.auth.signOut();
+
       window.location.href = "/login.html";
       return;
     }
 
-    // ✅ SUCCESS → REDIRECT
+    // 🧾 CHECK PROFILE COMPLETION
+    const hasTeam =
+      profile.team_name &&
+      profile.team_name.trim() !== "";
+
+    const hasIgn =
+      profile.in_game_name &&
+      profile.in_game_name.trim() !== "";
+
+    // 👤 NEW USER
+    if (!hasTeam || !hasIgn) {
+      window.location.href = "/complete-profile.html";
+      return;
+    }
+
+    // ✅ EXISTING USER
     window.location.href = "/index.html";
   }
 
