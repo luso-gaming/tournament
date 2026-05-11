@@ -10,51 +10,174 @@ if (!session) {
 
 const userId = session.user.id;
 
-document
-  .getElementById("saveBtn")
-  .addEventListener("click", async () => {
+const saveBtn = document.getElementById("saveBtn");
+const messageBox = document.getElementById("formMessage");
 
-    const teamName =
-      document.getElementById("teamName")
-      .value
-      .trim();
+function resetButton() {
 
-    const ign =
-      document.getElementById("ign")
-      .value
-      .trim();
+  saveBtn.classList.remove(
+    "success",
+    "loading",
+    "error",
+    "retry"
+  );
 
-    if (!teamName || !ign) {
-      alert("All fields are required");
-      return;
-    }
+}
 
-    // CHECK UNIQUE TEAM NAME
-    const { data: existingTeam } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("team_name", teamName)
-      .neq("id", userId)
-      .maybeSingle();
+saveBtn.addEventListener("click", async () => {
 
-    if (existingTeam) {
-      alert("Team name already taken");
-      return;
-    }
+  const teamName =
+    document.getElementById("teamName")
+    .value
+    .trim();
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        team_name: teamName,
-        in_game_name: ign
-      })
-      .eq("id", userId);
+  const ign =
+    document.getElementById("ign")
+    .value
+    .trim();
 
-    if (error) {
-      alert("Error saving profile");
-      console.error(error);
-      return;
-    }
+  resetButton();
 
+  messageBox.classList.remove(
+    "success-message",
+    "error-message"
+  );
+
+  // EMPTY CHECK
+
+  if (!teamName || !ign) {
+
+    saveBtn.classList.add("error");
+
+    messageBox.innerHTML =
+      "<p>Please fill all fields.</p>";
+
+    messageBox.classList.add("error-message");
+
+    setTimeout(() => {
+
+      saveBtn.classList.remove("error");
+      saveBtn.classList.add("retry");
+
+    }, 700);
+
+    return;
+  }
+
+  // LOADING
+
+  saveBtn.classList.add("loading");
+
+  // CHECK TEAM
+
+  const { data: existingTeam } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("team_name", teamName)
+    .neq("id", userId)
+    .maybeSingle();
+
+  if (existingTeam) {
+
+    resetButton();
+
+    saveBtn.classList.add("error");
+
+    let countdown = 5;
+
+    messageBox.innerHTML =
+      `<p>Team name already taken. Try again in ${countdown}s</p>`;
+
+    messageBox.classList.add("error-message");
+
+    const timer = setInterval(() => {
+
+      countdown--;
+
+      messageBox.innerHTML =
+        `<p>Team name already taken. Try again in ${countdown}s</p>`;
+
+      if (countdown <= 0) {
+
+        clearInterval(timer);
+
+        resetButton();
+
+        saveBtn.classList.add("retry");
+
+        messageBox.innerHTML =
+          "<p>Please try another team name.</p>";
+
+      }
+
+    }, 1000);
+
+    return;
+  }
+
+  // SAVE PROFILE
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      team_name: teamName,
+      in_game_name: ign
+    })
+    .eq("id", userId);
+
+  resetButton();
+
+  // SAVE ERROR
+
+  if (error) {
+
+    console.error(error);
+
+    saveBtn.classList.add("error");
+
+    let countdown = 5;
+
+    messageBox.innerHTML =
+      `<p>Error saving profile. Try again in ${countdown}s</p>`;
+
+    messageBox.classList.add("error-message");
+
+    const timer = setInterval(() => {
+
+      countdown--;
+
+      messageBox.innerHTML =
+        `<p>Error saving profile. Try again in ${countdown}s</p>`;
+
+      if (countdown <= 0) {
+
+        clearInterval(timer);
+
+        resetButton();
+
+        saveBtn.classList.add("retry");
+
+        messageBox.innerHTML =
+          "<p>Please try again.</p>";
+
+      }
+
+    }, 1000);
+
+    return;
+  }
+
+  // SUCCESS
+
+  saveBtn.classList.add("success");
+
+  messageBox.innerHTML =
+    "<p>Profile completed successfully.</p>";
+
+  messageBox.classList.add("success-message");
+
+  setTimeout(() => {
     window.location.href = "/index.html";
+  }, 1500);
+
 });

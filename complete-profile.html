@@ -16,7 +16,46 @@
   <input type="text" id="teamName" placeholder="Team Name">
   <input type="text" id="ign" placeholder="In Game Name">
 
-  <button id="saveBtn">Save Profile</button>
+      <button id="saveBtn" tabindex="0">
+      
+        <span class="btn-default">SUBMIT</span>
+      
+        <span class="btn-success">
+          <svg xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#0e418f"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+      
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+      
+          Saved
+        </span>
+      
+        <span class="btn-loading">
+          SAVING...
+        </span>
+      
+        <span class="btn-error">
+          ERROR
+        </span>
+      
+        <span class="btn-retry">
+          TRY AGAIN
+        </span>
+      
+      </button>
+      <div>
+        <div class="description" id="formMessage">
+          <p></p>
+        </div>
+      </div>
+  
 </div>
 <!-- -->
 <script type="module" src="/js/complete-profile.js"></script>
