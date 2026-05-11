@@ -94,7 +94,7 @@ button .btn-default{
 /* SUCCESS */
 
 button.success{
-  background:#d4ff00;
+  background:#00ff59;
 }
 
 button.success .btn-default{
@@ -105,13 +105,13 @@ button.success .btn-default{
 button.success .btn-success{
   opacity:1;
   transform:translate(-50%, -50%);
-  color:#0e418f;
+  color:#201E1F;
 }
 
 /* LOADING */
 
 button.loading{
-  background:#b5ccf3;
+  background:#d9ff00;
   pointer-events:none;
 }
 
@@ -121,7 +121,7 @@ button.loading .btn-default{
 
 button.loading .btn-loading{
   opacity:1;
-  color:#0e418f;
+  color:#201E1F;
 }
 
 /* ERROR */
@@ -146,12 +146,18 @@ button.retry{
   background:#ff9500;
 }
 
+button.retry .btn-default{
+  opacity:0;
+  transform:translate(-50%, -150%);
+}
+
 button.retry .btn-error{
   opacity:0;
 }
 
 button.retry .btn-retry{
   opacity:1;
+  transform:translate(-50%, -50%);
   color:white;
 }
 
