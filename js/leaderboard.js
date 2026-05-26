@@ -1,14 +1,14 @@
 import { supabase } from "/js/supabase.js";
 
 let currentMode = "season";
-let currentTypeFilter = "all";   // NEW: all | elite | pro | legend
-let leaderboardData = [];        // full sorted data for current mode+filter
+let currentTypeFilter = "all";
+let leaderboardData = [];
 let timerInterval;
 
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
   setupToggle();
-  setupTypeFilters();   // NEW
+  setupTypeFilters();
   loadSeasonLeaderboard();
   loadSeasonInfoBox();
 });
@@ -52,10 +52,8 @@ function setupTypeFilters() {
     chip.addEventListener("click", () => {
       chips.forEach(c => c.classList.remove("active"));
       chip.classList.add("active");
-
       currentTypeFilter = chip.dataset.type;
 
-      // Reload with new filter
       if (currentMode === "season") {
         loadSeasonLeaderboard();
       } else {
@@ -80,7 +78,6 @@ async function loadSeasonLeaderboard() {
     return;
   }
 
-  // Build tournament query with optional type filter
   let tourneyQuery = supabase
     .from("tournaments")
     .select("id, type")
@@ -98,21 +95,23 @@ async function loadSeasonLeaderboard() {
     return;
   }
 
+  // FIX: also fetch user_id so we can resolve current team names
   const { data: results } = await supabase
     .from("match_results")
-    .select("team_name, kills, total_points")
+    .select("user_id, team_name, kills, total_points")
     .in("tournament_id", ids);
 
-  buildLeaderboard(results || []);
+  const resolvedResults = await resolveTeamNames(results || []);
+  buildLeaderboard(resolvedResults);
 }
 
 /* ================= WEEKLY LEADERBOARD ================= */
 async function loadWeeklyLeaderboard() {
   showLeaderboardSkeleton();
 
+  // FIX: use the corrected IST week range
   const { start, end } = getISTWeekRange();
 
-  // Build tournament query with optional type filter
   let tourneyQuery = supabase
     .from("tournaments")
     .select("id, type")
@@ -131,9 +130,10 @@ async function loadWeeklyLeaderboard() {
     return;
   }
 
+  // FIX: also fetch user_id so we can resolve current team names
   const { data: results } = await supabase
     .from("match_results")
-    .select("*")
+    .select("user_id, team_name, kills, total_points")
     .in("tournament_id", ids);
 
   if (!results || results.length === 0) {
@@ -141,7 +141,34 @@ async function loadWeeklyLeaderboard() {
     return;
   }
 
-  buildLeaderboard(results);
+  const resolvedResults = await resolveTeamNames(results);
+  buildLeaderboard(resolvedResults);
+}
+
+/* ================= RESOLVE CURRENT TEAM NAMES ================= */
+// FIX: Look up the latest team_name from profiles using user_id.
+// Falls back to the stored team_name if user_id is missing or profile not found.
+async function resolveTeamNames(results) {
+  // Collect unique user_ids that exist
+  const userIds = [...new Set(results.map(r => r.user_id).filter(Boolean))];
+
+  if (userIds.length === 0) return results; // no user_ids stored, use old names as-is
+
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, team_name")
+    .in("id", userIds);
+
+  if (!profiles || profiles.length === 0) return results;
+
+  const profileMap = {};
+  profiles.forEach(p => { profileMap[p.id] = p.team_name; });
+
+  return results.map(r => ({
+    ...r,
+    // Use current team_name from profile if available, otherwise keep stored name
+    team_name: (r.user_id && profileMap[r.user_id]) ? profileMap[r.user_id] : r.team_name
+  }));
 }
 
 /* ================= BUILD LEADERBOARD ================= */
@@ -149,22 +176,19 @@ function buildLeaderboard(results) {
   const map = {};
 
   results.forEach(r => {
-    if (!map[r.team_name]) {
-      map[r.team_name] = { team: r.team_name, kills: 0, points: 0 };
+    const key = r.team_name;
+    if (!map[key]) {
+      map[key] = { team: key, kills: 0, points: 0 };
     }
-    map[r.team_name].kills  += r.kills || 0;
-    map[r.team_name].points += r.total_points || 0;
+    map[key].kills  += r.kills || 0;
+    map[key].points += r.total_points || 0;
   });
 
   leaderboardData = Object.values(map).sort((a, b) => b.points - a.points);
-
   const top50 = leaderboardData.slice(0, 50);
 
-  // Update count label
   const countEl = document.getElementById("lbCount");
-  if (countEl) {
-    countEl.textContent = `Top ${top50.length} teams`;
-  }
+  if (countEl) countEl.textContent = `Top ${top50.length} teams`;
 
   renderLeaderboard(top50);
   showUserRank(leaderboardData);
@@ -190,35 +214,29 @@ function renderLeaderboard(data) {
     row.className = "leaderboard-row";
     row.style.animationDelay = `${index * 30}ms`;
 
-    // rank class for top 3
     if (index === 0) row.classList.add("rank-1");
     if (index === 1) row.classList.add("rank-2");
     if (index === 2) row.classList.add("rank-3");
 
-    // Rank cell
     const rankSpan = document.createElement("span");
     rankSpan.className = "rank";
     const medals = ["🥇","🥈","🥉"];
     rankSpan.textContent = index < 3 ? medals[index] : `#${index + 1}`;
     row.appendChild(rankSpan);
 
-    // Team cell
     const teamCol = document.createElement("span");
     teamCol.className = "team-col";
-
     const teamName = document.createElement("span");
     teamName.className = "team-name";
     teamName.textContent = team.team;
     teamCol.appendChild(teamName);
     row.appendChild(teamCol);
 
-    // Kills
     const killsSpan = document.createElement("span");
     killsSpan.className = "kills";
     killsSpan.textContent = team.kills;
     row.appendChild(killsSpan);
 
-    // Points
     const ptsSpan = document.createElement("span");
     ptsSpan.className = "totalPoint";
     ptsSpan.textContent = team.points + " pts";
@@ -260,7 +278,6 @@ async function loadSeasonInfoBox() {
     });
   }
 
-  // Use textContent-safe approach
   infoEl.innerHTML = "";
 
   const title = document.createElement("span");
@@ -303,8 +320,8 @@ function startWeeklyTimer() {
   }
 
   function updateTimer() {
-    const diff     = getNextResetTime() - new Date();
-    const infoEl   = document.getElementById("infoText");
+    const diff   = getNextResetTime() - new Date();
+    const infoEl = document.getElementById("infoText");
 
     if (diff <= 0 && !hasReset) {
       hasReset = true;
@@ -340,7 +357,7 @@ function startWeeklyTimer() {
 
 /* ================= USER RANK ================= */
 async function showUserRank(fullData) {
-  const rankEl    = document.getElementById("userRankText");
+  const rankEl = document.getElementById("userRankText");
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -359,7 +376,10 @@ async function showUserRank(fullData) {
     return;
   }
 
-  const index = fullData.findIndex(t => t.team === profile.team_name);
+  // FIX: compare against the already-resolved current team names in fullData
+  const index = fullData.findIndex(
+    t => t.team.toLowerCase() === profile.team_name.toLowerCase()
+  );
 
   if (index === -1) {
     rankEl.textContent = currentMode === "weekly" ? "No participation this week" : "Unranked";
@@ -399,33 +419,37 @@ function showLeaderboardSkeleton(rows = 10) {
 }
 
 /* ================= IST WEEK RANGE ================= */
+// FIX: Rewritten to correctly compute the current IST week boundaries in UTC
 function getISTWeekRange() {
-  const now       = new Date();
-  const istOffset = 5.5 * 60 * 60 * 1000;
-  const istNow    = new Date(now.getTime() + istOffset);
+  const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+  const RESET_HOUR = 5, RESET_MINUTE = 30;
 
-  const resetHour = 5, resetMinute = 30;
+  // Current time in IST
+  const nowUTC = new Date();
+  const istNow = new Date(nowUTC.getTime() + IST_OFFSET_MS);
 
-  if (
-    istNow.getHours() < resetHour ||
-    (istNow.getHours() === resetHour && istNow.getMinutes() < resetMinute)
-  ) {
-    istNow.setDate(istNow.getDate() - 1);
+  // If before 5:30 AM IST, treat as previous day (week hasn't reset yet)
+  const resetMinutesOfDay = RESET_HOUR * 60 + RESET_MINUTE;
+  const istMinutesOfDay   = istNow.getUTCHours() * 60 + istNow.getUTCMinutes();
+
+  if (istMinutesOfDay < resetMinutesOfDay) {
+    istNow.setUTCDate(istNow.getUTCDate() - 1);
   }
 
-  const day  = istNow.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
+  // Find Monday of the current IST week
+  const dayOfWeek = istNow.getUTCDay(); // 0=Sun, 1=Mon, ...
+  const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 
+  // Monday at 05:30 IST = Monday at 00:00 UTC
   const monday = new Date(istNow);
-  monday.setDate(istNow.getDate() + diff);
-  monday.setHours(resetHour, resetMinute, 0, 0);
+  monday.setUTCDate(istNow.getUTCDate() - daysFromMonday);
+  monday.setUTCHours(RESET_HOUR, RESET_MINUTE, 0, 0);
 
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 7);
-  sunday.setHours(5, 29, 59, 999);
+  // Convert to UTC: subtract IST offset
+  const startUTC = new Date(monday.getTime() - IST_OFFSET_MS);
 
-  const startUTC = new Date(monday.getTime() - istOffset);
-  const endUTC   = new Date(sunday.getTime() - istOffset);
+  // Sunday at 05:29:59.999 IST = next Monday at 05:30 IST minus 1ms
+  const endUTC = new Date(startUTC.getTime() + 7 * 24 * 60 * 60 * 1000 - 1);
 
   return { start: startUTC.toISOString(), end: endUTC.toISOString() };
 }
