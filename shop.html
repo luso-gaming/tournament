@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registered Teams</title>
-    <meta name="description" content="Luso Esports organizes free BGMI tournaments with fair play, live leaderboards, team registrations, and transparent results for Indian gamers.">
-    <meta name="keywords" content="Luso Esports, BGMI tournament, free BGMI tournament, BGMI leaderboard, esports India, BGMI teams, online BGMI competition">
+    <title>Spin & Win – Luso Esports</title>
+    <meta name="description" content="Spin the wheel and win discounts on your BGMI tournament entry fee at Luso Esports.">
+    <meta name="keywords" content="Luso Esports, BGMI tournament, spin wheel, discount, esports India">
     <meta name="author" content="Luso Esports">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.lusoesports.in/teams.html">
-    
+    <link rel="canonical" href="https://www.lusoesports.in/spin.html">
+
     <!-- OPEN GRAPH -->
-    <meta property="og:title" content="Teams – Luso Esports">
-    <meta property="og:description" content="Explore registered teams, squads, and player lineups participating in BGMI tournaments on Luso Esports.">
+    <meta property="og:title" content="Spin & Win – Luso Esports">
+    <meta property="og:description" content="Spin the wheel and win up to 50% off your tournament entry fee.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.lusoesports.in/teams.html">
+    <meta property="og:url" content="https://www.lusoesports.in/spin.html">
     <meta property="og:image" content="https://www.lusoesports.in/assets/og-image.jpg">
     <meta property="og:image:type" content="image/png">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
-    
+
     <!-- PAGE CSS -->
-    <link rel="stylesheet" href="css/shop.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/shop.css">
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966566597501065"
-     crossorigin="anonymous"></script>
+    <!-- Google Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966566597501065" crossorigin="anonymous"></script>
 
-        <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S91PP8ZTL"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-7S91PP8ZTL');
     </script>
 </head>
@@ -43,34 +42,84 @@
 
     <!-- SIDEBAR -->
     <div id="sidebar-container"></div>
-<main>
-    <!-- REGISTERED TEAMS -->
-    <div class="construction-container">
-      <h1>This Page Is Under Construction</h1>
-    </div>
-    
-    <!-- Strip 1 -->
-    <div class="marquee-wrapper top-strip">
-      <div class="marquee">
-        UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION •
-      </div>
-    </div>
-    
-    <!-- Strip 2 -->
-    <div class="marquee-wrapper bottom-strip">
-      <div class="marquee">
-        UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION •
-      </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="spin-page">
+
+        <!-- SPIN CARD -->
+        <section class="spin-card">
+
+            <div class="card-header">
+                <p class="card-eyebrow">Limited time offer</p>
+                <h1 class="card-title">Spin & Win</h1>
+                <p class="card-sub">Win up to <strong>50% off</strong> your tournament entry fee</p>
+            </div>
+
+            <!-- SPINS COUNTER -->
+            <div class="spins-badge" id="spinsBadge">
+                <span class="spins-icon">🎯</span>
+                <span id="spinsText">Checking spins...</span>
+            </div>
+
+            <!-- WHEEL -->
+            <div class="wheel-area">
+                <div class="wheel-glow"></div>
+                <div class="pointer-wrap">
+                    <div class="pointer"></div>
+                </div>
+                <canvas id="wheelCanvas" width="320" height="320"></canvas>
+                <div class="wheel-center"></div>
+            </div>
+
+            <!-- SPIN BUTTON -->
+            <button class="spin-btn" id="spinBtn">
+                <span class="btn-text">Spin Now</span>
+                <span class="btn-loader" id="btnLoader" style="display:none">
+                    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                </span>
+            </button>
+
+        </section>
+
+        <!-- RESULT PANEL -->
+        <section class="result-panel" id="resultPanel" style="display:none">
+            <div class="result-inner">
+                <div class="confetti-row" id="confettiRow"></div>
+                <p class="result-eyebrow">You won</p>
+                <div class="result-discount" id="resultDiscount"></div>
+                <p class="result-desc">Use this coupon when registering for any tournament</p>
+                <div class="coupon-box">
+                    <span class="coupon-code" id="couponCode"></span>
+                    <button class="copy-btn" id="copyBtn" title="Copy code">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="copy-confirm" id="copyConfirm" style="display:none">✓ Copied to clipboard</p>
+                <p class="result-expires">Coupon expires in 30 days</p>
+            </div>
+        </section>
+
+        <!-- COUPON HISTORY -->
+        <section class="history-section" id="historySection" style="display:none">
+            <h2 class="history-title">Your Coupons</h2>
+            <div class="history-list" id="historyList"></div>
+        </section>
+
+    </main>
+
+    <!-- POPUP OVERLAY -->
+    <div class="spin-popup-overlay" id="spinPopup">
+        <div class="spin-popup">
+            <div class="popup-icon" id="popupIcon"></div>
+            <h3 class="popup-title" id="popupTitle"></h3>
+            <p class="popup-msg" id="popupMsg"></p>
+            <button class="popup-btn" id="popupClose"></button>
+        </div>
     </div>
 
-    <!-- Strip 1 -->
-    <div class="marquee-wrapper trd-strip">
-      <div class="marquee">
-        UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION •
-      </div>
-    </div>
-    
-</main>
     <!-- FOOTER -->
     <footer>
         <div class="footer-links">
@@ -82,16 +131,14 @@
             <span>|</span>
             <a href="/contact.html">Contact</a>
         </div>
-
-        <p class="footer-copy">
-            © 2026 Luso Esports. All rights reserved.
-        </p>
+        <p class="footer-copy">© 2026 Luso Esports. All rights reserved.</p>
     </footer>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPTS — same order as your other pages -->
     <script type="module" src="js/sidebar.js"></script>
     <script type="module" src="js/sidebar-loader.js"></script>
-    <script type="module" src="js/shop.js"></script>    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="js/shop.js"></script>
+    <script type="module" src="/js/auth.js"></script>
     <script type="module" src="/js/auth-ui.js"></script>
 
 </body>
