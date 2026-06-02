@@ -189,8 +189,10 @@ async function loadHistory() {
 // ─── LOAD USER & SPINS ────────────────────────────────────
 async function loadUserData() {
   const { data: { user } } = await supabase.auth.getUser();
-
+ console.log("USER:", user);
   if (!user) {
+
+    console.log("NO USER FOUND");
     // Not logged in — page still loads, spins badge shows hint
     currentUser = null;
     updateSpinsUI(0);
