@@ -1,4 +1,19 @@
 import { supabase } from "/js/supabase.js";
+
+window.onerror = function (message, source, lineno, colno, error) {
+  console.error("🚨 JS CRASH");
+  console.error("Message:", message);
+  console.error("Source:", source);
+  console.error("Line:", lineno);
+  console.error("Column:", colno);
+  console.error("Error:", error);
+};
+
+window.addEventListener("unhandledrejection", (event) => {
+  console.error("🚨 PROMISE ERROR");
+  console.error(event.reason);
+});
+
 console.log("✅ Logged in 1");
 const SLICES = [
   { label: '10%', discount: 10, color: '#1a1f35', text: '#7eb8f7' },
