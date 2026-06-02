@@ -1,5 +1,5 @@
 import { supabase } from "/js/supabase.js";
-
+console.log("✅ Logged in 1");
 const SLICES = [
   { label: '10%', discount: 10, color: '#1a1f35', text: '#7eb8f7' },
   { label: '50%', discount: 50, color: '#2a1a10', text: '#ffb830' },
@@ -38,6 +38,7 @@ const popupMsg       = document.getElementById('popupMsg');
 const popupClose     = document.getElementById('popupClose');
 
 function showPopup(type) {
+  console.log("✅ Logged in 2");
   if (type === 'login') {
     popupIcon.textContent  = '🔒';
     popupTitle.textContent = 'Login to Spin';
@@ -64,6 +65,7 @@ function showPopup(type) {
 }
 
 function hidePopup() {
+  console.log("✅ Logged in 3");
   popup.classList.remove('show');
 }
 
@@ -77,7 +79,7 @@ function drawWheel(angle) {
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
   const r  = cx - 4;
-
+console.log("✅ Logged in 4");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   for (let i = 0; i < NUM_SLICES; i++) {
@@ -119,7 +121,7 @@ function animateToSlice(targetIndex, onComplete) {
   const targetAngle    = currentAngle
     - ((currentAngle + sliceMidAngle) % (2 * Math.PI))
     - (2 * Math.PI * extraFullSpins);
-
+console.log("✅ Logged in 5");
   const duration   = 4500;
   const startTime  = performance.now();
   const startAngle = currentAngle;
@@ -127,6 +129,7 @@ function animateToSlice(targetIndex, onComplete) {
   function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
 
   function frame(now) {
+    console.log("✅ Logged in 6");
     const elapsed  = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
     currentAngle   = startAngle + (targetAngle - startAngle) * easeOut(progress);
@@ -140,6 +143,7 @@ function animateToSlice(targetIndex, onComplete) {
 // ─── UPDATE SPINS BADGE ───────────────────────────────────
 function updateSpinsUI(count) {
   spinsAvailable = count;
+  console.log("✅ Logged in 7");
   if (!currentUser) {
     spinsText.innerHTML = 'Login to see your spins';
   } else if (count > 0) {
@@ -151,6 +155,7 @@ function updateSpinsUI(count) {
 
 // ─── SHOW RESULT PANEL ────────────────────────────────────
 function showResult(discount, couponCode) {
+  console.log("✅ Logged in 8");
   document.getElementById('resultDiscount').textContent = discount + '% off';
   document.getElementById('couponCode').textContent = couponCode;
   document.getElementById('confettiRow').textContent =
@@ -162,7 +167,7 @@ function showResult(discount, couponCode) {
 // ─── LOAD HISTORY ─────────────────────────────────────────
 async function loadHistory() {
   if (!currentUser) return;
-
+console.log("✅ Logged in 9");
   const { data, error } = await supabase
     .from('spin_history')
     .select('coupon_code, discount_percent, is_used, created_at')
@@ -171,7 +176,7 @@ async function loadHistory() {
     .limit(10);
 
   if (error || !data || data.length === 0) return;
-
+console.log("✅ Logged in 10");
   historySection.style.display = 'block';
   document.getElementById('historyList').innerHTML = data.map(row => `
     <div class="history-item">
@@ -189,7 +194,7 @@ async function loadHistory() {
 // ─── LOAD USER & SPINS ────────────────────────────────────
 async function loadUserData() {
   console.log("=== LOAD USER DATA START ===");
-
+console.log("✅ Logged in 11");
   const { data: { user }, error: userError } = await supabase.auth.getUser();
 
   console.log("USER:", user);
@@ -238,7 +243,7 @@ spinBtn.addEventListener('click', async () => {
     showPopup('nospins');
     return;
   }
-
+console.log("✅ Logged in 12");
   // ── Proceed with spin ──
   spinning = true;
   spinBtn.disabled = true;
@@ -273,6 +278,7 @@ spinBtn.addEventListener('click', async () => {
   const safeIndex   = winnerIndex >= 0 ? winnerIndex : 0;
 
   animateToSlice(safeIndex, async () => {
+    console.log("✅ Logged in 13");
     showResult(data.discount, data.coupon_code);
     updateSpinsUI(data.spins_remaining);
     spinning = false;
@@ -296,7 +302,7 @@ document.getElementById('copyBtn').addEventListener('click', () => {
 supabase.auth.onAuthStateChange(async (event, session) => {
   console.log("AUTH EVENT:", event);
   console.log("SESSION:", session);
-
+console.log("✅ Logged in 14");
   if (event === 'SIGNED_IN' && session?.user) {
     currentUser = session.user;
 
