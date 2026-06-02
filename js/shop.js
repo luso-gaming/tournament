@@ -188,12 +188,16 @@ async function loadHistory() {
 
 // ─── LOAD USER & SPINS ────────────────────────────────────
 async function loadUserData() {
-  const { data: { user } } = await supabase.auth.getUser();
- console.log("USER:", user);
-  if (!user) {
+  console.log("=== LOAD USER DATA START ===");
 
-    console.log("NO USER FOUND");
-    // Not logged in — page still loads, spins badge shows hint
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  console.log("USER:", user);
+  console.log("USER ERROR:", userError);
+
+  if (!user) {
+    console.log("❌ NO USER FOUND");
+
     currentUser = null;
     updateSpinsUI(0);
     return;
@@ -201,19 +205,22 @@ async function loadUserData() {
 
   currentUser = user;
 
-  console.log("Logged in user:", user.id);
+  console.log("✅ Logged in user:", user.id);
 
-const { data: spinData, error } = await supabase
-  .from('user_spins')
-  .select('*')
-  .eq('user_id', user.id)
-  .single();
+  const { data: spinData, error: spinError } = await supabase
+    .from('user_spins')
+    .select('*')
+    .eq('user_id', user.id)
+    .single();
 
-console.log("Spin Data:", spinData);
-console.log("Spin Error:", error);
+  console.log("SPIN DATA:", spinData);
+  console.log("SPIN ERROR:", spinError);
 
   updateSpinsUI(spinData?.spins_available ?? 0);
+
   await loadHistory();
+
+  console.log("=== LOAD USER DATA END ===");
 }
 
 // ─── SPIN BUTTON CLICK ────────────────────────────────────
@@ -287,24 +294,33 @@ document.getElementById('copyBtn').addEventListener('click', () => {
 // ─── LISTEN FOR AUTH CHANGES (login/logout in header) ─────
 // This makes the page react when user logs in via your header
 supabase.auth.onAuthStateChange(async (event, session) => {
+  console.log("AUTH EVENT:", event);
+  console.log("SESSION:", session);
+
   if (event === 'SIGNED_IN' && session?.user) {
     currentUser = session.user;
-    const { data: spinData } = await supabase
+
+    const { data: spinData, error } = await supabase
       .from('user_spins')
-      .select('spins_available')
+      .select('*')
       .eq('user_id', session.user.id)
       .single();
 
-      console.log('User ID:', user.id);
-      console.log('Spin Data:', spinData);
-      console.log('Error:', error);
-
+    console.log("SIGNED IN USER:", session.user.id);
+    console.log("SPIN DATA:", spinData);
+    console.log("SPIN ERROR:", error);
 
     updateSpinsUI(spinData?.spins_available ?? 0);
+
     await loadHistory();
-  } else if (event === 'SIGNED_OUT') {
+  }
+
+  if (event === 'SIGNED_OUT') {
+    console.log("❌ USER SIGNED OUT");
+
     currentUser = null;
     updateSpinsUI(0);
+
     historySection.style.display = 'none';
   }
 });
@@ -312,7 +328,11 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 // ─── INIT ─────────────────────────────────────────────────
 drawWheel(0);
 
-supabase.auth.getSession().then(async ({ data }) => {
-  console.log("Session:", data.session);
+(async () => {
+  const { data, error } = await supabase.auth.getSession();
+
+  console.log("SESSION DATA:", data);
+  console.log("SESSION ERROR:", error);
+
   await loadUserData();
-});
+})();
