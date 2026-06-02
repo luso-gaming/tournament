@@ -1,14 +1,5 @@
-/* ============================================================
-   spin.js  —  Spin Wheel with Supabase server-side logic
-   - Page is public (no redirect if not logged in)
-   - Clicking Spin while logged out → popup "Login to spin"
-   - Clicking Spin with 0 spins → popup "No spins left"
-   - Uses your existing dynamic header/login system
-   ============================================================ */
-
 import { supabase } from "/js/supabase.js";
 
-// ─── WHEEL SLICES (cosmetic only — Supabase decides winner) ──
 const SLICES = [
   { label: '10%', discount: 10, color: '#1a1f35', text: '#7eb8f7' },
   { label: '50%', discount: 50, color: '#2a1a10', text: '#ffb830' },
@@ -27,7 +18,7 @@ const SLICE_ARC  = (2 * Math.PI) / NUM_SLICES;
 let currentAngle   = 0;
 let spinning       = false;
 let spinsAvailable = 0;
-let currentUser    = null;   // null = not logged in
+let currentUser    = null;  
 
 // ─── DOM REFS ─────────────────────────────────────────────
 const canvas         = document.getElementById('wheelCanvas');
@@ -46,9 +37,7 @@ const popupTitle     = document.getElementById('popupTitle');
 const popupMsg       = document.getElementById('popupMsg');
 const popupClose     = document.getElementById('popupClose');
 
-// ─── POPUP ────────────────────────────────────────────────
 function showPopup(type) {
-  // type: 'login' | 'nospins' | 'error'
   if (type === 'login') {
     popupIcon.textContent  = '🔒';
     popupTitle.textContent = 'Login to Spin';
@@ -56,9 +45,6 @@ function showPopup(type) {
     popupClose.textContent = 'Login';
     popupClose.onclick     = () => {
       hidePopup();
-      // Triggers your existing auth-ui login modal
-      // Open your browser devtools → inspect the login button in your header
-      // and paste its class/id here. Common ones below — uncomment the right one:
       document.querySelector('.auth-login-btn, .login-btn, [data-auth="login"]')?.click();
     };
   } else if (type === 'nospins') {
@@ -213,11 +199,16 @@ async function loadUserData() {
 
   currentUser = user;
 
-  const { data: spinData } = await supabase
-    .from('user_spins')
-    .select('spins_available')
-    .eq('user_id', user.id)
-    .single();
+  console.log("Logged in user:", user.id);
+
+const { data: spinData, error } = await supabase
+  .from('user_spins')
+  .select('*')
+  .eq('user_id', user.id)
+  .single();
+
+console.log("Spin Data:", spinData);
+console.log("Spin Error:", error);
 
   updateSpinsUI(spinData?.spins_available ?? 0);
   await loadHistory();
@@ -301,6 +292,12 @@ supabase.auth.onAuthStateChange(async (event, session) => {
       .select('spins_available')
       .eq('user_id', session.user.id)
       .single();
+
+      console.log('User ID:', user.id);
+      console.log('Spin Data:', spinData);
+      console.log('Error:', error);
+
+
     updateSpinsUI(spinData?.spins_available ?? 0);
     await loadHistory();
   } else if (event === 'SIGNED_OUT') {
@@ -312,4 +309,8 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 
 // ─── INIT ─────────────────────────────────────────────────
 drawWheel(0);
-loadUserData();
+
+supabase.auth.getSession().then(async ({ data }) => {
+  console.log("Session:", data.session);
+  await loadUserData();
+});
