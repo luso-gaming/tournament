@@ -1,20 +1,6 @@
 import { supabase } from "/js/supabase.js";
 
-window.onerror = function (message, source, lineno, colno, error) {
-  console.error("🚨 JS CRASH");
-  console.error("Message:", message);
-  console.error("Source:", source);
-  console.error("Line:", lineno);
-  console.error("Column:", colno);
-  console.error("Error:", error);
-};
 
-window.addEventListener("unhandledrejection", (event) => {
-  console.error("🚨 PROMISE ERROR");
-  console.error(event.reason);
-});
-
-console.log("✅ Logged in 1");
 const SLICES = [
   { label: '10%', discount: 10, color: '#1a1f35', text: '#7eb8f7' },
   { label: '50%', discount: 50, color: '#2a1a10', text: '#ffb830' },
@@ -53,7 +39,6 @@ const popupMsg       = document.getElementById('popupMsg');
 const popupClose     = document.getElementById('popupClose');
 
 function showPopup(type) {
-  console.log("✅ Logged in 2");
   if (type === 'login') {
     popupIcon.textContent  = '🔒';
     popupTitle.textContent = 'Login to Spin';
@@ -80,11 +65,9 @@ function showPopup(type) {
 }
 
 function hidePopup() {
-  console.log("✅ Logged in 3");
   popup.classList.remove('show');
 }
 
-// Close popup when clicking the dark overlay
 popup.addEventListener('click', (e) => {
   if (e.target === popup) hidePopup();
 });
@@ -133,12 +116,6 @@ function drawWheel(angle) {
 function animateToSlice(targetIndex, onComplete) {
   const extraFullSpins = 5 + Math.floor(Math.random() * 4);
 
-  // Canvas 0° = 3 o'clock. Pointer is at top = -PI/2.
-  // Each slice i starts at: i * SLICE_ARC
-  // Slice center: i * SLICE_ARC + SLICE_ARC / 2
-  // We need slice center to land at top (-PI/2) after rotation.
-  // Final angle must satisfy: finalAngle + sliceCenter ≡ -PI/2 (mod 2PI)
-  // So: finalAngle = -PI/2 - sliceCenter - (full rotations)
 
   const sliceCenter = targetIndex * SLICE_ARC + SLICE_ARC / 2;
   const baseTarget  = -Math.PI / 2 - sliceCenter;
@@ -179,7 +156,6 @@ function animateToSlice(targetIndex, onComplete) {
 // ─── UPDATE SPINS BADGE ───────────────────────────────────
 function updateSpinsUI(count) {
   spinsAvailable = count;
-  console.log("✅ Logged in 7 fix 1");
   if (!currentUser) {
     spinsText.innerHTML = 'Login to see your spins';
   } else if (count > 0) {
@@ -191,7 +167,6 @@ function updateSpinsUI(count) {
 
 // ─── SHOW RESULT PANEL ────────────────────────────────────
 function showResult(discount, couponCode) {
-  console.log("✅ Logged in 8");
   document.getElementById('resultDiscount').textContent = discount + '% off';
   document.getElementById('couponCode').textContent = couponCode;
   document.getElementById('confettiRow').textContent =
@@ -203,7 +178,6 @@ function showResult(discount, couponCode) {
 // ─── LOAD HISTORY ─────────────────────────────────────────
 async function loadHistory() {
   if (!currentUser) return;
-console.log("✅ Logged in 9");
   const { data, error } = await supabase
     .from('spin_history')
     .select('coupon_code, discount_percent, is_used, created_at')
@@ -212,7 +186,6 @@ console.log("✅ Logged in 9");
     .limit(10);
 
   if (error || !data || data.length === 0) return;
-console.log("✅ Logged in 10");
   historySection.style.display = 'block';
   document.getElementById('historyList').innerHTML = data.map(row => `
     <div class="history-item">
@@ -229,15 +202,10 @@ console.log("✅ Logged in 10");
 
 // ─── LOAD USER & SPINS ────────────────────────────────────
 async function loadUserData() {
-  console.log("=== LOAD USER DATA START ===");
-console.log("✅ Logged in 11");
   const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-  console.log("USER:", user);
-  console.log("USER ERROR:", userError);
 
   if (!user) {
-    console.log("❌ NO USER FOUND");
 
     currentUser = null;
     updateSpinsUI(0);
@@ -246,7 +214,6 @@ console.log("✅ Logged in 11");
 
   currentUser = user;
 
-  console.log("✅ Logged in user:", user.id);
 
   const { data: spinData, error: spinError } = await supabase
     .from('user_spins')
@@ -254,14 +221,11 @@ console.log("✅ Logged in 11");
     .eq('user_id', user.id)
     .single();
 
-  console.log("SPIN DATA:", spinData);
-  console.log("SPIN ERROR:", spinError);
 
   updateSpinsUI(spinData?.spins_available ?? 0);
 
   await loadHistory();
 
-  console.log("=== LOAD USER DATA END ===");
 }
 
 // ─── SPIN BUTTON CLICK ────────────────────────────────────
@@ -279,7 +243,6 @@ spinBtn.addEventListener('click', async () => {
     showPopup('nospins');
     return;
   }
-console.log("✅ Logged in 12");
   // ── Proceed with spin ──
   spinning = true;
   spinBtn.disabled = true;
@@ -308,10 +271,6 @@ console.log("✅ Logged in 12");
     return;
   }
 
-  // Use slice_index from DB directly — guaranteed to match
-  console.log("DB discount:", data.discount);
-  console.log("DB slice_index:", data.slice_index);
-  console.log("JS slice at index:", SLICES[data.slice_index]);
 
   animateToSlice(data.slice_index, async () => {
     showResult(data.discount, data.coupon_code);
@@ -335,9 +294,6 @@ document.getElementById('copyBtn').addEventListener('click', () => {
 // ─── LISTEN FOR AUTH CHANGES (login/logout in header) ─────
 // This makes the page react when user logs in via your header
 supabase.auth.onAuthStateChange(async (event, session) => {
-  console.log("AUTH EVENT:", event);
-  console.log("SESSION:", session);
-console.log("✅ Logged in 14");
   if (event === 'SIGNED_IN' && session?.user) {
     currentUser = session.user;
 
@@ -347,9 +303,6 @@ console.log("✅ Logged in 14");
       .eq('user_id', session.user.id)
       .single();
 
-    console.log("SIGNED IN USER:", session.user.id);
-    console.log("SPIN DATA:", spinData);
-    console.log("SPIN ERROR:", error);
 
     updateSpinsUI(spinData?.spins_available ?? 0);
 
@@ -357,7 +310,6 @@ console.log("✅ Logged in 14");
   }
 
   if (event === 'SIGNED_OUT') {
-    console.log("❌ USER SIGNED OUT");
 
     currentUser = null;
     updateSpinsUI(0);
@@ -370,14 +322,12 @@ console.log("✅ Logged in 14");
 drawWheel(0);
 
 supabase.auth.onAuthStateChange(async (event, session) => {
-  console.log("AUTH EVENT:", event);
-  console.log("SESSION:", session);
+
 
   if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
 
     if (session?.user) {
       currentUser = session.user;
-      console.log("✅ USER:", session.user.id);
 
       // Check if user_spins row exists, create it if not
       let { data: spinData, error: spinError } = await supabase
@@ -386,8 +336,6 @@ supabase.auth.onAuthStateChange(async (event, session) => {
         .eq('user_id', session.user.id)
         .single();
 
-      console.log("SPIN DATA:", spinData);
-      console.log("SPIN ERROR:", spinError);
 
       // If no row exists, create one with 1 free spin
       if (!spinData) {
@@ -397,8 +345,6 @@ supabase.auth.onAuthStateChange(async (event, session) => {
           .select()
           .single();
 
-        console.log("CREATED SPIN ROW:", newRow);
-        console.log("INSERT ERROR:", insertError);
         spinData = newRow;
       }
 
@@ -412,7 +358,6 @@ supabase.auth.onAuthStateChange(async (event, session) => {
     }
 
   } else if (event === 'SIGNED_OUT') {
-    console.log("❌ SIGNED OUT");
     currentUser = null;
     updateSpinsUI(0);
     historySection.style.display = 'none';
