@@ -349,11 +349,52 @@ console.log("✅ Logged in 14");
 // ─── INIT ─────────────────────────────────────────────────
 drawWheel(0);
 
-(async () => {
-  const { data, error } = await supabase.auth.getSession();
+supabase.auth.onAuthStateChange(async (event, session) => {
+  console.log("AUTH EVENT:", event);
+  console.log("SESSION:", session);
 
-  console.log("SESSION DATA:", data);
-  console.log("SESSION ERROR:", error);
+  if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
 
-  await loadUserData();
-})();
+    if (session?.user) {
+      currentUser = session.user;
+      console.log("✅ USER:", session.user.id);
+
+      // Check if user_spins row exists, create it if not
+      let { data: spinData, error: spinError } = await supabase
+        .from('user_spins')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .single();
+
+      console.log("SPIN DATA:", spinData);
+      console.log("SPIN ERROR:", spinError);
+
+      // If no row exists, create one with 1 free spin
+      if (!spinData) {
+        const { data: newRow, error: insertError } = await supabase
+          .from('user_spins')
+          .insert({ user_id: session.user.id, spins_available: 1 })
+          .select()
+          .single();
+
+        console.log("CREATED SPIN ROW:", newRow);
+        console.log("INSERT ERROR:", insertError);
+        spinData = newRow;
+      }
+
+      updateSpinsUI(spinData?.spins_available ?? 0);
+      await loadHistory();
+
+    } else {
+      // INITIAL_SESSION with no user = not logged in
+      currentUser = null;
+      updateSpinsUI(0);
+    }
+
+  } else if (event === 'SIGNED_OUT') {
+    console.log("❌ SIGNED OUT");
+    currentUser = null;
+    updateSpinsUI(0);
+    historySection.style.display = 'none';
+  }
+});
