@@ -131,12 +131,24 @@ console.log("✅ Logged in 4");
 
 // ─── ANIMATE TO SLICE ─────────────────────────────────────
 function animateToSlice(targetIndex, onComplete) {
-  const extraFullSpins = 5 + Math.random() * 4;
-  const sliceMidAngle  = targetIndex * SLICE_ARC + SLICE_ARC / 2;
-  const targetAngle    = currentAngle
-    - ((currentAngle + sliceMidAngle) % (2 * Math.PI))
-    - (2 * Math.PI * extraFullSpins);
-console.log("✅ Logged in 5");
+  const extraFullSpins = 5 + Math.floor(Math.random() * 4); // 5–8 full rotations
+
+  // Each slice occupies SLICE_ARC radians
+  // We want slice[targetIndex] to sit under the pointer (top = -Math.PI / 2)
+  // Pointer is at the top, which in canvas terms is -PI/2
+  const pointerAngle = -Math.PI / 2;
+
+  // The angle where targetIndex slice CENTER should end up
+  const sliceCenter = targetIndex * SLICE_ARC + SLICE_ARC / 2;
+
+  // How much we need to rotate so sliceCenter aligns with pointer
+  // Normalize currentAngle first
+  const normalizedCurrent = ((currentAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  const neededRotation = ((pointerAngle - sliceCenter - normalizedCurrent) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+
+  // Final target = current + extra full spins + needed rotation to land exactly
+  const targetAngle = currentAngle - neededRotation - (2 * Math.PI * extraFullSpins);
+
   const duration   = 4500;
   const startTime  = performance.now();
   const startAngle = currentAngle;
@@ -144,12 +156,17 @@ console.log("✅ Logged in 5");
   function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
 
   function frame(now) {
-    console.log("✅ Logged in 6");
     const elapsed  = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
     currentAngle   = startAngle + (targetAngle - startAngle) * easeOut(progress);
     drawWheel(currentAngle);
-    if (progress < 1) { requestAnimationFrame(frame); } else { onComplete(); }
+    if (progress < 1) {
+      requestAnimationFrame(frame);
+    } else {
+      currentAngle = targetAngle; // lock to exact position
+      drawWheel(currentAngle);
+      onComplete();
+    }
   }
 
   requestAnimationFrame(frame);
@@ -280,7 +297,6 @@ console.log("✅ Logged in 12");
   }
 
   if (!data.success) {
-    // Double-check from server (race condition safety)
     showPopup('nospins');
     updateSpinsUI(0);
     spinning = false;
@@ -288,12 +304,12 @@ console.log("✅ Logged in 12");
     return;
   }
 
-  // Animate wheel to the slice Supabase returned
-  const winnerIndex = SLICES.findIndex(s => s.discount === data.discount);
-  const safeIndex   = winnerIndex >= 0 ? winnerIndex : 0;
+  // Use slice_index from DB directly — guaranteed to match
+  console.log("DB discount:", data.discount);
+  console.log("DB slice_index:", data.slice_index);
+  console.log("JS slice at index:", SLICES[data.slice_index]);
 
-  animateToSlice(safeIndex, async () => {
-    console.log("✅ Logged in 13");
+  animateToSlice(data.slice_index, async () => {
     showResult(data.discount, data.coupon_code);
     updateSpinsUI(data.spins_remaining);
     spinning = false;
