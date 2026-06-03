@@ -94,7 +94,7 @@ function drawWheel(angle) {
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
   const r  = cx - 4;
-console.log("✅ Logged in 4");
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   for (let i = 0; i < NUM_SLICES; i++) {
@@ -131,27 +131,31 @@ console.log("✅ Logged in 4");
 
 // ─── ANIMATE TO SLICE ─────────────────────────────────────
 function animateToSlice(targetIndex, onComplete) {
-  const extraFullSpins = 5 + Math.floor(Math.random() * 4); // 5–8 full rotations
+  const extraFullSpins = 5 + Math.floor(Math.random() * 4);
 
-  // Each slice occupies SLICE_ARC radians
-  // We want slice[targetIndex] to sit under the pointer (top = -Math.PI / 2)
-  // Pointer is at the top, which in canvas terms is -PI/2
-  const pointerAngle = -Math.PI / 2;
+  // Canvas 0° = 3 o'clock. Pointer is at top = -PI/2.
+  // Each slice i starts at: i * SLICE_ARC
+  // Slice center: i * SLICE_ARC + SLICE_ARC / 2
+  // We need slice center to land at top (-PI/2) after rotation.
+  // Final angle must satisfy: finalAngle + sliceCenter ≡ -PI/2 (mod 2PI)
+  // So: finalAngle = -PI/2 - sliceCenter - (full rotations)
 
-  // The angle where targetIndex slice CENTER should end up
   const sliceCenter = targetIndex * SLICE_ARC + SLICE_ARC / 2;
+  const baseTarget  = -Math.PI / 2 - sliceCenter;
 
-  // How much we need to rotate so sliceCenter aligns with pointer
-  // Normalize currentAngle first
-  const normalizedCurrent = ((currentAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-  const neededRotation = ((pointerAngle - sliceCenter - normalizedCurrent) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+  // Normalize so we always spin FORWARD (negative = clockwise in canvas)
+  const fullSpinAngle = -(2 * Math.PI * extraFullSpins);
+  
+  // How far we need to rotate from currentAngle to land correctly
+  let delta = baseTarget - currentAngle + fullSpinAngle;
+  
+  // Make sure delta is always a large negative (spinning forward many times)
+  while (delta > -2 * Math.PI) delta -= 2 * Math.PI;
 
-  // Final target = current + extra full spins + needed rotation to land exactly
-  const targetAngle = currentAngle - neededRotation - (2 * Math.PI * extraFullSpins);
-
-  const duration   = 4500;
-  const startTime  = performance.now();
-  const startAngle = currentAngle;
+  const targetAngle = currentAngle + delta;
+  const duration    = 4500;
+  const startTime   = performance.now();
+  const startAngle  = currentAngle;
 
   function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
 
@@ -163,7 +167,7 @@ function animateToSlice(targetIndex, onComplete) {
     if (progress < 1) {
       requestAnimationFrame(frame);
     } else {
-      currentAngle = targetAngle; // lock to exact position
+      currentAngle = targetAngle; // lock exact position
       drawWheel(currentAngle);
       onComplete();
     }
@@ -175,7 +179,7 @@ function animateToSlice(targetIndex, onComplete) {
 // ─── UPDATE SPINS BADGE ───────────────────────────────────
 function updateSpinsUI(count) {
   spinsAvailable = count;
-  console.log("✅ Logged in 7");
+  console.log("✅ Logged in 7 fix 1");
   if (!currentUser) {
     spinsText.innerHTML = 'Login to see your spins';
   } else if (count > 0) {
