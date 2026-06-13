@@ -690,3 +690,42 @@ body {
 
   .rules-inner { padding: 28px 32px; }
 }
+
+/* =====================
+   LOAD MORE (PAST TOURNAMENTS)
+===================== */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.load-more-btn {
+  min-height: var(--tap-min);
+  padding: 12px 32px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 10px;
+  border: 1px solid var(--border-accent);
+  background: var(--bg-card);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  touch-action: manipulation;
+}
+
+.load-more-btn:disabled {
+  color: var(--text-faint);
+  border-color: var(--border);
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .load-more-btn:hover:not(:disabled) {
+    background: var(--accent-dim);
+  }
+}
