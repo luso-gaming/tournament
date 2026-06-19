@@ -383,10 +383,10 @@ async function handleJoinClick(btn) {
   }
 
   const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("team_name, in_game_name")
-    .eq("id", session.user.id)
-    .single();
+  .from("profiles")
+  .select("team_name, in_game_name, points")
+  .eq("id", session.user.id)
+  .single();
 
   if (profileError) { alert("Error loading profile"); return; }
 
@@ -395,6 +395,37 @@ async function handleJoinClick(btn) {
     window.location.href = "/dashboard.html";
     return;
   }
+
+  // Get tournament type
+const { data: tournament, error: tournamentError } = await supabase
+  .from("tournaments")
+  .select("type")
+  .eq("id", tournamentId)
+  .single();
+
+if (tournamentError) {
+  alert("Unable to verify tournament requirements.");
+  return;
+}
+
+// Elite = Free for everyone
+if (tournament.type === "pro" && (profile.points || 0) < 100) {
+  alert("Sorry, You dont have enough points to join.");
+  return;
+}
+
+if (tournament.type === "legend" && (profile.points || 0) < 250) {
+  alert("You need at least 250 points to join Legend tournaments.");
+  return;
+}
+
+
+
+
+
+
+
+
 
   btn.disabled = true;
   btn.textContent = "Joining...";
