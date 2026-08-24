@@ -36,6 +36,14 @@ saveBtn.addEventListener("click", async () => {
     .value
     .trim();
 
+  const ageConfirm =
+    document.getElementById("ageConfirm")
+    .checked;
+
+  const termsPrivacy =
+    document.getElementById("termsPrivacy")
+    .checked;
+
   resetButton();
 
   messageBox.classList.remove(
@@ -51,6 +59,48 @@ saveBtn.addEventListener("click", async () => {
 
     messageBox.innerHTML =
       "<p>Please fill all fields.</p>";
+
+    messageBox.classList.add("error-message");
+
+    setTimeout(() => {
+
+      saveBtn.classList.remove("error");
+      saveBtn.classList.add("retry");
+
+    }, 700);
+
+    return;
+  }
+
+  // AGE CHECK
+
+  if (!ageConfirm) {
+
+    saveBtn.classList.add("error");
+
+    messageBox.innerHTML =
+      "<p>You must confirm that you are 18 years or older.</p>";
+
+    messageBox.classList.add("error-message");
+
+    setTimeout(() => {
+
+      saveBtn.classList.remove("error");
+      saveBtn.classList.add("retry");
+
+    }, 700);
+
+    return;
+  }
+
+  // TERMS & PRIVACY CHECK
+
+  if (!termsPrivacy) {
+
+    saveBtn.classList.add("error");
+
+    messageBox.innerHTML =
+      "<p>Please agree to the Terms & Conditions and Privacy Policy.</p>";
 
     messageBox.classList.add("error-message");
 
