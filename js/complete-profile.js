@@ -14,35 +14,27 @@ const saveBtn = document.getElementById("saveBtn");
 const messageBox = document.getElementById("formMessage");
 
 function resetButton() {
-
   saveBtn.classList.remove(
     "success",
     "loading",
     "error",
     "retry"
   );
-
 }
 
 saveBtn.addEventListener("click", async () => {
 
   const teamName =
-    document.getElementById("teamName")
-    .value
-    .trim();
+    document.getElementById("teamName").value.trim();
 
   const ign =
-    document.getElementById("ign")
-    .value
-    .trim();
+    document.getElementById("ign").value.trim();
 
   const ageConfirm =
-    document.getElementById("ageConfirm")
-    .checked;
+    document.getElementById("ageConfirm").checked;
 
   const termsPrivacy =
-    document.getElementById("termsPrivacy")
-    .checked;
+    document.getElementById("termsPrivacy").checked;
 
   resetButton();
 
@@ -51,7 +43,9 @@ saveBtn.addEventListener("click", async () => {
     "error-message"
   );
 
-  // EMPTY CHECK
+  // =========================
+  // EMPTY FIELD CHECK
+  // =========================
 
   if (!teamName || !ign) {
 
@@ -63,16 +57,16 @@ saveBtn.addEventListener("click", async () => {
     messageBox.classList.add("error-message");
 
     setTimeout(() => {
-
       saveBtn.classList.remove("error");
       saveBtn.classList.add("retry");
-
     }, 700);
 
     return;
   }
 
+  // =========================
   // AGE CHECK
+  // =========================
 
   if (!ageConfirm) {
 
@@ -84,16 +78,16 @@ saveBtn.addEventListener("click", async () => {
     messageBox.classList.add("error-message");
 
     setTimeout(() => {
-
       saveBtn.classList.remove("error");
       saveBtn.classList.add("retry");
-
     }, 700);
 
     return;
   }
 
-  // TERMS & PRIVACY CHECK
+  // =========================
+  // TERMS + PRIVACY CHECK
+  // =========================
 
   if (!termsPrivacy) {
 
@@ -105,27 +99,137 @@ saveBtn.addEventListener("click", async () => {
     messageBox.classList.add("error-message");
 
     setTimeout(() => {
-
       saveBtn.classList.remove("error");
       saveBtn.classList.add("retry");
-
     }, 700);
 
     return;
   }
 
+  // =========================
   // LOADING
+  // =========================
 
   saveBtn.classList.add("loading");
 
-  // CHECK TEAM
+  // =========================
+  // GET CURRENT LEGAL VERSIONS
+  // =========================
 
-  const { data: existingTeam } = await supabase
+  const {
+    data: legalDocuments,
+    error: legalError
+  } = await supabase
+    .from("legal_documents")
+    .select("document_type, current_version")
+    .in("document_type", ["terms", "privacy"]);
+
+  if (legalError) {
+
+    console.error("Legal documents error:", legalError);
+
+    resetButton();
+    saveBtn.classList.add("error");
+
+    messageBox.innerHTML =
+      "<p>Unable to verify the current Terms and Privacy Policy. Please try again.</p>";
+
+    messageBox.classList.add("error-message");
+
+    setTimeout(() => {
+      saveBtn.classList.remove("error");
+      saveBtn.classList.add("retry");
+    }, 700);
+
+    return;
+  }
+
+  // =========================
+  // FIND TERMS + PRIVACY
+  // =========================
+
+  const termsDocument =
+    legalDocuments.find(
+      document => document.document_type === "terms"
+    );
+
+  const privacyDocument =
+    legalDocuments.find(
+      document => document.document_type === "privacy"
+    );
+
+  if (!termsDocument || !privacyDocument) {
+
+    console.error(
+      "Missing legal document:",
+      legalDocuments
+    );
+
+    resetButton();
+    saveBtn.classList.add("error");
+
+    messageBox.innerHTML =
+      "<p>Terms or Privacy Policy version is unavailable. Please try again later.</p>";
+
+    messageBox.classList.add("error-message");
+
+    setTimeout(() => {
+      saveBtn.classList.remove("error");
+      saveBtn.classList.add("retry");
+    }, 700);
+
+    return;
+  }
+
+  const termsVersion =
+    termsDocument.current_version;
+
+  const privacyVersion =
+    privacyDocument.current_version;
+
+  // =========================
+  // CONSENT TIMESTAMPS
+  // =========================
+
+  const consentTime =
+    new Date().toISOString();
+
+  // =========================
+  // CHECK TEAM NAME
+  // =========================
+
+  const {
+    data: existingTeam,
+    error: teamCheckError
+  } = await supabase
     .from("profiles")
     .select("id")
     .eq("team_name", teamName)
     .neq("id", userId)
     .maybeSingle();
+
+  if (teamCheckError) {
+
+    console.error(
+      "Team check error:",
+      teamCheckError
+    );
+
+    resetButton();
+    saveBtn.classList.add("error");
+
+    messageBox.innerHTML =
+      "<p>Unable to check team name. Please try again.</p>";
+
+    messageBox.classList.add("error-message");
+
+    setTimeout(() => {
+      saveBtn.classList.remove("error");
+      saveBtn.classList.add("retry");
+    }, 700);
+
+    return;
+  }
 
   if (existingTeam) {
 
@@ -157,7 +261,6 @@ saveBtn.addEventListener("click", async () => {
 
         messageBox.innerHTML =
           "<p>Please try another team name.</p>";
-
       }
 
     }, 1000);
@@ -165,23 +268,45 @@ saveBtn.addEventListener("click", async () => {
     return;
   }
 
-  // SAVE PROFILE
+  // =========================
+  // SAVE PROFILE + CONSENTS
+  // =========================
 
   const { error } = await supabase
     .from("profiles")
     .update({
+
+      // Profile
       team_name: teamName,
-      in_game_name: ign
+      in_game_name: ign,
+
+      // Age consent
+      age_confirmed: true,
+      age_consented_at: consentTime,
+
+      // Terms consent
+      terms_version_accepted: termsVersion,
+      terms_consented_at: consentTime,
+
+      // Privacy consent
+      privacy_version_accepted: privacyVersion,
+      privacy_consented_at: consentTime
+
     })
     .eq("id", userId);
 
   resetButton();
 
+  // =========================
   // SAVE ERROR
+  // =========================
 
   if (error) {
 
-    console.error(error);
+    console.error(
+      "Profile save error:",
+      error
+    );
 
     saveBtn.classList.add("error");
 
@@ -209,7 +334,6 @@ saveBtn.addEventListener("click", async () => {
 
         messageBox.innerHTML =
           "<p>Please try again.</p>";
-
       }
 
     }, 1000);
@@ -217,7 +341,9 @@ saveBtn.addEventListener("click", async () => {
     return;
   }
 
+  // =========================
   // SUCCESS
+  // =========================
 
   saveBtn.classList.add("success");
 
